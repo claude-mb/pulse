@@ -20,12 +20,15 @@ class PulseApp extends StatelessWidget {
           gameFactory: PulseGame.new,
           overlayBuilderMap: {
             'MainMenu': (context, game) {
-              return Container(
-                color: Colors.black54,
-                child: const Center(
-                  child: Text(
-                    'Main Menu',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+              return GestureDetector(
+                onTap: () => game.overlays.remove('MainMenu'),
+                child: Container(
+                  color: Colors.black54,
+                  child: const Center(
+                    child: Text(
+                      'Tap to Start',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
                   ),
                 ),
               );
