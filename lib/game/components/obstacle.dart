@@ -10,12 +10,16 @@ import '../config/game_config.dart';
 /// Extends [RectangleComponent] for built-in rectangle rendering.
 /// Moves downward at [GameConfig.obstacleSpeed] and auto-removes
 /// when it passes below the visible world area.
-/// Collision hitboxes will be added in Plan 02-03.
+/// Width can vary between [GameConfig.obstacleMinWidth] and
+/// [GameConfig.obstacleMaxWidth] for visual variety.
 class Obstacle extends RectangleComponent {
-  Obstacle({required Vector2 position})
+  Obstacle({required Vector2 position, double? width})
       : super(
           position: position,
-          size: Vector2(GameConfig.obstacleWidth, GameConfig.obstacleHeight),
+          size: Vector2(
+            width ?? GameConfig.obstacleWidth,
+            GameConfig.obstacleHeight,
+          ),
           anchor: Anchor.center,
           paint: Paint()..color = GameConfig.obstacleColor,
         );

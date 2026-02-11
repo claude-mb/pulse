@@ -27,10 +27,13 @@ class GameConfig {
   static const double playerMinX = 40.0;
   static const double playerMaxX = 360.0;
 
-  // Obstacles (placeholder values — tuned in Phase 2-3)
-  static const double obstacleSpeed = 200.0;
-  static const double spawnInterval = 1.5;
+  // Obstacles (tuned in Plan 02-05 for satisfying feel)
+  static const double obstacleSpeed = 280.0;
+  static const double spawnInterval = 1.1;
   static const double obstacleWidth = 60.0;
+  static const double obstacleMinWidth = 50.0;
+  static const double obstacleMaxWidth = 80.0;
   static const double obstacleHeight = 20.0;
   static const double obstacleSpawnY = -30.0;
+  static const double obstacleMinSpawnSeparation = 80.0;
 }
