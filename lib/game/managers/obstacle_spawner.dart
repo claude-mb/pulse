@@ -35,8 +35,9 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
 
     if (game.state != GameState.playing) return;
 
-    // Update sequencer difficulty from the DifficultyManager each frame.
+    // Update sequencer difficulty and gap scale from the DifficultyManager.
     _sequencer.setDifficulty(game.difficultyManager.difficultyLevel);
+    _sequencer.setGapScale(game.difficultyManager.gapScale);
 
     _elapsed += dt;
 

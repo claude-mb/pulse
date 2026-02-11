@@ -32,6 +32,30 @@ class DifficultyManager extends Component with HasGameReference<PulseGame> {
   /// Current discrete difficulty level (1-5).
   int get difficultyLevel => _difficultyLevel;
 
+  /// Gap scale factor based on difficulty level.
+  ///
+  /// Controls how wide survivable gaps are in obstacle patterns.
+  /// Lower values = narrower gaps = harder.
+  /// - Difficulty 1-2: 1.0 (80px+ gaps)
+  /// - Difficulty 3: 0.9 (72px gaps)
+  /// - Difficulty 4: 0.8 (64px gaps)
+  /// - Difficulty 5: 0.75 (60px gaps)
+  double get gapScale {
+    switch (_difficultyLevel) {
+      case 1:
+      case 2:
+        return 1.0;
+      case 3:
+        return 0.9;
+      case 4:
+        return 0.8;
+      case 5:
+        return 0.75;
+      default:
+        return 1.0;
+    }
+  }
+
   @override
   void update(double dt) {
     super.update(dt);

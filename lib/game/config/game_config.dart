@@ -39,6 +39,7 @@ class GameConfig {
 
   // Pattern constraints
   static const double minGapWidth = 80.0;
+  static const double minSurvivableGap = 55.0;
 
   // Difficulty escalation
   static const List<double> difficultyThresholds = [0, 10, 25, 45, 70];

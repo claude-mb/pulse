@@ -5,8 +5,10 @@ import '../models/obstacle_pattern.dart';
 
 /// Predefined obstacle patterns for the Pulse game.
 ///
-/// Each factory method takes a [Random] instance and returns an
-/// [ObstaclePattern] with randomized placement variations.
+/// Each factory method takes a [Random] instance and an optional [gapScale]
+/// (0.7-1.0) that controls gap widths based on difficulty. Lower gapScale
+/// means narrower gaps. All patterns are validated to ensure survivable gaps.
+///
 /// Difficulty levels determine when patterns become available.
 class Patterns {
   // Prevent instantiation.
@@ -33,6 +35,45 @@ class Patterns {
     return GameConfig.playerMinX + random.nextDouble() * _playWidth;
   }
 
+  /// Effective minimum gap for the given [gapScale].
+  ///
+  /// Scales [GameConfig.minGapWidth] by [gapScale], but never allows the
+  /// gap to drop below [GameConfig.minSurvivableGap] (55px hard floor).
+  static double _effectiveMinGap(double gapScale) {
+    return (GameConfig.minGapWidth * gapScale)
+        .clamp(GameConfig.minSurvivableGap, double.infinity);
+  }
+
+  /// Maximum retry attempts when gap validation fails before falling
+  /// back to the single pattern.
+  static const int _maxRetries = 5;
+
+  /// Generates a pattern using [factory], validates it, retries up to
+  /// [_maxRetries] times, and falls back to [single] if all fail.
+  static ObstaclePattern _generateValidated(
+    Random random,
+    double gapScale,
+    ObstaclePattern Function(Random random, double gapScale) factory,
+  ) {
+    final minGap = _effectiveMinGap(gapScale);
+
+    for (var attempt = 0; attempt < _maxRetries; attempt++) {
+      final pattern = factory(random, gapScale);
+      if (ObstaclePattern.validateGap(pattern.placements, minGap, _playWidth)) {
+        return pattern;
+      }
+    }
+
+    // Fallback: single obstacle is always survivable.
+    assert(() {
+      // ignore: avoid_print
+      print('[Patterns] Validation failed after $_maxRetries retries, '
+          'falling back to single pattern.');
+      return true;
+    }());
+    return single(random);
+  }
+
   // ---------------------------------------------------------------------------
   // Pattern factories
   // ---------------------------------------------------------------------------
@@ -40,7 +81,8 @@ class Patterns {
   /// **single** (difficulty 1) -- One obstacle at a random x position.
   ///
   /// Width varies between 50-80px. No postDelay.
-  static ObstaclePattern single(Random random) {
+  /// [gapScale] is accepted for API consistency but has no effect on single.
+  static ObstaclePattern single(Random random, [double gapScale = 1.0]) {
     final x = _randomPixelX(random);
     final width = _randomWidth(random);
 
@@ -58,11 +100,16 @@ class Patterns {
 
   /// **doubleGap** (difficulty 2) -- Two obstacles creating a survivable gap.
   ///
-  /// A random gap center is chosen within the play area. The gap is at least
-  /// [GameConfig.minGapWidth] pixels wide. Obstacles fill the space on either
-  /// side of the gap with widths between 70-100px. postDelay 0.2s.
-  static ObstaclePattern doubleGap(Random random) {
-    const minGap = GameConfig.minGapWidth; // 80px
+  /// A random gap center is chosen within the play area. The gap width is
+  /// scaled by [gapScale] (minimum [GameConfig.minSurvivableGap]).
+  /// Obstacles fill the space on either side with widths between 70-100px.
+  /// postDelay 0.2s.
+  static ObstaclePattern doubleGap(Random random, [double gapScale = 1.0]) {
+    return _generateValidated(random, gapScale, _doubleGapImpl);
+  }
+
+  static ObstaclePattern _doubleGapImpl(Random random, double gapScale) {
+    final minGap = _effectiveMinGap(gapScale);
     const minObstacleW = 70.0;
     const maxObstacleW = 100.0;
 
@@ -108,7 +155,12 @@ class Patterns {
   ///
   /// First obstacle at a random x. Second offset >= 120px horizontally with
   /// yOffset -140 (~0.5s later at speed 280). postDelay 0.3s.
-  static ObstaclePattern stagger(Random random) {
+  /// Each row is individually validated for survivable gaps.
+  static ObstaclePattern stagger(Random random, [double gapScale = 1.0]) {
+    return _generateValidated(random, gapScale, _staggerImpl);
+  }
+
+  static ObstaclePattern _staggerImpl(Random random, double gapScale) {
     final firstX = _randomPixelX(random);
     final firstWidth = _randomWidth(random);
 
@@ -167,7 +219,12 @@ class Patterns {
   ///
   /// Random direction (left-to-right or right-to-left). ~100px horizontal
   /// spacing between each, -100 yOffset increments. postDelay 0.4s.
-  static ObstaclePattern wave(Random random) {
+  /// Each row is individually validated for survivable gaps.
+  static ObstaclePattern wave(Random random, [double gapScale = 1.0]) {
+    return _generateValidated(random, gapScale, _waveImpl);
+  }
+
+  static ObstaclePattern _waveImpl(Random random, double gapScale) {
     const hSpacing = 100.0;
     const vSpacing = -100.0;
 
