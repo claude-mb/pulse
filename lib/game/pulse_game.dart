@@ -99,6 +99,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Return to the main menu.
   void returnToMenu() {
     _state = GameState.menu;
+    clearObstacles();
+    player.resetPosition();
+    obstacleSpawner.reset();
     overlays.remove('HUD');
     overlays.remove('Pause');
     overlays.remove('GameOver');
