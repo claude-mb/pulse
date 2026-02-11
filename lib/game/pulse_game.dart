@@ -41,6 +41,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Start a new game session.
   void startGame() {
     _state = GameState.playing;
+    player.resetPosition();
     overlays.remove('MainMenu');
     overlays.add('HUD');
     paused = false;
@@ -71,6 +72,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Reset the game to start a new session.
   void resetGame() {
     _state = GameState.playing;
+    player.resetPosition();
     overlays.remove('GameOver');
     overlays.add('HUD');
     paused = false;
@@ -90,7 +92,10 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 /// World-level tap handler — receives events in world coordinates.
 /// Game-level TapCallbacks gives canvas coordinates which don't match
 /// the world coordinate space under CameraComponent.withFixedResolution.
-/// Phase 2 will move input to component-level TapCallbacks on Player.
+///
+/// Tapping the left half of the screen dodges the player left; tapping
+/// the right half dodges right. A [TapIndicator] is spawned for visual
+/// feedback at the tap location.
 class _WorldTapHandler extends Component
     with TapCallbacks, HasGameReference<PulseGame> {
   @override
@@ -99,6 +104,14 @@ class _WorldTapHandler extends Component
   @override
   void onTapDown(TapDownEvent event) {
     if (game.state == GameState.playing) {
+      // Dodge based on which half of the screen was tapped.
+      if (event.localPosition.x < GameConfig.worldWidth / 2) {
+        game.player.dodgeLeft();
+      } else {
+        game.player.dodgeRight();
+      }
+
+      // Visual feedback at tap location.
       parent?.add(TapIndicator(position: event.localPosition));
     }
   }

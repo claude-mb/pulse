@@ -1,14 +1,16 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 
 import '../config/game_config.dart';
 import '../pulse_game.dart';
 
 /// The player entity — a diamond/rhombus shape at the bottom of the screen.
 ///
-/// Controlled via dodge methods (added in Task 2). Collision hitboxes
-/// will be added in Plan 02-03.
+/// Moves left/right via [dodgeLeft] and [dodgeRight] using [MoveEffect]
+/// for smooth, snappy animation. Collision hitboxes will be added in
+/// Plan 02-03.
 class Player extends PositionComponent with HasGameReference<PulseGame> {
   Player()
       : super(
@@ -21,6 +23,46 @@ class Player extends PositionComponent with HasGameReference<PulseGame> {
         );
 
   final Paint _paint = Paint()..color = GameConfig.playerColor;
+
+  /// Dodge the player to the left by [GameConfig.playerDodgeDistance],
+  /// clamped to [GameConfig.playerMinX].
+  void dodgeLeft() {
+    final targetX =
+        (position.x - GameConfig.playerDodgeDistance).clamp(
+          GameConfig.playerMinX,
+          GameConfig.playerMaxX,
+        );
+    _moveTo(targetX);
+  }
+
+  /// Dodge the player to the right by [GameConfig.playerDodgeDistance],
+  /// clamped to [GameConfig.playerMaxX].
+  void dodgeRight() {
+    final targetX =
+        (position.x + GameConfig.playerDodgeDistance).clamp(
+          GameConfig.playerMinX,
+          GameConfig.playerMaxX,
+        );
+    _moveTo(targetX);
+  }
+
+  /// Reset the player to the center starting position.
+  void resetPosition() {
+    // Cancel any in-flight move effects.
+    children.whereType<MoveEffect>().forEach((e) => e.removeFromParent());
+    position = Vector2(GameConfig.worldWidth / 2, GameConfig.playerStartY);
+  }
+
+  /// Internal: cancel existing move effects and animate to [targetX].
+  void _moveTo(double targetX) {
+    children.whereType<MoveEffect>().forEach((e) => e.removeFromParent());
+    add(
+      MoveEffect.to(
+        Vector2(targetX, position.y),
+        EffectController(duration: 0.1),
+      ),
+    );
+  }
 
   @override
   void render(Canvas canvas) {
