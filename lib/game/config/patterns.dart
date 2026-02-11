@@ -267,4 +267,98 @@ class Patterns {
       postDelay: 0.4,
     );
   }
+
+  /// **wallWithGap** (difficulty 4) -- 3-4 obstacles forming a wall with one gap.
+  ///
+  /// Obstacles span most of the play area with exactly one survivable gap.
+  /// Gap width is scaled by [gapScale] (80px at 1.0, 60px at 0.75).
+  /// All obstacles are at the same yOffset for a wall effect.
+  /// postDelay 0.5s for breathing room after the wall.
+  static ObstaclePattern wallWithGap(Random random, [double gapScale = 1.0]) {
+    return _generateValidated(random, gapScale, _wallWithGapImpl);
+  }
+
+  static ObstaclePattern _wallWithGapImpl(Random random, double gapScale) {
+    final gapWidth = _effectiveMinGap(gapScale);
+    final leftEdge = GameConfig.playerMinX;
+    final rightEdge = GameConfig.playerMaxX;
+
+    // Pick a random gap center within the reachable play area,
+    // ensuring the gap fits entirely within bounds.
+    final gapHalf = gapWidth / 2;
+    final minGapCenter = leftEdge + gapHalf + 20; // leave room for left obstacle
+    final maxGapCenter = rightEdge - gapHalf - 20; // leave room for right obstacle
+    final gapCenter =
+        minGapCenter + random.nextDouble() * (maxGapCenter - minGapCenter);
+
+    final gapLeft = gapCenter - gapHalf;
+    final gapRight = gapCenter + gapHalf;
+
+    final placements = <ObstaclePlacement>[];
+
+    // Left side: fill from leftEdge to gapLeft with 1-2 obstacles.
+    final leftSpace = gapLeft - leftEdge;
+    if (leftSpace > 0) {
+      if (leftSpace > 140 && random.nextBool()) {
+        // Split into 2 obstacles.
+        final splitPoint = leftEdge + leftSpace * (0.3 + random.nextDouble() * 0.4);
+        final w1 = (splitPoint - leftEdge).clamp(GameConfig.obstacleMinWidth, GameConfig.obstacleMaxWidth * 2);
+        final c1 = leftEdge + w1 / 2;
+        placements.add(ObstaclePlacement(
+          normalizedX: _toNormalized(c1),
+          widthOverride: w1,
+        ));
+        final w2 = (gapLeft - splitPoint).clamp(GameConfig.obstacleMinWidth, GameConfig.obstacleMaxWidth * 2);
+        final c2 = splitPoint + w2 / 2;
+        placements.add(ObstaclePlacement(
+          normalizedX: _toNormalized(c2),
+          widthOverride: w2,
+        ));
+      } else {
+        // Single obstacle covering the left side.
+        final w = leftSpace;
+        final c = leftEdge + w / 2;
+        placements.add(ObstaclePlacement(
+          normalizedX: _toNormalized(c),
+          widthOverride: w,
+        ));
+      }
+    }
+
+    // Right side: fill from gapRight to rightEdge with 1-2 obstacles.
+    final rightSpace = rightEdge - gapRight;
+    if (rightSpace > 0) {
+      if (rightSpace > 140 && random.nextBool()) {
+        // Split into 2 obstacles.
+        final splitPoint = gapRight + rightSpace * (0.3 + random.nextDouble() * 0.4);
+        final w1 = (splitPoint - gapRight).clamp(GameConfig.obstacleMinWidth, GameConfig.obstacleMaxWidth * 2);
+        final c1 = gapRight + w1 / 2;
+        placements.add(ObstaclePlacement(
+          normalizedX: _toNormalized(c1),
+          widthOverride: w1,
+        ));
+        final w2 = (rightEdge - splitPoint).clamp(GameConfig.obstacleMinWidth, GameConfig.obstacleMaxWidth * 2);
+        final c2 = splitPoint + w2 / 2;
+        placements.add(ObstaclePlacement(
+          normalizedX: _toNormalized(c2),
+          widthOverride: w2,
+        ));
+      } else {
+        // Single obstacle covering the right side.
+        final w = rightSpace;
+        final c = gapRight + w / 2;
+        placements.add(ObstaclePlacement(
+          normalizedX: _toNormalized(c),
+          widthOverride: w,
+        ));
+      }
+    }
+
+    return ObstaclePattern(
+      id: 'wallWithGap',
+      difficulty: 4,
+      placements: placements,
+      postDelay: 0.5,
+    );
+  }
 }

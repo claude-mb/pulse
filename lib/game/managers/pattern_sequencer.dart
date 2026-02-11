@@ -48,6 +48,7 @@ class PatternSequencer {
     _register('doubleGap', Patterns.doubleGap);
     _register('stagger', Patterns.stagger);
     _register('wave', Patterns.wave);
+    _register('wallWithGap', Patterns.wallWithGap);
   }
 
   /// Register a pattern factory with an initial weight of 1.0.
