@@ -31,6 +31,16 @@ class GameOverScreen extends StatelessWidget {
                       letterSpacing: 8,
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '${game.survivalTime.toStringAsFixed(1)}s',
+                    style: TextStyle(
+                      color: GameConfig.textColor.withValues(alpha: 0.8),
+                      fontSize: 32,
+                      fontWeight: FontWeight.w300,
+                      letterSpacing: 2,
+                    ),
+                  ),
                   const SizedBox(height: 32),
                   Text(
                     'TAP TO RETRY',

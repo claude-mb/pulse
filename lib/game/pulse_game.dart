@@ -27,8 +27,21 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   GameState _state = GameState.menu;
   GameState get state => _state;
 
+  double _survivalTime = 0.0;
+
+  /// Elapsed survival time in seconds since the current game started.
+  double get survivalTime => _survivalTime;
+
   @override
   Color backgroundColor() => GameConfig.backgroundColor;
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (_state == GameState.playing) {
+      _survivalTime += dt;
+    }
+  }
 
   @override
   Future<void> onLoad() async {
@@ -47,6 +60,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Start a new game session.
   void startGame() {
     _state = GameState.playing;
+    _survivalTime = 0.0;
     player.resetPosition();
     clearObstacles();
     obstacleSpawner.reset();
@@ -80,6 +94,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Reset the game to start a new session.
   void resetGame() {
     _state = GameState.playing;
+    _survivalTime = 0.0;
     player.resetPosition();
     clearObstacles();
     obstacleSpawner.reset();
