@@ -5,6 +5,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
 import 'components/tap_indicator.dart';
+import 'config/game_config.dart';
 
 enum GameState { menu, playing, paused, gameOver }
 
@@ -12,8 +13,8 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   PulseGame()
       : super(
           camera: CameraComponent.withFixedResolution(
-            width: 400,
-            height: 800,
+            width: GameConfig.worldWidth,
+            height: GameConfig.worldHeight,
           ),
         );
 
@@ -21,7 +22,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   GameState get state => _state;
 
   @override
-  Color backgroundColor() => const Color(0xFF1A1A2E);
+  Color backgroundColor() => GameConfig.backgroundColor;
 
   @override
   Future<void> onLoad() async {

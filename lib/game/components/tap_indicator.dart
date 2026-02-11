@@ -3,17 +3,18 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 
+import '../config/game_config.dart';
+
 /// A visual indicator that appears at tap positions.
 ///
-/// Renders a small white circle that fades out over 0.3 seconds
-/// and then removes itself from the game.
+/// Renders a small circle that fades out and then removes itself from the game.
 class TapIndicator extends CircleComponent {
   TapIndicator({required Vector2 position})
       : super(
           position: position,
-          radius: 15,
+          radius: GameConfig.tapIndicatorRadius,
           anchor: Anchor.center,
-          paint: Paint()..color = const Color(0xFFFFFFFF),
+          paint: Paint()..color = GameConfig.textColor,
         );
 
   @override
@@ -21,7 +22,7 @@ class TapIndicator extends CircleComponent {
     await super.onLoad();
     add(
       OpacityEffect.fadeOut(
-        EffectController(duration: 0.3),
+        EffectController(duration: GameConfig.tapIndicatorDuration),
         onComplete: removeFromParent,
       ),
     );
