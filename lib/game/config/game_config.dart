@@ -30,4 +30,7 @@ class GameConfig {
   // Obstacles (placeholder values — tuned in Phase 2-3)
   static const double obstacleSpeed = 200.0;
   static const double spawnInterval = 1.5;
+  static const double obstacleWidth = 60.0;
+  static const double obstacleHeight = 20.0;
+  static const double obstacleSpawnY = -30.0;
 }
