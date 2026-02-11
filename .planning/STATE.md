@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 3 of 10 (Obstacle System)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-11 — Completed 03-01-PLAN.md
+Last activity: 2026-02-11 — Completed 03-02-PLAN.md
 
-Progress: ██░░░░░░░░ 21%
+Progress: ██░░░░░░░░ 23%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 8 min
-- Total execution time: 1.5 hours
+- Total plans completed: 12
+- Average duration: 10 min
+- Total execution time: 2.1 hours
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: ██░░░░░░░░ 21%
 |-------|-------|-------|----------|
 | 1. Foundation | 5/5 | 67 min | 13 min |
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
-| 3. Obstacle System | 1/5 | 6 min | 6 min |
+| 3. Obstacle System | 2/5 | 42 min | 21 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (4 min), 02-03 (3 min), 02-04 (4 min), 02-05 (5 min), 03-01 (6 min)
-- Trend: Consistent fast execution, pattern data models slightly heavier
+- Last 5 plans: 02-03 (3 min), 02-04 (4 min), 02-05 (5 min), 03-01 (6 min), 03-02 (36 min)
+- Trend: 03-02 longer due to refactoring + build verification
 
 ## Accumulated Context
 
@@ -62,6 +62,8 @@ Recent decisions affecting current work:
 | 02-05 | Anti-clustering: attempt-based with fallback | Prevents impossible obstacle overlap sequences |
 | 03-01 | normalizedX (0-1) for pattern placement | Decouples patterns from absolute pixel positions |
 | 03-01 | Static factory methods per pattern with Random | Procedural variation, consistent project style |
+| 03-02 | Generate-then-filter for difficulty gating | Simpler than maintaining eligible pattern lists |
+| 03-02 | Obstacle speed as instance field | Prepares for difficulty scaling without changing behavior |
 
 ### Deferred Issues
 
@@ -74,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-11
-Stopped at: Completed 03-01-PLAN.md
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
