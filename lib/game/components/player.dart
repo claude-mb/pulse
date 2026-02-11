@@ -6,13 +6,15 @@ import 'package:flame/effects.dart';
 
 import '../config/game_config.dart';
 import '../pulse_game.dart';
+import 'obstacle.dart';
 
 /// The player entity — a diamond/rhombus shape at the bottom of the screen.
 ///
 /// Moves left/right via [dodgeLeft] and [dodgeRight] using [MoveEffect]
-/// for smooth, snappy animation. Collision hitboxes will be added in
-/// Plan 02-03.
-class Player extends PositionComponent with HasGameReference<PulseGame> {
+/// for smooth, snappy animation. Detects collisions with [Obstacle]s and
+/// triggers game over.
+class Player extends PositionComponent
+    with HasGameReference<PulseGame>, CollisionCallbacks {
   Player()
       : super(
           size: Vector2.all(GameConfig.playerSize),
@@ -36,6 +38,19 @@ class Player extends PositionComponent with HasGameReference<PulseGame> {
         position: size * 0.1,
       ),
     );
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is Obstacle) {
+      // Guard: prevent multiple gameOver calls from simultaneous collisions.
+      if (game.state != GameState.playing) return;
+      game.gameOver();
+    }
   }
 
   /// Dodge the player to the left by [GameConfig.playerDodgeDistance],
