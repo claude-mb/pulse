@@ -20,14 +20,8 @@ import 'pattern_sequencer.dart';
 /// Only spawns when [PulseGame.state] is [GameState.playing].
 class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
   final Random _random = Random();
-  late final PatternSequencer _sequencer;
+  late final PatternSequencer _sequencer = PatternSequencer(random: _random);
   double _elapsed = 0;
-
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-    _sequencer = PatternSequencer(random: _random);
-  }
 
   @override
   void update(double dt) {
