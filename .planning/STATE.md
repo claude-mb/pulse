@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 1 of 10 (Foundation)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-11 — Completed 01-01-PLAN.md
+Last activity: 2026-02-11 — Completed 01-02-PLAN.md
 
-Progress: █░░░░░░░░░ 2%
+Progress: ██░░░░░░░░ 4%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 17 min
-- Total execution time: 0.3 hours
+- Total plans completed: 2
+- Average duration: 16 min
+- Total execution time: 0.5 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Foundation | 1/5 | 17 min | 17 min |
+| 1. Foundation | 2/5 | 31 min | 16 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (17 min)
-- Trend: First plan
+- Last 5 plans: 01-01 (17 min), 01-02 (14 min)
+- Trend: Stable
 
 ## Accumulated Context
 
@@ -44,6 +44,8 @@ Recent decisions affecting current work:
 |-------|----------|-----------|
 | 01-01 | Flutter SDK installed to C:/flutter | Was not pre-installed; cloned stable branch |
 | 01-01 | Let pub resolve latest Flame versions | Avoid version pinning issues early |
+| 01-02 | CameraComponent.withFixedResolution(400x800) via constructor | Cleaner initialization than creating in onLoad |
+| 01-02 | GameWidget.controlled(gameFactory:) modern pattern | Avoids deprecated instance passing |
 
 ### Deferred Issues
 
@@ -56,5 +58,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-11
-Stopped at: Completed 01-01-PLAN.md
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
