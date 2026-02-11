@@ -59,7 +59,7 @@ Plans:
 Plans:
 - [x] 03-01: Obstacle pattern library (single, double, alternating, wave)
 - [x] 03-02: Pattern sequencer with weighted random selection
-- [ ] 03-03: Difficulty curve — speed and complexity escalation over time
+- [x] 03-03: Difficulty curve — speed and complexity escalation over time
 - [ ] 03-04: Gap calibration — ensuring patterns are always fair/survivable
 - [ ] 03-05: Pattern variety and rhythm — preventing repetitive sequences
 
@@ -166,7 +166,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-02-11 |
 | 2. Core Game Loop | 5/5 | Complete | 2026-02-11 |
-| 3. Obstacle System | 2/5 | In progress | - |
+| 3. Obstacle System | 3/5 | In progress | - |
 | 4. Visual Juice | 0/6 | Not started | - |
 | 5. Audio System | 0/5 | Not started | - |
 | 6. Scoring & High Scores | 0/5 | Not started | - |
