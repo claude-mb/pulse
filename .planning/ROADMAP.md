@@ -48,7 +48,7 @@ Plans:
 - [x] 02-02: Basic obstacle spawning and movement toward player
 - [x] 02-03: Collision detection between player and obstacles
 - [x] 02-04: Death + instant restart flow (zero friction retry loop)
-- [ ] 02-05: Timing window tuning and difficulty feel calibration
+- [x] 02-05: Timing window tuning and difficulty feel calibration
 
 ### Phase 3: Obstacle System
 **Goal**: Procedurally generated obstacle patterns that escalate in difficulty over time
@@ -165,7 +165,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-02-11 |
-| 2. Core Game Loop | 4/5 | In progress | - |
+| 2. Core Game Loop | 5/5 | Complete | 2026-02-11 |
 | 3. Obstacle System | 0/5 | Not started | - |
 | 4. Visual Juice | 0/6 | Not started | - |
 | 5. Audio System | 0/5 | Not started | - |

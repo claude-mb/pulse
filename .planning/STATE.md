@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 2 — Core Game Loop
+**Current focus:** Phase 2 complete — ready for Phase 3
 
 ## Current Position
 
-Phase: 2 of 10 (Core Game Loop)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-11 — Completed 02-04-PLAN.md
+Phase: 2 of 10 (Core Game Loop) — Complete
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-02-11 — Completed 02-05-PLAN.md
 
-Progress: █████░░░░░ 17%
+Progress: ██░░░░░░░░ 19%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 10
 - Average duration: 9 min
-- Total execution time: 1.3 hours
+- Total execution time: 1.4 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 5/5 | 67 min | 13 min |
-| 2. Core Game Loop | 4/5 | 15 min | 4 min |
+| 2. Core Game Loop | 5/5 | 20 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-05 (5 min), 02-01 (4 min), 02-02 (4 min), 02-03 (3 min), 02-04 (4 min)
-- Trend: Phase 2 plans consistently 3-4 min — clean autonomous execution
+- Last 5 plans: 02-01 (4 min), 02-02 (4 min), 02-03 (3 min), 02-04 (4 min), 02-05 (5 min)
+- Trend: Phase 2 completed in 20 min total — fast autonomous execution
 
 ## Accumulated Context
 
@@ -57,6 +57,8 @@ Recent decisions affecting current work:
 | 02-01 | MoveEffect.to() with 0.1s for dodge animation | Snappy responsive feel, cancel-before-add pattern |
 | 02-02 | Subtract-not-zero timer accumulator | Preserves timing accuracy across variable frame rates |
 | 02-03 | 80% player hitbox, passive obstacle hitboxes | Near-miss fairness + performance optimization |
+| 02-05 | obstacleSpeed 280, spawnInterval 1.1s | Urgent but fair feel for core loop |
+| 02-05 | Anti-clustering: attempt-based with fallback | Prevents impossible obstacle overlap sequences |
 
 ### Deferred Issues
 
@@ -69,5 +71,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-11
-Stopped at: Completed 02-04-PLAN.md
+Stopped at: Completed 02-05-PLAN.md — Phase 2 complete
 Resume file: None
