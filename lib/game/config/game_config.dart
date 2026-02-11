@@ -36,4 +36,7 @@ class GameConfig {
   static const double obstacleHeight = 20.0;
   static const double obstacleSpawnY = -30.0;
   static const double obstacleMinSpawnSeparation = 80.0;
+
+  // Pattern constraints
+  static const double minGapWidth = 80.0;
 }
