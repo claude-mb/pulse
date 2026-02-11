@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+import 'components/player.dart';
 import 'components/tap_indicator.dart';
 import 'config/game_config.dart';
 
@@ -18,6 +19,8 @@ class PulseGame extends FlameGame with HasCollisionDetection {
           ),
         );
 
+  late Player player;
+
   GameState _state = GameState.menu;
   GameState get state => _state;
 
@@ -30,6 +33,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     paused = true;
     world.add(ScreenHitbox());
     world.add(_WorldTapHandler());
+
+    player = Player();
+    world.add(player);
   }
 
   /// Start a new game session.

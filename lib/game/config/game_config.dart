@@ -19,9 +19,13 @@ class GameConfig {
   static const double tapIndicatorRadius = 15.0;
   static const double tapIndicatorDuration = 0.3;
 
-  // Player (placeholder values — tuned in Phase 2)
+  // Player
   static const double playerSize = 40.0;
   static const double playerSpeed = 300.0;
+  static const double playerStartY = 720.0;
+  static const double playerDodgeDistance = 120.0;
+  static const double playerMinX = 40.0;
+  static const double playerMaxX = 360.0;
 
   // Obstacles (placeholder values — tuned in Phase 2-3)
   static const double obstacleSpeed = 200.0;
