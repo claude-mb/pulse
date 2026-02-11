@@ -10,7 +10,7 @@ None
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** - Flutter + Flame project setup, build configs, game shell
+- [x] **Phase 1: Foundation** - Flutter + Flame project setup, build configs, game shell
 - [ ] **Phase 2: Core Game Loop** - Tap-to-dodge mechanic, player movement, collision detection
 - [ ] **Phase 3: Obstacle System** - Procedural obstacle generation, patterns, escalating difficulty
 - [ ] **Phase 4: Visual Juice** - Screen shake, particles, flash effects, geometric art style
@@ -35,7 +35,7 @@ Plans:
 - [x] 01-02: Flame GameWidget integration and game loop skeleton
 - [x] 01-03: Input handling system (tap detection, gesture processing)
 - [x] 01-04: Game state management (playing, paused, game over, restart)
-- [ ] 01-05: Asset loading pipeline and screen scaling/responsive layout
+- [x] 01-05: Asset loading pipeline and screen scaling/responsive layout
 
 ### Phase 2: Core Game Loop
 **Goal**: Playable prototype — a shape moves, player taps to dodge, collisions kill, instant restart
@@ -164,7 +164,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 4/5 | In progress | - |
+| 1. Foundation | 5/5 | Complete | 2026-02-11 |
 | 2. Core Game Loop | 0/5 | Not started | - |
 | 3. Obstacle System | 0/5 | Not started | - |
 | 4. Visual Juice | 0/6 | Not started | - |
