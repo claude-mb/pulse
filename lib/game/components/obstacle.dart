@@ -8,13 +8,20 @@ import '../config/game_config.dart';
 /// A falling obstacle that the player must dodge.
 ///
 /// Extends [RectangleComponent] for built-in rectangle rendering.
-/// Moves downward at [GameConfig.obstacleSpeed] and auto-removes
-/// when it passes below the visible world area.
+/// Moves downward at [speed] (defaults to [GameConfig.obstacleSpeed])
+/// and auto-removes when it passes below the visible world area.
 /// Width can vary between [GameConfig.obstacleMinWidth] and
 /// [GameConfig.obstacleMaxWidth] for visual variety.
 class Obstacle extends RectangleComponent {
-  Obstacle({required Vector2 position, double? width})
-      : super(
+  /// Downward speed in pixels per second.
+  final double speed;
+
+  Obstacle({
+    required Vector2 position,
+    double? width,
+    double? speed,
+  })  : speed = speed ?? GameConfig.obstacleSpeed,
+        super(
           position: position,
           size: Vector2(
             width ?? GameConfig.obstacleWidth,
@@ -34,7 +41,7 @@ class Obstacle extends RectangleComponent {
   @override
   void update(double dt) {
     super.update(dt);
-    position.y += GameConfig.obstacleSpeed * dt;
+    position.y += speed * dt;
 
     // Remove when fully off-screen (with 50px buffer).
     if (position.y > GameConfig.worldHeight + 50) {

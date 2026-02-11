@@ -5,24 +5,29 @@ import 'package:flame/components.dart';
 import '../components/obstacle.dart';
 import '../config/game_config.dart';
 import '../pulse_game.dart';
+import 'pattern_sequencer.dart';
 
-/// Spawns [Obstacle] instances at regular intervals during gameplay.
+/// Spawns [Obstacle] formations at regular intervals during gameplay.
 ///
-/// Uses an accumulator-based timer in [update] to spawn obstacles
-/// at [GameConfig.spawnInterval] intervals. Obstacles are placed at
-/// random x positions within the player movement bounds and at
-/// [GameConfig.obstacleSpawnY] (above the visible area).
+/// Uses a [PatternSequencer] to select obstacle patterns, then translates
+/// each pattern's [ObstaclePlacement] list into concrete [Obstacle] instances
+/// added to the game world.
 ///
-/// Width varies randomly between [GameConfig.obstacleMinWidth] and
-/// [GameConfig.obstacleMaxWidth]. Anti-clustering logic ensures
-/// consecutive obstacles are at least [GameConfig.obstacleMinSpawnSeparation]
-/// apart horizontally.
+/// Spawn timing is accumulator-based: when the timer fires, a pattern is
+/// requested from the sequencer, all its obstacles are spawned, and the
+/// pattern's [postDelay] is added to the timer before the next spawn.
 ///
 /// Only spawns when [PulseGame.state] is [GameState.playing].
 class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
   final Random _random = Random();
+  late final PatternSequencer _sequencer;
   double _elapsed = 0;
-  double? _lastSpawnX;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    _sequencer = PatternSequencer(random: _random);
+  }
 
   @override
   void update(double dt) {
@@ -35,52 +40,42 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
     while (_elapsed >= GameConfig.spawnInterval) {
       _elapsed -= GameConfig.spawnInterval;
 
-      // Randomize obstacle width for visual variety.
-      final width = GameConfig.obstacleMinWidth +
-          _random.nextDouble() *
-              (GameConfig.obstacleMaxWidth - GameConfig.obstacleMinWidth);
+      // Select a pattern from the sequencer.
+      final pattern = _sequencer.next();
 
-      // Pick a random x position, ensuring minimum separation from last spawn.
-      final randomX = _pickSpawnX();
+      // Spawn each obstacle placement in the pattern.
+      for (final placement in pattern.placements) {
+        // Map normalizedX (0.0-1.0) to world x within player movement bounds.
+        final x = GameConfig.playerMinX +
+            placement.normalizedX *
+                (GameConfig.playerMaxX - GameConfig.playerMinX);
 
-      _lastSpawnX = randomX;
+        // yOffset shifts from the spawn line (negative = further above).
+        final y = GameConfig.obstacleSpawnY + placement.yOffset;
 
-      final obstacle = Obstacle(
-        position: Vector2(randomX, GameConfig.obstacleSpawnY),
-        width: width,
-      );
+        // Use widthOverride if provided, otherwise random width.
+        final width = placement.widthOverride ??
+            (GameConfig.obstacleMinWidth +
+                _random.nextDouble() *
+                    (GameConfig.obstacleMaxWidth - GameConfig.obstacleMinWidth));
 
-      parent?.add(obstacle);
-    }
-  }
+        final obstacle = Obstacle(
+          position: Vector2(x, y),
+          width: width,
+        );
 
-  /// Pick a random x position that respects the minimum spawn separation
-  /// from the last obstacle. Falls back after a few attempts to avoid
-  /// infinite loops.
-  double _pickSpawnX() {
-    final range = GameConfig.playerMaxX - GameConfig.playerMinX;
-    const maxAttempts = 10;
-
-    for (var i = 0; i < maxAttempts; i++) {
-      final x = GameConfig.playerMinX + _random.nextDouble() * range;
-
-      if (_lastSpawnX == null ||
-          (x - _lastSpawnX!).abs() >= GameConfig.obstacleMinSpawnSeparation) {
-        return x;
+        parent?.add(obstacle);
       }
-    }
 
-    // Fallback: place on the opposite side of the play field from the last spawn.
-    final midX = (GameConfig.playerMinX + GameConfig.playerMaxX) / 2;
-    if (_lastSpawnX != null && _lastSpawnX! > midX) {
-      return GameConfig.playerMinX + _random.nextDouble() * (range / 3);
+      // Add the pattern's postDelay to the timer so there's a gap
+      // before the next pattern spawns.
+      _elapsed -= pattern.postDelay;
     }
-    return GameConfig.playerMaxX - _random.nextDouble() * (range / 3);
   }
 
-  /// Reset the spawn timer and last-spawn tracking (call on game start/restart).
+  /// Reset the spawn timer and sequencer state (call on game start/restart).
   void reset() {
     _elapsed = 0;
-    _lastSpawnX = null;
+    _sequencer.reset();
   }
 }
