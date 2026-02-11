@@ -4,9 +4,11 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+import 'components/obstacle.dart';
 import 'components/player.dart';
 import 'components/tap_indicator.dart';
 import 'config/game_config.dart';
+import 'managers/obstacle_spawner.dart';
 
 enum GameState { menu, playing, paused, gameOver }
 
@@ -20,6 +22,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
         );
 
   late Player player;
+  late ObstacleSpawner obstacleSpawner;
 
   GameState _state = GameState.menu;
   GameState get state => _state;
@@ -36,12 +39,17 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
     player = Player();
     world.add(player);
+
+    obstacleSpawner = ObstacleSpawner();
+    world.add(obstacleSpawner);
   }
 
   /// Start a new game session.
   void startGame() {
     _state = GameState.playing;
     player.resetPosition();
+    clearObstacles();
+    obstacleSpawner.reset();
     overlays.remove('MainMenu');
     overlays.add('HUD');
     paused = false;
@@ -73,9 +81,19 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   void resetGame() {
     _state = GameState.playing;
     player.resetPosition();
+    clearObstacles();
+    obstacleSpawner.reset();
     overlays.remove('GameOver');
     overlays.add('HUD');
     paused = false;
+  }
+
+  /// Remove all [Obstacle] children from the world.
+  void clearObstacles() {
+    world.children
+        .whereType<Obstacle>()
+        .toList()
+        .forEach((o) => o.removeFromParent());
   }
 
   /// Return to the main menu.
