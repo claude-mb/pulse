@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 
@@ -23,6 +24,19 @@ class Player extends PositionComponent with HasGameReference<PulseGame> {
         );
 
   final Paint _paint = Paint()..color = GameConfig.playerColor;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    // 80% hitbox centered on the player — forgiving near-misses.
+    add(
+      RectangleHitbox.relative(
+        Vector2(0.8, 0.8),
+        parentSize: size,
+        position: size * 0.1,
+      ),
+    );
+  }
 
   /// Dodge the player to the left by [GameConfig.playerDodgeDistance],
   /// clamped to [GameConfig.playerMinX].

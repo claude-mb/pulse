@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 import '../config/game_config.dart';
@@ -18,6 +19,13 @@ class Obstacle extends RectangleComponent {
           anchor: Anchor.center,
           paint: Paint()..color = GameConfig.obstacleColor,
         );
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    // Full-size hitbox — obstacles are the threat, no forgiveness.
+    add(RectangleHitbox(collisionType: CollisionType.passive));
+  }
 
   @override
   void update(double dt) {
