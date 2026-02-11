@@ -45,4 +45,7 @@ class GameConfig {
   static const List<double> difficultyThresholds = [0, 10, 25, 45, 70];
   static const double maxSpeedMultiplier = 1.6;
   static const double minIntervalMultiplier = 0.55;
+
+  // Pattern variety
+  static const int maxConsecutiveSimple = 3;
 }
