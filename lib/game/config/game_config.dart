@@ -48,4 +48,10 @@ class GameConfig {
 
   // Pattern variety
   static const int maxConsecutiveSimple = 3;
+
+  // Rhythm system (intense/breather cycles)
+  static const int rhythmIntenseMin = 4;
+  static const int rhythmIntenseMax = 6;
+  static const int rhythmBreatherLength = 2;
+  static const double rhythmBreatherIntervalBonus = 1.3;
 }

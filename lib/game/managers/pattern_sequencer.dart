@@ -39,6 +39,20 @@ class PatternSequencer {
   /// Number of consecutive 'single' selections in the most recent history.
   int _recentSingleCount = 0;
 
+  // --- Rhythm system state ---
+
+  /// Number of patterns spawned since the last breather ended.
+  int _patternsSinceBreather = 0;
+
+  /// Whether the sequencer is currently in a breather phase.
+  bool _inBreather = false;
+
+  /// How many breather patterns remain before resuming intense mode.
+  int _breatherPatternsRemaining = 0;
+
+  /// The intense-phase threshold — randomised each cycle for unpredictability.
+  int _intenseThreshold = 0;
+
   /// Current difficulty level (1-5). Only patterns with
   /// difficulty <= this value are eligible for selection.
   int _currentDifficulty = 1;
@@ -58,7 +72,14 @@ class PatternSequencer {
     _register('stagger', Patterns.stagger);
     _register('wave', Patterns.wave);
     _register('wallWithGap', Patterns.wallWithGap);
+    _intenseThreshold = _rollIntenseThreshold();
   }
+
+  /// Whether the sequencer is currently in a breather phase.
+  ///
+  /// During breather, only single patterns are spawned and the
+  /// [ObstacleSpawner] applies an interval bonus for extra breathing room.
+  bool get isBreather => _inBreather;
 
   /// Register a pattern factory with an initial weight of 1.0.
   void _register(
@@ -76,6 +97,43 @@ class PatternSequencer {
   ///
   /// The current [_gapScale] is passed to each pattern factory.
   ObstaclePattern next() {
+    // --- Rhythm system: breather/intense cycling (difficulty 2+) ---
+    if (_currentDifficulty >= 2) {
+      if (_inBreather) {
+        if (_breatherPatternsRemaining > 0) {
+          // Still in breather: force a single pattern.
+          _breatherPatternsRemaining--;
+          final breatherPattern = Patterns.single(_random, _gapScale);
+          _addToHistory(breatherPattern.id);
+          if (_breatherPatternsRemaining <= 0) {
+            // Breather complete — resume intense mode.
+            _inBreather = false;
+            _patternsSinceBreather = 0;
+            _intenseThreshold = _rollIntenseThreshold();
+          }
+          return breatherPattern;
+        }
+      } else {
+        // Intense mode: check if we've hit the threshold.
+        if (_patternsSinceBreather >= _intenseThreshold) {
+          // Start a breather phase.
+          _inBreather = true;
+          _breatherPatternsRemaining = GameConfig.rhythmBreatherLength +
+              _random.nextInt(2); // 2-3 patterns
+          // Immediately return a breather single.
+          _breatherPatternsRemaining--;
+          final breatherPattern = Patterns.single(_random, _gapScale);
+          _addToHistory(breatherPattern.id);
+          if (_breatherPatternsRemaining <= 0) {
+            _inBreather = false;
+            _patternsSinceBreather = 0;
+            _intenseThreshold = _rollIntenseThreshold();
+          }
+          return breatherPattern;
+        }
+      }
+    }
+
     // Build list of eligible (index, pattern) pairs with base weights.
     final eligible = <_EligiblePattern>[];
 
@@ -144,6 +202,7 @@ class PatternSequencer {
       roll -= entry.weight;
       if (roll <= 0) {
         _addToHistory(entry.pattern.id);
+        _patternsSinceBreather++;
         return entry.pattern;
       }
     }
@@ -151,6 +210,7 @@ class PatternSequencer {
     // Floating-point edge case: return the last eligible pattern.
     final last = selection.last;
     _addToHistory(last.pattern.id);
+    _patternsSinceBreather++;
     return last.pattern;
   }
 
@@ -170,12 +230,23 @@ class PatternSequencer {
   /// Current gap scale.
   double get gapScale => _gapScale;
 
-  /// Clear history and reset difficulty to 1 and gapScale to 1.0.
+  /// Clear history, rhythm state, and reset difficulty to 1 and gapScale to 1.0.
   void reset() {
     _history.clear();
     _recentSingleCount = 0;
+    _patternsSinceBreather = 0;
+    _inBreather = false;
+    _breatherPatternsRemaining = 0;
+    _intenseThreshold = _rollIntenseThreshold();
     _currentDifficulty = 1;
     _gapScale = 1.0;
+  }
+
+  /// Roll a new random intense-phase threshold (4-6 patterns).
+  int _rollIntenseThreshold() {
+    return GameConfig.rhythmIntenseMin +
+        _random.nextInt(
+            GameConfig.rhythmIntenseMax - GameConfig.rhythmIntenseMin + 1);
   }
 
   /// Add a pattern id to the history, keeping only the last 3.

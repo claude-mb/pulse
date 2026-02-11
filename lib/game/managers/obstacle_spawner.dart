@@ -42,8 +42,12 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
     _elapsed += dt;
 
     // Dynamic spawn interval: base interval scaled by difficulty.
-    final interval =
+    // During breather phases, multiply by the breather bonus for extra room.
+    var interval =
         GameConfig.spawnInterval * game.difficultyManager.intervalMultiplier;
+    if (_sequencer.isBreather) {
+      interval *= GameConfig.rhythmBreatherIntervalBonus;
+    }
 
     while (_elapsed >= interval) {
       _elapsed -= interval;
