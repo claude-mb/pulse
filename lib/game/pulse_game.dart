@@ -6,6 +6,8 @@ import 'package:flame/game.dart';
 
 import 'components/tap_indicator.dart';
 
+enum GameState { menu, playing, paused, gameOver }
+
 class PulseGame extends FlameGame with HasCollisionDetection {
   PulseGame()
       : super(
@@ -15,36 +17,82 @@ class PulseGame extends FlameGame with HasCollisionDetection {
           ),
         );
 
+  GameState _state = GameState.menu;
+  GameState get state => _state;
+
   @override
   Color backgroundColor() => const Color(0xFF1A1A2E);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    paused = true;
     world.add(ScreenHitbox());
     world.add(_WorldTapHandler());
   }
 
-  /// Start a new game session. Wired in Plan 01-04.
-  void startGame() {}
+  /// Start a new game session.
+  void startGame() {
+    _state = GameState.playing;
+    overlays.remove('MainMenu');
+    overlays.add('HUD');
+    paused = false;
+  }
 
-  /// Handle game over state. Wired in Plan 01-04.
-  void gameOver() {}
+  /// Pause the current game.
+  void pauseGame() {
+    _state = GameState.paused;
+    overlays.add('Pause');
+    paused = true;
+  }
 
-  /// Reset the game to initial state. Wired in Plan 01-04.
-  void resetGame() {}
+  /// Resume from pause.
+  void resumeGame() {
+    _state = GameState.playing;
+    overlays.remove('Pause');
+    paused = false;
+  }
+
+  /// Handle game over state.
+  void gameOver() {
+    _state = GameState.gameOver;
+    overlays.remove('HUD');
+    overlays.add('GameOver');
+    paused = true;
+  }
+
+  /// Reset the game to start a new session.
+  void resetGame() {
+    _state = GameState.playing;
+    overlays.remove('GameOver');
+    overlays.add('HUD');
+    paused = false;
+  }
+
+  /// Return to the main menu.
+  void returnToMenu() {
+    _state = GameState.menu;
+    overlays.remove('HUD');
+    overlays.remove('Pause');
+    overlays.remove('GameOver');
+    overlays.add('MainMenu');
+    paused = true;
+  }
 }
 
 /// World-level tap handler — receives events in world coordinates.
 /// Game-level TapCallbacks gives canvas coordinates which don't match
 /// the world coordinate space under CameraComponent.withFixedResolution.
 /// Phase 2 will move input to component-level TapCallbacks on Player.
-class _WorldTapHandler extends Component with TapCallbacks {
+class _WorldTapHandler extends Component
+    with TapCallbacks, HasGameReference<PulseGame> {
   @override
   bool containsLocalPoint(Vector2 point) => true;
 
   @override
   void onTapDown(TapDownEvent event) {
-    parent?.add(TapIndicator(position: event.localPosition));
+    if (game.state == GameState.playing) {
+      parent?.add(TapIndicator(position: event.localPosition));
+    }
   }
 }
