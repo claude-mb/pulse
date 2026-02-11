@@ -35,13 +35,24 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
 
     if (game.state != GameState.playing) return;
 
+    // Update sequencer difficulty from the DifficultyManager each frame.
+    _sequencer.setDifficulty(game.difficultyManager.difficultyLevel);
+
     _elapsed += dt;
 
-    while (_elapsed >= GameConfig.spawnInterval) {
-      _elapsed -= GameConfig.spawnInterval;
+    // Dynamic spawn interval: base interval scaled by difficulty.
+    final interval =
+        GameConfig.spawnInterval * game.difficultyManager.intervalMultiplier;
+
+    while (_elapsed >= interval) {
+      _elapsed -= interval;
 
       // Select a pattern from the sequencer.
       final pattern = _sequencer.next();
+
+      // Dynamic obstacle speed: base speed scaled by difficulty.
+      final speed =
+          GameConfig.obstacleSpeed * game.difficultyManager.speedMultiplier;
 
       // Spawn each obstacle placement in the pattern.
       for (final placement in pattern.placements) {
@@ -62,6 +73,7 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
         final obstacle = Obstacle(
           position: Vector2(x, y),
           width: width,
+          speed: speed,
         );
 
         parent?.add(obstacle);

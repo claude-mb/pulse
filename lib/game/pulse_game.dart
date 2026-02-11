@@ -8,6 +8,7 @@ import 'components/obstacle.dart';
 import 'components/player.dart';
 import 'components/tap_indicator.dart';
 import 'config/game_config.dart';
+import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
 
 enum GameState { menu, playing, paused, gameOver }
@@ -23,6 +24,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   late Player player;
   late ObstacleSpawner obstacleSpawner;
+  late DifficultyManager difficultyManager;
 
   GameState _state = GameState.menu;
   GameState get state => _state;
@@ -53,6 +55,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     player = Player();
     world.add(player);
 
+    difficultyManager = DifficultyManager();
+    world.add(difficultyManager);
+
     obstacleSpawner = ObstacleSpawner();
     world.add(obstacleSpawner);
   }
@@ -63,6 +68,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     player.resetPosition();
     clearObstacles();
+    difficultyManager.reset();
     obstacleSpawner.reset();
     overlays.remove('MainMenu');
     overlays.add('HUD');
@@ -97,6 +103,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     player.resetPosition();
     clearObstacles();
+    difficultyManager.reset();
     obstacleSpawner.reset();
     overlays.remove('GameOver');
     overlays.add('HUD');
