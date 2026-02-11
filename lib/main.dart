@@ -2,6 +2,10 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 import 'game/pulse_game.dart';
+import 'screens/game_over_screen.dart';
+import 'screens/hud_overlay.dart';
+import 'screens/main_menu.dart';
+import 'screens/pause_overlay.dart';
 
 void main() {
   runApp(const PulseApp());
@@ -19,53 +23,10 @@ class PulseApp extends StatelessWidget {
         body: GameWidget<PulseGame>.controlled(
           gameFactory: PulseGame.new,
           overlayBuilderMap: {
-            'MainMenu': (context, game) {
-              return GestureDetector(
-                onTap: () => game.overlays.remove('MainMenu'),
-                child: Container(
-                  color: Colors.black54,
-                  child: const Center(
-                    child: Text(
-                      'Tap to Start',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    ),
-                  ),
-                ),
-              );
-            },
-            'GameOver': (context, game) {
-              return Container(
-                color: Colors.black54,
-                child: const Center(
-                  child: Text(
-                    'Game Over',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                ),
-              );
-            },
-            'HUD': (context, game) {
-              return Container(
-                color: Colors.black54,
-                child: const Center(
-                  child: Text(
-                    'HUD',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                ),
-              );
-            },
-            'Pause': (context, game) {
-              return Container(
-                color: Colors.black54,
-                child: const Center(
-                  child: Text(
-                    'Pause',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                ),
-              );
-            },
+            'MainMenu': (context, game) => MainMenu(game: game),
+            'GameOver': (context, game) => GameOverScreen(game: game),
+            'HUD': (context, game) => HudOverlay(game: game),
+            'Pause': (context, game) => PauseOverlay(game: game),
           },
           initialActiveOverlays: const ['MainMenu'],
         ),
