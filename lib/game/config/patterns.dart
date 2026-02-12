@@ -122,16 +122,20 @@ class Patterns {
 
     // Left obstacle: centered between playerMinX and gap left edge.
     final gapLeft = gapCenter - gapHalf;
-    final leftWidth =
-        (minObstacleW + random.nextDouble() * (maxObstacleW - minObstacleW))
-            .clamp(minObstacleW, gapLeft - GameConfig.playerMinX);
+    final maxLeftW = gapLeft - GameConfig.playerMinX;
+    final leftWidth = maxLeftW < minObstacleW
+        ? maxLeftW
+        : (minObstacleW + random.nextDouble() * (maxObstacleW - minObstacleW))
+            .clamp(minObstacleW, maxLeftW);
     final leftX = (GameConfig.playerMinX + gapLeft) / 2;
 
     // Right obstacle: centered between gap right edge and playerMaxX.
     final gapRight = gapCenter + gapHalf;
-    final rightWidth =
-        (minObstacleW + random.nextDouble() * (maxObstacleW - minObstacleW))
-            .clamp(minObstacleW, GameConfig.playerMaxX - gapRight);
+    final maxRightW = GameConfig.playerMaxX - gapRight;
+    final rightWidth = maxRightW < minObstacleW
+        ? maxRightW
+        : (minObstacleW + random.nextDouble() * (maxObstacleW - minObstacleW))
+            .clamp(minObstacleW, maxRightW);
     final rightX = (gapRight + GameConfig.playerMaxX) / 2;
 
     return ObstaclePattern(

@@ -30,6 +30,9 @@ class PatternSequencer {
   /// Pattern ids corresponding to each factory (same index).
   final List<String> _factoryIds;
 
+  /// Minimum difficulty level required for each factory (same index).
+  final List<int> _factoryDifficulties;
+
   /// Current weight for each pattern id (higher = more likely to be selected).
   final Map<String, double> _weights;
 
@@ -66,12 +69,13 @@ class PatternSequencer {
       : _random = random,
         _factories = <ObstaclePattern Function(Random, [double])>[],
         _factoryIds = <String>[],
+        _factoryDifficulties = <int>[],
         _weights = <String, double>{} {
-    _register('single', Patterns.single);
-    _register('doubleGap', Patterns.doubleGap);
-    _register('stagger', Patterns.stagger);
-    _register('wave', Patterns.wave);
-    _register('wallWithGap', Patterns.wallWithGap);
+    _register('single', 1, Patterns.single);
+    _register('doubleGap', 2, Patterns.doubleGap);
+    _register('stagger', 2, Patterns.stagger);
+    _register('wave', 3, Patterns.wave);
+    _register('wallWithGap', 4, Patterns.wallWithGap);
     _intenseThreshold = _rollIntenseThreshold();
   }
 
@@ -81,10 +85,11 @@ class PatternSequencer {
   /// [ObstacleSpawner] applies an interval bonus for extra breathing room.
   bool get isBreather => _inBreather;
 
-  /// Register a pattern factory with an initial weight of 1.0.
+  /// Register a pattern factory with its difficulty level and initial weight of 1.0.
   void _register(
-      String id, ObstaclePattern Function(Random, [double]) factory) {
+      String id, int difficulty, ObstaclePattern Function(Random, [double]) factory) {
     _factoryIds.add(id);
+    _factoryDifficulties.add(difficulty);
     _factories.add(factory);
     _weights[id] = 1.0;
   }
@@ -138,14 +143,16 @@ class PatternSequencer {
     final eligible = <_EligiblePattern>[];
 
     for (var i = 0; i < _factories.length; i++) {
+      // Skip factories above current difficulty — avoids unnecessary
+      // pattern generation and potential edge-case errors.
+      if (_factoryDifficulties[i] > _currentDifficulty) continue;
+
       final pattern = _factories[i](_random, _gapScale);
-      if (pattern.difficulty <= _currentDifficulty) {
-        eligible.add(_EligiblePattern(
-          index: i,
-          pattern: pattern,
-          weight: _weights[_factoryIds[i]] ?? 1.0,
-        ));
-      }
+      eligible.add(_EligiblePattern(
+        index: i,
+        pattern: pattern,
+        weight: _weights[_factoryIds[i]] ?? 1.0,
+      ));
     }
 
     // Fallback: if nothing is eligible (shouldn't happen at diff >= 1),
