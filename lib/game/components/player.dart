@@ -10,22 +10,28 @@ import 'obstacle.dart';
 
 /// The player entity — a diamond/rhombus shape at the bottom of the screen.
 ///
+/// Uses [PolygonComponent] for reliable cross-platform rendering (including web).
 /// Moves left/right via [dodgeLeft] and [dodgeRight] using [MoveEffect]
 /// for smooth, snappy animation. Detects collisions with [Obstacle]s and
 /// triggers game over.
-class Player extends PositionComponent
+class Player extends PolygonComponent
     with HasGameReference<PulseGame>, CollisionCallbacks {
   Player()
       : super(
-          size: Vector2.all(GameConfig.playerSize),
+          // Diamond vertices: top, right, bottom, left
+          [
+            Vector2(20, 0),
+            Vector2(40, 20),
+            Vector2(20, 40),
+            Vector2(0, 20),
+          ],
           anchor: Anchor.center,
           position: Vector2(
             GameConfig.worldWidth / 2,
             GameConfig.playerStartY,
           ),
+          paint: Paint()..color = GameConfig.playerColor,
         );
-
-  final Paint _paint = Paint()..color = GameConfig.playerColor;
 
   @override
   Future<void> onLoad() async {
@@ -91,20 +97,5 @@ class Player extends PositionComponent
         EffectController(duration: 0.1),
       ),
     );
-  }
-
-  @override
-  void render(Canvas canvas) {
-    final halfW = size.x / 2;
-    final halfH = size.y / 2;
-
-    final path = Path()
-      ..moveTo(halfW, 0) // top
-      ..lineTo(size.x, halfH) // right
-      ..lineTo(halfW, size.y) // bottom
-      ..lineTo(0, halfH) // left
-      ..close();
-
-    canvas.drawPath(path, _paint);
   }
 }
