@@ -48,6 +48,12 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    // Position camera so the visible area is (0,0)→(400,800) instead of
+    // the default (-200,-400)→(200,400). Without this, everything is off-screen.
+    camera.viewfinder.position = Vector2(
+      GameConfig.worldWidth / 2,
+      GameConfig.worldHeight / 2,
+    );
     paused = true;
     world.add(ScreenHitbox());
     world.add(_WorldTapHandler());
