@@ -60,6 +60,10 @@ class GameConfig {
   static const double deathParticleSpeed = 250.0;
   static const double deathParticleLifespan = 0.5;
 
+  // Dodge sparkle particles
+  static const int dodgeSparkleCount = 6;
+  static const double dodgeSparkleLifespan = 0.25;
+
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
   static const double shakeIntensityNearMiss = 3.0;

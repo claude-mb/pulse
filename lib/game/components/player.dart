@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 
 import '../config/game_config.dart';
+import '../effects/dodge_sparkle.dart';
 import '../pulse_game.dart';
 import 'obstacle.dart';
 
@@ -68,6 +69,12 @@ class Player extends PolygonComponent
           GameConfig.playerMaxX,
         );
     _moveTo(targetX);
+    game.world.add(
+      DodgeSparkle.create(
+        position: position,
+        direction: DodgeDirection.left,
+      ),
+    );
   }
 
   /// Dodge the player to the right by [GameConfig.playerDodgeDistance],
@@ -79,6 +86,12 @@ class Player extends PolygonComponent
           GameConfig.playerMaxX,
         );
     _moveTo(targetX);
+    game.world.add(
+      DodgeSparkle.create(
+        position: position,
+        direction: DodgeDirection.right,
+      ),
+    );
   }
 
   /// Reset the player to the center starting position.
