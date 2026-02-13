@@ -64,6 +64,10 @@ class GameConfig {
   static const int dodgeSparkleCount = 6;
   static const double dodgeSparkleLifespan = 0.25;
 
+  // Death flash overlay
+  static const double flashDuration = 0.25;
+  static const double flashOpacity = 0.7;
+
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
   static const double shakeIntensityNearMiss = 3.0;
