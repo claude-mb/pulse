@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 4 in progress — Visual Juice (screen shake complete)
+**Current focus:** Phase 4 in progress — Visual Juice (screen shake + particles complete)
 
 ## Current Position
 
 Phase: 4 of 10 (Visual Juice)
-Plan: 1 of 6 in current phase
+Plan: 2 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-13 — Completed 04-01-PLAN.md
+Last activity: 2026-02-13 — Completed 04-02-PLAN.md
 
-Progress: ████▓░░░░░ 30%
+Progress: ████▓░░░░░ 32%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
+- Total plans completed: 17
 - Average duration: 9 min
-- Total execution time: 2.5 hours
+- Total execution time: 2.6 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: ████▓░░░░░ 30%
 | 1. Foundation | 5/5 | 67 min | 13 min |
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
 | 3. Obstacle System | 5/5 | 57 min | 11 min |
-| 4. Visual Juice | 1/6 | 9 min | 9 min |
+| 4. Visual Juice | 2/6 | 15 min | 8 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (36 min), 03-03 (4 min), 03-04 (6 min), 03-05 (5 min), 04-01 (9 min)
-- Trend: Consistent execution, back to normal after 03-02 outlier
+- Last 5 plans: 03-03 (4 min), 03-04 (6 min), 03-05 (5 min), 04-01 (9 min), 04-02 (6 min)
+- Trend: Fast and consistent, particle effects straightforward
 
 ## Accumulated Context
 
@@ -75,6 +75,9 @@ Recent decisions affecting current work:
 | 04-01 | Manual per-frame random offsets for ScreenShake | Jitter needs non-deterministic control, not tweened MoveEffect |
 | 04-01 | Future.delayed with state guard for death pause | Shake must play out before game freezes; guard prevents stale pause |
 | 04-01 | Near-miss threshold 70px center-to-center | Triggers often with 80% hitbox, feels rewarding without being spammy |
+| 04-02 | ComputedParticle for fading instead of PaintParticle | Simpler opacity calc, avoids saveLayer GPU cost |
+| 04-02 | Diamond fragments for death, white circles for dodge | Match player shape aesthetic; high contrast sparkle on dark bg |
+| 04-02 | Particle factory pattern: static create() returning ParticleSystemComponent | Reusable, consistent with project patterns |
 
 ### Deferred Issues
 
@@ -87,5 +90,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-13
-Stopped at: Completed 04-01-PLAN.md — Screen shake system done, Phase 4 in progress
+Stopped at: Completed 04-02-PLAN.md — Particle effects done (death explosion + dodge sparkle), Phase 4 in progress
 Resume file: None
