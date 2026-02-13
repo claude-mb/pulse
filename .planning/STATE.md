@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 3 in progress — obstacle pattern system
+**Current focus:** Phase 3 complete — ready for Phase 4: Visual Juice
 
 ## Current Position
 
 Phase: 3 of 10 (Obstacle System)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-11 — Completed 03-04-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-02-13 — Completed 03-05-PLAN.md
 
-Progress: ███░░░░░░░ 26%
+Progress: ████░░░░░░ 28%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
+- Total plans completed: 15
 - Average duration: 9 min
-- Total execution time: 2.2 hours
+- Total execution time: 2.3 hours
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: ███░░░░░░░ 26%
 |-------|-------|-------|----------|
 | 1. Foundation | 5/5 | 67 min | 13 min |
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
-| 3. Obstacle System | 4/5 | 52 min | 13 min |
+| 3. Obstacle System | 5/5 | 57 min | 11 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-05 (5 min), 03-01 (6 min), 03-02 (36 min), 03-03 (4 min), 03-04 (6 min)
+- Last 5 plans: 03-01 (6 min), 03-02 (36 min), 03-03 (4 min), 03-04 (6 min), 03-05 (5 min)
 - Trend: Consistent execution, 03-02 outlier due to build verification
 
 ## Accumulated Context
@@ -68,6 +68,9 @@ Recent decisions affecting current work:
 | 03-03 | Speed primary, patterns secondary escalation | Players feel speed increase before harder patterns |
 | 03-04 | 55px minimum survivable gap | 32px hitbox + 23px dodge tolerance |
 | 03-04 | Validated generation with retry/fallback | Prevents impossible layouts, max 5 attempts |
+| 03-05 | History-based weight penalties (0.3x) for recent patterns | Keeps randomness while reducing repetition |
+| 03-05 | Randomized intense threshold (4-6) for rhythm | Prevents predictable breather timing |
+| 03-05 | Breather: simple patterns + 1.3x interval | Double relief: easier patterns AND slower spawning |
 
 ### Deferred Issues
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-11
-Stopped at: Completed 03-04-PLAN.md
+Last session: 2026-02-13
+Stopped at: Completed 03-05-PLAN.md — Phase 3 complete
 Resume file: None
