@@ -25,6 +25,17 @@ class Obstacle extends RectangleComponent
   /// Whether this obstacle has already checked the player zone for a near-miss.
   bool _passedPlayerZone = false;
 
+  // Paint objects for styled obstacle rendering.
+  static final Paint _fillPaint = Paint()..color = GameConfig.obstacleColor;
+  static final Paint _outlinePaint = Paint()
+    ..color = GameConfig.obstacleOutlineColor
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 1.5;
+  static final Paint _highlightPaint = Paint()
+    ..color = GameConfig.obstacleHighlightColor
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 1.0;
+
   Obstacle({
     required Vector2 position,
     double? width,
@@ -45,6 +56,25 @@ class Obstacle extends RectangleComponent
     await super.onLoad();
     // Full-size hitbox — obstacles are the threat, no forgiveness.
     add(RectangleHitbox(collisionType: CollisionType.passive));
+  }
+
+  @override
+  void render(Canvas canvas) {
+    // Draw manually for geometric styled look — fill, outline, highlight.
+    final rect = size.toRect();
+
+    // 1. Filled rectangle (base).
+    canvas.drawRect(rect, _fillPaint);
+
+    // 2. Stroke outline for crisp geometric edge.
+    canvas.drawRect(rect, _outlinePaint);
+
+    // 3. Top-edge highlight for depth / lit-from-above look.
+    canvas.drawLine(
+      rect.topLeft,
+      rect.topRight,
+      _highlightPaint,
+    );
   }
 
   @override

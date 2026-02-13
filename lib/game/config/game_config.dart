@@ -12,6 +12,8 @@ class GameConfig {
   static const Color backgroundColor = Color(0xFF1A1A2E);
   static const Color playerColor = Color(0xFFE94560);
   static const Color obstacleColor = Color(0xFF0F3460);
+  static const Color obstacleOutlineColor = Color(0xFF1A5276);
+  static const Color obstacleHighlightColor = Color(0xFF2471A3);
   static const Color accentColor = Color(0xFF16213E);
   static const Color textColor = Color(0xFFFFFFFF);
 
