@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+import 'components/danger_tint.dart';
 import 'components/obstacle.dart';
 import 'components/player.dart';
 import 'components/tap_indicator.dart';
@@ -66,6 +67,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
     difficultyManager = DifficultyManager();
     world.add(difficultyManager);
+
+    // Persistent danger tint — invisible at difficulty 1, subtle red at max.
+    world.add(DangerTint());
 
     obstacleSpawner = ObstacleSpawner();
     world.add(obstacleSpawner);

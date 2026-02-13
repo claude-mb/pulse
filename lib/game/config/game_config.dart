@@ -68,6 +68,10 @@ class GameConfig {
   static const double flashDuration = 0.25;
   static const double flashOpacity = 0.7;
 
+  // Danger tint overlay
+  static const Color dangerTintColor = Color(0xFFFF2020);
+  static const double dangerTintMaxOpacity = 0.12;
+
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
   static const double shakeIntensityNearMiss = 3.0;
