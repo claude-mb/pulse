@@ -31,6 +31,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   late Player player;
   late ObstacleSpawner obstacleSpawner;
   late DifficultyManager difficultyManager;
+  late BackgroundPulse backgroundPulse;
 
   GameState _state = GameState.menu;
   GameState get state => _state;
@@ -69,7 +70,8 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     world.add(GameBackground());
 
     // Background pulse — syncs to spawn rhythm at priority -5.
-    world.add(BackgroundPulse());
+    backgroundPulse = BackgroundPulse();
+    world.add(backgroundPulse);
 
     world.add(ScreenHitbox());
     world.add(_WorldTapHandler());

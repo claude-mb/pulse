@@ -78,6 +78,9 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
         parent?.add(obstacle);
       }
 
+      // Trigger visual heartbeat on the background pulse.
+      game.backgroundPulse.kick();
+
       // Add the pattern's postDelay to the timer so there's a gap
       // before the next pattern spawns.
       _elapsed -= pattern.postDelay;
