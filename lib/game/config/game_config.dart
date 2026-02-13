@@ -94,6 +94,11 @@ class GameConfig {
   static const double entranceAnimDuration = 0.3;
   static const double entranceInvulnerabilityDuration = 0.5;
 
+  // Background pulse
+  static const double pulseBaseAmplitude = 0.03;
+  static const double pulseMaxAmplitude = 0.08;
+  static const Color pulseColor = Color(0xFF16213E);
+
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
   static const double shakeIntensityNearMiss = 3.0;

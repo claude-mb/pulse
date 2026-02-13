@@ -5,6 +5,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
 import 'components/background.dart';
+import 'components/background_pulse.dart';
 import 'components/danger_tint.dart';
 import 'components/obstacle.dart';
 import 'components/player.dart';
@@ -66,6 +67,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     paused = true;
     // Background grid — renders behind everything at priority -10.
     world.add(GameBackground());
+
+    // Background pulse — syncs to spawn rhythm at priority -5.
+    world.add(BackgroundPulse());
 
     world.add(ScreenHitbox());
     world.add(_WorldTapHandler());
