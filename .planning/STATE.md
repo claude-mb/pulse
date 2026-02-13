@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 4 in progress — Visual Juice (screen shake + particles complete)
+**Current focus:** Phase 4 in progress — Visual Juice (screen shake + particles + flash/tint complete)
 
 ## Current Position
 
 Phase: 4 of 10 (Visual Juice)
-Plan: 2 of 6 in current phase
+Plan: 3 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-13 — Completed 04-02-PLAN.md
+Last activity: 2026-02-13 — Completed 04-03-PLAN.md
 
-Progress: ████▓░░░░░ 32%
+Progress: ████▓░░░░░ 34%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
+- Total plans completed: 18
 - Average duration: 9 min
-- Total execution time: 2.6 hours
+- Total execution time: 2.7 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: ████▓░░░░░ 32%
 | 1. Foundation | 5/5 | 67 min | 13 min |
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
 | 3. Obstacle System | 5/5 | 57 min | 11 min |
-| 4. Visual Juice | 2/6 | 15 min | 8 min |
+| 4. Visual Juice | 3/6 | 21 min | 7 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (4 min), 03-04 (6 min), 03-05 (5 min), 04-01 (9 min), 04-02 (6 min)
-- Trend: Fast and consistent, particle effects straightforward
+- Last 5 plans: 03-04 (6 min), 03-05 (5 min), 04-01 (9 min), 04-02 (6 min), 04-03 (6 min)
+- Trend: Fast and consistent, overlay effects straightforward
 
 ## Accumulated Context
 
@@ -78,6 +78,9 @@ Recent decisions affecting current work:
 | 04-02 | ComputedParticle for fading instead of PaintParticle | Simpler opacity calc, avoids saveLayer GPU cost |
 | 04-02 | Diamond fragments for death, white circles for dodge | Match player shape aesthetic; high contrast sparkle on dark bg |
 | 04-02 | Particle factory pattern: static create() returning ParticleSystemComponent | Reusable, consistent with project patterns |
+| 04-03 | FlashOverlay at priority 100, DangerTint at priority -1 | Flash renders on top of everything; tint behind gameplay, above background |
+| 04-03 | Danger tint derives opacity from speedMultiplier for smooth interpolation | Avoids discrete level jumps, smooth tension ramp |
+| 04-03 | Opacity targets 0.0/0.02/0.05/0.08/0.12 across 5 levels | Intentionally very subtle — subconscious tension |
 
 ### Deferred Issues
 
@@ -90,5 +93,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-13
-Stopped at: Completed 04-02-PLAN.md — Particle effects done (death explosion + dodge sparkle), Phase 4 in progress
+Stopped at: Completed 04-03-PLAN.md — Flash and color feedback done (death flash + danger tint), Phase 4 in progress
 Resume file: None
