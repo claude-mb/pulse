@@ -74,6 +74,11 @@ class GameConfig {
   static const Color dangerTintColor = Color(0xFFFF2020);
   static const double dangerTintMaxOpacity = 0.12;
 
+  // Player glow and pulse
+  static const double playerGlowRadius = 8.0;
+  static const double playerGlowOpacity = 0.3;
+  static const double playerPulseFrequency = 1.5;
+
   // Background grid
   static const double gridSpacing = 50.0;
   static const Color gridColor = Color(0xFF16213E);

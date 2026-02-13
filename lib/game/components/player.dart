@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/collisions.dart';
@@ -34,6 +35,22 @@ class Player extends PolygonComponent
           paint: Paint()..color = GameConfig.playerColor,
         );
 
+  /// Timer for the idle pulse animation (glow breathing effect).
+  double _pulseTimer = 0.0;
+
+  /// Paint for the glow layer behind the player diamond.
+  final Paint _glowPaint = Paint()
+    ..color = GameConfig.playerColor.withValues(
+      alpha: GameConfig.playerGlowOpacity,
+    )
+    ..maskFilter = const MaskFilter.blur(
+      BlurStyle.normal,
+      GameConfig.playerGlowRadius,
+    );
+
+  /// Diamond path in local coordinates for the solid fill.
+  late final Path _diamondPath;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -45,6 +62,42 @@ class Player extends PolygonComponent
         position: size * 0.1,
       ),
     );
+
+    // Pre-build the diamond path for manual rendering.
+    _diamondPath = Path()
+      ..moveTo(20, 0)
+      ..lineTo(40, 20)
+      ..lineTo(20, 40)
+      ..lineTo(0, 20)
+      ..close();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    _pulseTimer += dt;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    // Calculate glow scale oscillation for idle pulse breathing.
+    // Oscillates between 1.2x and 1.4x for a gentle breathing effect.
+    final pulse = math.sin(
+      _pulseTimer * 2 * math.pi * GameConfig.playerPulseFrequency,
+    );
+    final glowScale = 1.3 + 0.1 * pulse; // 1.2 to 1.4
+
+    // 1. Draw glow layer — scaled-up blurred diamond.
+    canvas.save();
+    // Scale around the center of the diamond (20, 20).
+    canvas.translate(20, 20);
+    canvas.scale(glowScale);
+    canvas.translate(-20, -20);
+    canvas.drawPath(_diamondPath, _glowPaint);
+    canvas.restore();
+
+    // 2. Draw solid diamond on top (using component's paint).
+    canvas.drawPath(_diamondPath, paint);
   }
 
   @override
