@@ -39,6 +39,9 @@ class Player extends PolygonComponent
   /// Timer for the idle pulse animation (glow breathing effect).
   double _pulseTimer = 0.0;
 
+  /// Whether the player is temporarily invulnerable (during entrance).
+  bool _invulnerable = false;
+
   /// Paint for the glow layer behind the player diamond.
   final Paint _glowPaint = Paint()
     ..color = GameConfig.playerColor.withValues(
@@ -93,6 +96,19 @@ class Player extends PolygonComponent
         _playingDeathFade = false;
       }
     }
+
+    // Manual entrance fade-in — animate paint alpha from 0 to 1.
+    if (_playingEntranceFade) {
+      _entranceFadeTimer += dt;
+      final progress = (_entranceFadeTimer / 0.2).clamp(0.0, 1.0); // 0.2s fade
+      paint.color = GameConfig.playerColor.withValues(alpha: progress);
+      _glowPaint.color = GameConfig.playerColor.withValues(
+        alpha: GameConfig.playerGlowOpacity * progress,
+      );
+      if (progress >= 1.0) {
+        _playingEntranceFade = false;
+      }
+    }
   }
 
   @override
@@ -124,6 +140,8 @@ class Player extends PolygonComponent
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is Obstacle) {
+      // Guard: ignore collisions during entrance invulnerability.
+      if (_invulnerable) return;
       // Guard: prevent multiple gameOver calls from simultaneous collisions.
       if (game.state != GameState.playing) return;
       game.gameOver();
@@ -163,6 +181,47 @@ class Player extends PolygonComponent
       ),
     );
   }
+
+  /// Play the entrance animation — pop in from scale 0 with elastic bounce.
+  void playEntranceAnimation() {
+    // Start invisible and scaled down.
+    scale = Vector2.zero();
+    paint.color = GameConfig.playerColor.withValues(alpha: 0.0);
+    _glowPaint.color = GameConfig.playerColor.withValues(alpha: 0.0);
+
+    // Scale pop-in with elastic curve for a satisfying bounce.
+    add(
+      ScaleEffect.to(
+        Vector2.all(1.0),
+        EffectController(
+          duration: GameConfig.entranceAnimDuration,
+          curve: Curves.elasticOut,
+        ),
+      ),
+    );
+
+    // Fade in via manual timer (same approach as death fade).
+    _entranceFadeTimer = 0.0;
+    _playingEntranceFade = true;
+
+    // Brief invulnerability during entrance.
+    _invulnerable = true;
+    Future.delayed(
+      Duration(
+        milliseconds:
+            (GameConfig.entranceInvulnerabilityDuration * 1000).round(),
+      ),
+      () {
+        _invulnerable = false;
+      },
+    );
+  }
+
+  /// Whether the entrance fade animation is playing.
+  bool _playingEntranceFade = false;
+
+  /// Timer for manual entrance fade animation.
+  double _entranceFadeTimer = 0.0;
 
   /// Play the death animation — shrink to 0 and fade out.
   void playDeathAnimation() {
@@ -205,6 +264,9 @@ class Player extends PolygonComponent
     );
     _playingDeathFade = false;
     _deathFadeTimer = 0.0;
+    _playingEntranceFade = false;
+    _entranceFadeTimer = 0.0;
+    _invulnerable = false;
   }
 
   /// Internal: cancel existing move effects and animate to [targetX].

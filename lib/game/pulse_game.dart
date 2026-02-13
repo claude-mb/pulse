@@ -89,6 +89,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     _timeScale = 1.0;
     player.resetPosition();
+    player.playEntranceAnimation();
     clearObstacles();
     difficultyManager.reset();
     obstacleSpawner.reset();
@@ -178,6 +179,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     _timeScale = 1.0;
     player.resetPosition();
+    player.playEntranceAnimation();
     clearObstacles();
     difficultyManager.reset();
     obstacleSpawner.reset();
