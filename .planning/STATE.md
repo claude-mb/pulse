@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 3 complete — ready for Phase 4: Visual Juice
+**Current focus:** Phase 4 in progress — Visual Juice (screen shake complete)
 
 ## Current Position
 
-Phase: 3 of 10 (Obstacle System)
-Plan: 5 of 5 in current phase
-Status: Phase complete
-Last activity: 2026-02-13 — Completed 03-05-PLAN.md
+Phase: 4 of 10 (Visual Juice)
+Plan: 1 of 6 in current phase
+Status: In progress
+Last activity: 2026-02-13 — Completed 04-01-PLAN.md
 
-Progress: ████░░░░░░ 28%
+Progress: ████▓░░░░░ 30%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: 9 min
-- Total execution time: 2.3 hours
+- Total execution time: 2.5 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: ████░░░░░░ 28%
 | 1. Foundation | 5/5 | 67 min | 13 min |
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
 | 3. Obstacle System | 5/5 | 57 min | 11 min |
+| 4. Visual Juice | 1/6 | 9 min | 9 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (6 min), 03-02 (36 min), 03-03 (4 min), 03-04 (6 min), 03-05 (5 min)
-- Trend: Consistent execution, 03-02 outlier due to build verification
+- Last 5 plans: 03-02 (36 min), 03-03 (4 min), 03-04 (6 min), 03-05 (5 min), 04-01 (9 min)
+- Trend: Consistent execution, back to normal after 03-02 outlier
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 | 03-05 | History-based weight penalties (0.3x) for recent patterns | Keeps randomness while reducing repetition |
 | 03-05 | Randomized intense threshold (4-6) for rhythm | Prevents predictable breather timing |
 | 03-05 | Breather: simple patterns + 1.3x interval | Double relief: easier patterns AND slower spawning |
+| 04-01 | Manual per-frame random offsets for ScreenShake | Jitter needs non-deterministic control, not tweened MoveEffect |
+| 04-01 | Future.delayed with state guard for death pause | Shake must play out before game freezes; guard prevents stale pause |
+| 04-01 | Near-miss threshold 70px center-to-center | Triggers often with 80% hitbox, feels rewarding without being spammy |
 
 ### Deferred Issues
 
@@ -83,5 +87,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-13
-Stopped at: Completed 03-05-PLAN.md — Phase 3 complete
+Stopped at: Completed 04-01-PLAN.md — Screen shake system done, Phase 4 in progress
 Resume file: None

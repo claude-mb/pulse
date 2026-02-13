@@ -71,7 +71,7 @@ Plans:
 **Plans**: 6 plans
 
 Plans:
-- [ ] 04-01: Screen shake system (on death, near-miss, combo milestones)
+- [x] 04-01: Screen shake system (on death, near-miss, combo milestones)
 - [ ] 04-02: Particle effects (death explosion, trail particles, dodge sparkle)
 - [ ] 04-03: Flash and color feedback (hit flash, combo glow, danger tint)
 - [ ] 04-04: Geometric art style — player shapes, obstacle shapes, background
@@ -167,7 +167,7 @@ Plans:
 | 1. Foundation | 5/5 | Complete | 2026-02-11 |
 | 2. Core Game Loop | 5/5 | Complete | 2026-02-11 |
 | 3. Obstacle System | 5/5 | Complete | 2026-02-13 |
-| 4. Visual Juice | 0/6 | Not started | - |
+| 4. Visual Juice | 1/6 | In progress | - |
 | 5. Audio System | 0/5 | Not started | - |
 | 6. Scoring & High Scores | 0/5 | Not started | - |
 | 7. Progression & Unlockables | 0/5 | Not started | - |
