@@ -36,6 +36,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   double _survivalTime = 0.0;
 
+  /// Time scale multiplier — 1.0 is normal speed, < 1.0 is slow motion.
+  double _timeScale = 1.0;
+
   /// Elapsed survival time in seconds since the current game started.
   double get survivalTime => _survivalTime;
 
@@ -44,9 +47,10 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   @override
   void update(double dt) {
-    super.update(dt);
+    final scaledDt = dt * _timeScale;
+    super.update(scaledDt);
     if (_state == GameState.playing) {
-      _survivalTime += dt;
+      _survivalTime += scaledDt;
     }
   }
 
@@ -83,6 +87,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   void startGame() {
     _state = GameState.playing;
     _survivalTime = 0.0;
+    _timeScale = 1.0;
     player.resetPosition();
     clearObstacles();
     difficultyManager.reset();
@@ -109,12 +114,14 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   /// Handle game over state.
   ///
-  /// Triggers a strong screen shake and delays pausing so the shake animation
-  /// plays out before the game freezes.
+  /// Triggers slow-motion, screen shake, death particles, flash, and player
+  /// death animation. Pauses after the slow-mo window completes.
   void gameOver() {
     _state = GameState.gameOver;
     overlays.remove('HUD');
     overlays.add('GameOver');
+    // Slow-motion for dramatic death.
+    _timeScale = GameConfig.deathSlowMoScale;
     triggerShake(
       GameConfig.shakeIntensityDeath,
       GameConfig.shakeDurationDeath,
@@ -123,9 +130,14 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     world.add(DeathParticles.create(position: player.position));
     // Full-screen white flash for dramatic death punctuation.
     world.add(FlashOverlay());
-    // Delay pause so the death shake is visible before the game freezes.
+    // Player shrinks and fades during slow-mo window.
+    player.playDeathAnimation();
+    // Delay pause so the death effects play out before the game freezes.
+    // Extended to deathSlowMoDuration to accommodate slow-mo window.
     Future.delayed(
-      Duration(milliseconds: (GameConfig.shakeDurationDeath * 1000).round()),
+      Duration(
+        milliseconds: (GameConfig.deathSlowMoDuration * 1000).round(),
+      ),
       () {
         // Guard: only pause if still in gameOver state (user may have restarted).
         if (_state == GameState.gameOver) {
@@ -164,6 +176,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   void resetGame() {
     _state = GameState.playing;
     _survivalTime = 0.0;
+    _timeScale = 1.0;
     player.resetPosition();
     clearObstacles();
     difficultyManager.reset();

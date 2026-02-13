@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flutter/animation.dart';
 
 import '../config/game_config.dart';
 import '../effects/dodge_sparkle.dart';
@@ -76,6 +77,22 @@ class Player extends PolygonComponent
   void update(double dt) {
     super.update(dt);
     _pulseTimer += dt;
+
+    // Manual death fade — animate paint alpha since PolygonComponent
+    // doesn't support OpacityEffect directly.
+    if (_playingDeathFade) {
+      _deathFadeTimer += dt;
+      final progress = (_deathFadeTimer / GameConfig.playerDeathAnimDuration)
+          .clamp(0.0, 1.0);
+      final alpha = (1.0 - progress);
+      paint.color = GameConfig.playerColor.withValues(alpha: alpha);
+      _glowPaint.color = GameConfig.playerColor.withValues(
+        alpha: GameConfig.playerGlowOpacity * alpha,
+      );
+      if (progress >= 1.0) {
+        _playingDeathFade = false;
+      }
+    }
   }
 
   @override
@@ -147,11 +164,47 @@ class Player extends PolygonComponent
     );
   }
 
+  /// Play the death animation — shrink to 0 and fade out.
+  void playDeathAnimation() {
+    add(
+      ScaleEffect.to(
+        Vector2.zero(),
+        EffectController(
+          duration: GameConfig.playerDeathAnimDuration,
+          curve: Curves.easeIn,
+        ),
+      ),
+    );
+    // Fade out via paint alpha since PolygonComponent has no HasPaint mixin.
+    _deathFadeTimer = 0.0;
+    _playingDeathFade = true;
+  }
+
+  /// Whether the death fade animation is playing.
+  bool _playingDeathFade = false;
+
+  /// Timer for manual death fade animation.
+  double _deathFadeTimer = 0.0;
+
   /// Reset the player to the center starting position.
   void resetPosition() {
     // Cancel any in-flight move effects.
     children.whereType<MoveEffect>().forEach((e) => e.removeFromParent());
     position = Vector2(GameConfig.worldWidth / 2, GameConfig.playerStartY);
+    resetVisuals();
+  }
+
+  /// Restore player visuals to default (after death animation or entrance).
+  void resetVisuals() {
+    // Cancel any in-flight scale effects.
+    children.whereType<ScaleEffect>().forEach((e) => e.removeFromParent());
+    scale = Vector2.all(1.0);
+    paint.color = GameConfig.playerColor;
+    _glowPaint.color = GameConfig.playerColor.withValues(
+      alpha: GameConfig.playerGlowOpacity,
+    );
+    _playingDeathFade = false;
+    _deathFadeTimer = 0.0;
   }
 
   /// Internal: cancel existing move effects and animate to [targetX].

@@ -85,6 +85,11 @@ class GameConfig {
   static const double gridOpacity = 0.3;
   static const double gridScrollSpeed = 0.15;
 
+  // Death animation
+  static const double deathSlowMoScale = 0.3;
+  static const double deathSlowMoDuration = 0.5;
+  static const double playerDeathAnimDuration = 0.4;
+
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
   static const double shakeIntensityNearMiss = 3.0;
