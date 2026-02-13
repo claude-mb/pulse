@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 4 in progress — Visual Juice (screen shake + particles + flash/tint + geometric art style complete)
+**Current focus:** Phase 4 in progress — Visual Juice (screen shake + particles + flash/tint + geometric art style + smooth transitions complete)
 
 ## Current Position
 
 Phase: 4 of 10 (Visual Juice)
-Plan: 4 of 6 in current phase
+Plan: 5 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-13 — Completed 04-04-PLAN.md
+Last activity: 2026-02-13 — Completed 04-05-PLAN.md
 
-Progress: ████▓░░░░░ 36%
+Progress: ████▓░░░░░ 38%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
+- Total plans completed: 20
 - Average duration: 9 min
-- Total execution time: 2.8 hours
+- Total execution time: 2.9 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: ████▓░░░░░ 36%
 | 1. Foundation | 5/5 | 67 min | 13 min |
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
 | 3. Obstacle System | 5/5 | 57 min | 11 min |
-| 4. Visual Juice | 4/6 | 29 min | 7 min |
+| 4. Visual Juice | 5/6 | 36 min | 7 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-05 (5 min), 04-01 (9 min), 04-02 (6 min), 04-03 (6 min), 04-04 (8 min)
-- Trend: Fast and consistent, rendering overrides straightforward
+- Last 5 plans: 04-01 (9 min), 04-02 (6 min), 04-03 (6 min), 04-04 (8 min), 04-05 (7 min)
+- Trend: Fast and consistent, animation patterns well-established
 
 ## Accumulated Context
 
@@ -86,6 +86,10 @@ Recent decisions affecting current work:
 | 04-04 | Grid scrolls at 15% of obstacle speed | Subtle parallax — noticeable but not distracting |
 | 04-04 | Player glow via MaskFilter.blur on scaled diamond | Simple, performant glow with idle pulse animation |
 | 04-04 | Pulse 1.2x-1.4x at 1.5Hz via sin wave | Subtle breathing — alive feel without conscious distraction |
+| 04-05 | Manual _timeScale on PulseGame.update() for slow-motion | Uniform control over all children, simple reset |
+| 04-05 | Manual paint alpha animation for PolygonComponent opacity | PolygonComponent lacks HasPaint mixin for OpacityEffect |
+| 04-05 | Entrance invulnerability via Future.delayed (0.5s) | Prevents unfair deaths during pop-in animation |
+| 04-05 | elasticOut for entrance, easeIn for death curves | Satisfying bounce on start, weighty feel on death |
 
 ### Deferred Issues
 
@@ -98,5 +102,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-13
-Stopped at: Completed 04-04-PLAN.md — Geometric art style done (obstacle styling + background grid + player glow/pulse), Phase 4 in progress
+Stopped at: Completed 04-05-PLAN.md — Smooth animations and transitions done (death slow-mo + entrance pop-in + spawn protection), Phase 4 in progress
 Resume file: None

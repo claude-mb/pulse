@@ -75,7 +75,7 @@ Plans:
 - [x] 04-02: Particle effects (death explosion, trail particles, dodge sparkle)
 - [x] 04-03: Flash and color feedback (hit flash, combo glow, danger tint)
 - [x] 04-04: Geometric art style — player shapes, obstacle shapes, background
-- [ ] 04-05: Smooth animations and transitions (game start, death, restart)
+- [x] 04-05: Smooth animations and transitions (game start, death, restart)
 - [ ] 04-06: Background pulse effect synced to gameplay rhythm
 
 ### Phase 5: Audio System
@@ -167,7 +167,7 @@ Plans:
 | 1. Foundation | 5/5 | Complete | 2026-02-11 |
 | 2. Core Game Loop | 5/5 | Complete | 2026-02-11 |
 | 3. Obstacle System | 5/5 | Complete | 2026-02-13 |
-| 4. Visual Juice | 4/6 | In progress | - |
+| 4. Visual Juice | 5/6 | In progress | - |
 | 5. Audio System | 0/5 | Not started | - |
 | 6. Scoring & High Scores | 0/5 | Not started | - |
 | 7. Progression & Unlockables | 0/5 | Not started | - |
