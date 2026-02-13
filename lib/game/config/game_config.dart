@@ -54,4 +54,11 @@ class GameConfig {
   static const int rhythmIntenseMax = 6;
   static const int rhythmBreatherLength = 2;
   static const double rhythmBreatherIntervalBonus = 1.3;
+
+  // Screen shake
+  static const double shakeIntensityDeath = 8.0;
+  static const double shakeIntensityNearMiss = 3.0;
+  static const double shakeDurationDeath = 0.3;
+  static const double shakeDurationNearMiss = 0.15;
+  static const double nearMissThreshold = 70.0;
 }
