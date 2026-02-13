@@ -8,6 +8,7 @@ import 'components/obstacle.dart';
 import 'components/player.dart';
 import 'components/tap_indicator.dart';
 import 'config/game_config.dart';
+import 'effects/death_particles.dart';
 import 'effects/screen_shake.dart';
 import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
@@ -109,6 +110,8 @@ class PulseGame extends FlameGame with HasCollisionDetection {
       GameConfig.shakeIntensityDeath,
       GameConfig.shakeDurationDeath,
     );
+    // Spawn death explosion particles at player position.
+    world.add(DeathParticles.create(position: player.position));
     // Delay pause so the death shake is visible before the game freezes.
     Future.delayed(
       Duration(milliseconds: (GameConfig.shakeDurationDeath * 1000).round()),

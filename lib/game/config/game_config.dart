@@ -55,6 +55,11 @@ class GameConfig {
   static const int rhythmBreatherLength = 2;
   static const double rhythmBreatherIntervalBonus = 1.3;
 
+  // Death particles
+  static const int deathParticleCount = 18;
+  static const double deathParticleSpeed = 250.0;
+  static const double deathParticleLifespan = 0.5;
+
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
   static const double shakeIntensityNearMiss = 3.0;
