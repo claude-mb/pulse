@@ -8,6 +8,7 @@ import 'components/obstacle.dart';
 import 'components/player.dart';
 import 'components/tap_indicator.dart';
 import 'config/game_config.dart';
+import 'effects/screen_shake.dart';
 import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
 
@@ -76,6 +77,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     clearObstacles();
     difficultyManager.reset();
     obstacleSpawner.reset();
+    _clearShake();
     overlays.remove('MainMenu');
     overlays.add('HUD');
     paused = false;
@@ -96,11 +98,52 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   }
 
   /// Handle game over state.
+  ///
+  /// Triggers a strong screen shake and delays pausing so the shake animation
+  /// plays out before the game freezes.
   void gameOver() {
     _state = GameState.gameOver;
     overlays.remove('HUD');
     overlays.add('GameOver');
-    paused = true;
+    triggerShake(
+      GameConfig.shakeIntensityDeath,
+      GameConfig.shakeDurationDeath,
+    );
+    // Delay pause so the death shake is visible before the game freezes.
+    Future.delayed(
+      Duration(milliseconds: (GameConfig.shakeDurationDeath * 1000).round()),
+      () {
+        // Guard: only pause if still in gameOver state (user may have restarted).
+        if (_state == GameState.gameOver) {
+          paused = true;
+        }
+      },
+    );
+  }
+
+  /// Trigger a screen shake on the camera viewfinder.
+  ///
+  /// Removes any existing [ScreenShake] children first to prevent stacking.
+  void triggerShake(double intensity, double duration) {
+    camera.viewfinder.children
+        .whereType<ScreenShake>()
+        .toList()
+        .forEach((s) => s.removeFromParent());
+    camera.viewfinder.add(
+      ScreenShake(intensity: intensity, duration: duration),
+    );
+  }
+
+  /// Remove any active screen shake and restore the viewfinder base position.
+  void _clearShake() {
+    camera.viewfinder.children
+        .whereType<ScreenShake>()
+        .toList()
+        .forEach((s) => s.removeFromParent());
+    camera.viewfinder.position = Vector2(
+      GameConfig.worldWidth / 2,
+      GameConfig.worldHeight / 2,
+    );
   }
 
   /// Reset the game to start a new session.
@@ -111,6 +154,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     clearObstacles();
     difficultyManager.reset();
     obstacleSpawner.reset();
+    _clearShake();
     overlays.remove('GameOver');
     overlays.add('HUD');
     paused = false;

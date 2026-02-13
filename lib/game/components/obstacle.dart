@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 import '../config/game_config.dart';
+import '../pulse_game.dart';
 
 /// A falling obstacle that the player must dodge.
 ///
@@ -12,9 +13,17 @@ import '../config/game_config.dart';
 /// and auto-removes when it passes below the visible world area.
 /// Width can vary between [GameConfig.obstacleMinWidth] and
 /// [GameConfig.obstacleMaxWidth] for visual variety.
-class Obstacle extends RectangleComponent {
+///
+/// Detects near-misses: when the obstacle passes the player zone without
+/// colliding and is within [GameConfig.nearMissThreshold] pixels
+/// horizontally, a subtle screen shake is triggered.
+class Obstacle extends RectangleComponent
+    with HasGameReference<PulseGame> {
   /// Downward speed in pixels per second.
   final double speed;
+
+  /// Whether this obstacle has already checked the player zone for a near-miss.
+  bool _passedPlayerZone = false;
 
   Obstacle({
     required Vector2 position,
@@ -42,6 +51,22 @@ class Obstacle extends RectangleComponent {
   void update(double dt) {
     super.update(dt);
     position.y += speed * dt;
+
+    // Near-miss detection: check once when obstacle passes player's Y zone.
+    if (!_passedPlayerZone &&
+        position.y > GameConfig.playerStartY + GameConfig.playerSize / 2) {
+      _passedPlayerZone = true;
+      if (game.state == GameState.playing) {
+        final horizontalDistance =
+            (position.x - game.player.position.x).abs();
+        if (horizontalDistance < GameConfig.nearMissThreshold) {
+          game.triggerShake(
+            GameConfig.shakeIntensityNearMiss,
+            GameConfig.shakeDurationNearMiss,
+          );
+        }
+      }
+    }
 
     // Remove when fully off-screen (with 50px buffer).
     if (position.y > GameConfig.worldHeight + 50) {
