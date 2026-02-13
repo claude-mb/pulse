@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+import 'components/background.dart';
 import 'components/danger_tint.dart';
 import 'components/obstacle.dart';
 import 'components/player.dart';
@@ -59,6 +60,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
       GameConfig.worldHeight / 2,
     );
     paused = true;
+    // Background grid — renders behind everything at priority -10.
+    world.add(GameBackground());
+
     world.add(ScreenHitbox());
     world.add(_WorldTapHandler());
 

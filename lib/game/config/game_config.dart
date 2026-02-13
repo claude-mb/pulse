@@ -74,6 +74,12 @@ class GameConfig {
   static const Color dangerTintColor = Color(0xFFFF2020);
   static const double dangerTintMaxOpacity = 0.12;
 
+  // Background grid
+  static const double gridSpacing = 50.0;
+  static const Color gridColor = Color(0xFF16213E);
+  static const double gridOpacity = 0.3;
+  static const double gridScrollSpeed = 0.15;
+
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
   static const double shakeIntensityNearMiss = 3.0;
