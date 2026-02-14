@@ -129,7 +129,7 @@ Plans:
 - [x] 08-02: Settings screen with audio controls and mute persistence
 - [x] 08-03: Animated screen transitions for all overlays
 - [x] 08-04: First-time tutorial/onboarding (minimal — tap instruction)
-- [ ] 08-05: UI consistency pass and complete navigation flow verification
+- [x] 08-05: UI consistency pass and complete navigation flow verification
 
 ### Phase 9: Daily Challenge
 **Goal**: Seeded daily mode that gives players a reason to come back every day
@@ -170,6 +170,6 @@ Plans:
 | 5. Audio System | 5/5 | Complete | 2026-02-14 |
 | 6. Scoring & High Scores | 5/5 | Complete | 2026-02-14 |
 | 7. Progression & Unlockables | 5/5 | Complete | 2026-02-14 |
-| 8. UI & Menus | 4/5 | In progress | - |
+| 8. UI & Menus | 5/5 | Complete | 2026-02-14 |
 | 9. Daily Challenge | 0/5 | Not started | - |
 | 10. App Store Ship | 0/6 | Not started | - |
