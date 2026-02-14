@@ -10,6 +10,8 @@ class GameOverScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sm = game.scoreManager;
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => game.resetGame(),
@@ -17,11 +19,12 @@ class GameOverScreen extends StatelessWidget {
         color: const Color(0xCC000000),
         child: Stack(
           children: [
-            // Centered GAME OVER + Tap to Retry
+            // Centered content
             Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // GAME OVER title
                   Text(
                     'GAME OVER',
                     style: TextStyle(
@@ -31,17 +34,62 @@ class GameOverScreen extends StatelessWidget {
                       letterSpacing: 8,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
+                  // SCORE label
                   Text(
-                    '${game.survivalTime.toStringAsFixed(1)}s',
+                    'SCORE',
                     style: TextStyle(
-                      color: GameConfig.textColor.withValues(alpha: 0.8),
-                      fontSize: 32,
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 2,
+                      color: GameConfig.textColor.withValues(alpha: 0.6),
+                      fontSize: 14,
+                      letterSpacing: 4,
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  // Final score number
+                  Text(
+                    '${sm.displayScore}',
+                    style: const TextStyle(
+                      color: GameConfig.textColor,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  // Stats row: survival time + best combo
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '${game.survivalTime.toStringAsFixed(1)}s',
+                        style: TextStyle(
+                          color: GameConfig.textColor.withValues(alpha: 0.7),
+                          fontSize: 16,
+                        ),
+                      ),
+                      if (sm.bestCombo > 1) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            '\u00b7',
+                            style: TextStyle(
+                              color:
+                                  GameConfig.textColor.withValues(alpha: 0.5),
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Best \u00d7${sm.bestCombo}',
+                          style: TextStyle(
+                            color: GameConfig.textColor.withValues(alpha: 0.7),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                   const SizedBox(height: 32),
+                  // TAP TO RETRY
                   Text(
                     'TAP TO RETRY',
                     style: TextStyle(
@@ -53,7 +101,7 @@ class GameOverScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Menu button in bottom-left corner
+            // Menu button — bottom center
             Positioned(
               bottom: 32,
               left: 0,
