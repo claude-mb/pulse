@@ -41,6 +41,31 @@ class _GameOverScreenState extends State<GameOverScreen>
     super.dispose();
   }
 
+  /// Builds a small label + value column for lifetime stats.
+  Widget _lifetimeStat(String label, String value) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: GameConfig.textColor.withValues(alpha: 0.4),
+            fontSize: 10,
+            letterSpacing: 2,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          value,
+          style: TextStyle(
+            color: GameConfig.textColor.withValues(alpha: 0.4),
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final sm = game.scoreManager;
@@ -118,40 +143,64 @@ class _GameOverScreenState extends State<GameOverScreen>
                       ),
                     ),
                   const SizedBox(height: 12),
-                  // Stats row: survival time + best combo
+                  // This-run stats row
+                  Text(
+                    'Dodges: ${sm.totalDodges}'
+                    '  |  Near-misses: ${sm.totalNearMisses}'
+                    '  |  Best combo: \u00d7${sm.bestCombo}',
+                    style: TextStyle(
+                      color: GameConfig.textColor.withValues(alpha: 0.6),
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  // Survival time
+                  Text(
+                    '${game.survivalTime.toStringAsFixed(1)}s survived',
+                    style: TextStyle(
+                      color: GameConfig.textColor.withValues(alpha: 0.6),
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Thin divider above lifetime stats
+                  Container(
+                    width: 200,
+                    height: 1,
+                    color: GameConfig.textColor.withValues(alpha: 0.2),
+                  ),
+                  const SizedBox(height: 12),
+                  // Lifetime stats grid
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        '${game.survivalTime.toStringAsFixed(1)}s',
-                        style: TextStyle(
-                          color: GameConfig.textColor.withValues(alpha: 0.7),
-                          fontSize: 16,
-                        ),
+                      _lifetimeStat(
+                        'GAMES',
+                        '${ScoreRepository.instance.gamesPlayed}',
                       ),
-                      if (sm.bestCombo > 1) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            '\u00b7',
-                            style: TextStyle(
-                              color:
-                                  GameConfig.textColor.withValues(alpha: 0.5),
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'Best \u00d7${sm.bestCombo}',
-                          style: TextStyle(
-                            color: GameConfig.textColor.withValues(alpha: 0.7),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
+                      const SizedBox(width: 24),
+                      _lifetimeStat(
+                        'BEST TIME',
+                        '${ScoreRepository.instance.bestSurvivalTime.toStringAsFixed(1)}s',
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _lifetimeStat(
+                        'TOTAL DODGES',
+                        '${ScoreRepository.instance.allTimeTotalDodges}',
+                      ),
+                      const SizedBox(width: 24),
+                      _lifetimeStat(
+                        'BEST COMBO',
+                        '\u00d7${ScoreRepository.instance.allTimeBestCombo}',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
                   // TAP TO RETRY
                   Text(
                     'TAP TO RETRY',
