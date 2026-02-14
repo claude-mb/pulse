@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/background.dart';
 import 'components/background_pulse.dart';
@@ -44,6 +45,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   GameState _state = GameState.menu;
   GameState get state => _state;
+
+  /// Whether the player has already seen the first-time tutorial.
+  bool _hasSeenTutorial = false;
 
   /// Which overlay the gallery should return to when closed.
   String _galleryReturnTo = 'MainMenu';
@@ -97,6 +101,10 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     // Initialise progression/XP persistence.
     await ProgressionRepository.instance.initialize();
 
+    // Load first-time tutorial flag.
+    final prefs = await SharedPreferences.getInstance();
+    _hasSeenTutorial = prefs.getBool('has_seen_tutorial') ?? false;
+
     // Restore persisted color theme before any components are created.
     GameConfig.activeTheme = ColorThemes.getById(
       ProgressionRepository.instance.selectedThemeId,
@@ -131,7 +139,31 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   }
 
   /// Start a new game session.
+  ///
+  /// If the player has never seen the tutorial, shows it first.
+  /// Otherwise jumps straight into gameplay.
   void startGame() {
+    if (!_hasSeenTutorial) {
+      overlays.remove('MainMenu');
+      overlays.add('Tutorial');
+      return;
+    }
+    overlays.remove('MainMenu');
+    _beginGameplay();
+  }
+
+  /// Dismiss the first-time tutorial and start actual gameplay.
+  void dismissTutorial() {
+    _hasSeenTutorial = true;
+    // Fire-and-forget persistence.
+    SharedPreferences.getInstance()
+        .then((p) => p.setBool('has_seen_tutorial', true));
+    overlays.remove('Tutorial');
+    _beginGameplay();
+  }
+
+  /// Core game-start sequence shared by [startGame] and [dismissTutorial].
+  void _beginGameplay() {
     _state = GameState.playing;
     _survivalTime = 0.0;
     _timeScale = 1.0;
@@ -145,7 +177,6 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     scoreManager.reset();
     obstacleSpawner.reset();
     _clearShake();
-    overlays.remove('MainMenu');
     paused = false;
     // Brief delay before HUD appears for a clean visual beat.
     Future.delayed(const Duration(milliseconds: 100), () {
