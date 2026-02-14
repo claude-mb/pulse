@@ -101,6 +101,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _state = GameState.playing;
     _survivalTime = 0.0;
     _timeScale = 1.0;
+    audioManager.playSfx('restart_chime.wav');
     player.resetPosition();
     player.playEntranceAnimation();
     clearObstacles();
@@ -132,6 +133,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// death animation. Pauses after the slow-mo window completes.
   void gameOver() {
     _state = GameState.gameOver;
+    audioManager.playSfx('death_impact.wav');
     overlays.remove('HUD');
     overlays.add('GameOver');
     // Slow-motion for dramatic death.
@@ -191,6 +193,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _state = GameState.playing;
     _survivalTime = 0.0;
     _timeScale = 1.0;
+    audioManager.playSfx('restart_chime.wav');
     player.resetPosition();
     player.playEntranceAnimation();
     clearObstacles();
