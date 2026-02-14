@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 9 complete — ready for Phase 10
+**Current focus:** Phase 10 in progress — App Store Ship
 
 ## Current Position
 
-Phase: 9 of 10 (Daily Challenge)
-Plan: 5 of 5 in current phase
-Status: Phase 9 complete
-Last activity: 2026-02-14 — Completed 09-05 (Phase 9 complete)
+Phase: 10 of 10 (App Store Ship)
+Plan: 1 of 6 in current phase
+Status: In progress
+Last activity: 2026-02-14 — Completed 10-01-PLAN.md
 
-Progress: █████████░ 87%
+Progress: █████████░ 89%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 46
+- Total plans completed: 47
 - Average duration: 7 min
-- Total execution time: 5.67 hours
+- Total execution time: 5.78 hours
 
 **By Phase:**
 
@@ -37,10 +37,11 @@ Progress: █████████░ 87%
 
 | 8. UI & Menus | 5/5 | 27 min | 5 min |
 | 9. Daily Challenge | 5/5 | 17 min | 3 min |
+| 10. App Store Ship | 1/6 | 7 min | 7 min |
 
 **Recent Trend:**
-- Last 5 plans: 09-01 (3 min), 09-02 (3 min), 09-03 (2 min), 09-04 (3 min), 09-05 (6 min)
-- Trend: Phase 9 complete at ~3 min/plan average
+- Last 5 plans: 09-03 (2 min), 09-04 (3 min), 09-05 (6 min), 10-01 (7 min)
+- Trend: Phase 10 started, first plan at 7 min
 
 ## Accumulated Context
 
@@ -142,6 +143,8 @@ Recent decisions affecting current work:
 | 09-04 | DAILY CHALLENGE label above HUD score | Clear mode identification during gameplay |
 | 09-05 | DAILY CHALLENGE title at 32px on game over | Visual distinction from GAME OVER at 48px |
 | 09-05 | Reuse _pulseController for NEW DAILY BEST | Consistent animation, minimal code duplication |
+| 10-01 | Manhattan distance diamond rendering with glow opacity falloff | Efficient geometric icon generation |
+| 10-01 | Dark background-only splash (no image) | Fast loading, matches game theme |
 
 ### Deferred Issues
 
@@ -154,5 +157,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Phase 9 complete — ready for Phase 10 (App Store Ship)
+Stopped at: Completed 10-01-PLAN.md — ready for 10-02
 Resume file: None
