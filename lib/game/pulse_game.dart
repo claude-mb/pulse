@@ -21,6 +21,8 @@ import 'managers/score_manager.dart';
 import 'models/color_theme.dart';
 import 'models/player_shape.dart';
 import '../utils/audio_manager.dart';
+import '../utils/daily_challenge_repository.dart';
+import '../utils/daily_seed.dart';
 import '../utils/progression_repository.dart';
 import '../utils/score_repository.dart';
 
@@ -62,6 +64,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   /// Whether the most recent game-over was a new personal best.
   bool lastRunWasNewBest = false;
+
+  /// Whether the most recent daily challenge game-over was a new daily best.
+  bool lastDailyWasNewBest = false;
 
   /// XP earned in the most recent game (so game over screen can display it).
   int lastXpEarned = 0;
@@ -109,6 +114,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     // Initialise progression/XP persistence.
     await ProgressionRepository.instance.initialize();
 
+    // Initialise daily challenge persistence.
+    await DailyChallengeRepository.instance.initialize();
+
     // Load first-time tutorial flag.
     final prefs = await SharedPreferences.getInstance();
     _hasSeenTutorial = prefs.getBool('has_seen_tutorial') ?? false;
@@ -151,6 +159,22 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// If the player has never seen the tutorial, shows it first.
   /// Otherwise jumps straight into gameplay.
   void startGame() {
+    _gameMode = GameMode.endless;
+    if (!_hasSeenTutorial) {
+      overlays.remove('MainMenu');
+      overlays.add('Tutorial');
+      return;
+    }
+    overlays.remove('MainMenu');
+    _beginGameplay();
+  }
+
+  /// Start a daily challenge session.
+  ///
+  /// Sets the game mode to daily so that [_beginGameplay] will use a
+  /// deterministic seed for the obstacle spawner.
+  void startDailyChallenge() {
+    _gameMode = GameMode.daily;
     if (!_hasSeenTutorial) {
       overlays.remove('MainMenu');
       overlays.add('Tutorial');
@@ -176,6 +200,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     _timeScale = 1.0;
     lastRunWasNewBest = false;
+    lastDailyWasNewBest = false;
     audioManager.playSfx('restart_chime.wav');
     audioManager.playBgm('ambient_loop.wav');
     player.resetPosition();
@@ -183,7 +208,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     clearObstacles();
     difficultyManager.reset();
     scoreManager.reset();
-    obstacleSpawner.reset();
+    obstacleSpawner.reset(
+      seed: _gameMode == GameMode.daily ? todaysSeed() : null,
+    );
     _clearShake();
     paused = false;
     // Brief delay before HUD appears for a clean visual beat.
