@@ -19,9 +19,14 @@ import 'pattern_sequencer.dart';
 ///
 /// Only spawns when [PulseGame.state] is [GameState.playing].
 class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
-  final Random _random = Random();
-  late final PatternSequencer _sequencer = PatternSequencer(random: _random);
+  late Random _random;
+  late PatternSequencer _sequencer;
   double _elapsed = 0;
+
+  ObstacleSpawner({int? seed}) {
+    _random = seed != null ? Random(seed) : Random();
+    _sequencer = PatternSequencer(random: _random);
+  }
 
   @override
   void update(double dt) {
@@ -100,8 +105,18 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
   }
 
   /// Reset the spawn timer and sequencer state (call on game start/restart).
-  void reset() {
+  ///
+  /// If [seed] is provided, creates a fresh seeded [Random] and new
+  /// [PatternSequencer] for deterministic pattern generation. Without a seed,
+  /// the existing [Random] continues its sequence and only the sequencer
+  /// state is cleared.
+  void reset({int? seed}) {
     _elapsed = 0;
-    _sequencer.reset();
+    if (seed != null) {
+      _random = Random(seed);
+      _sequencer = PatternSequencer(random: _random);
+    } else {
+      _sequencer.reset();
+    }
   }
 }
