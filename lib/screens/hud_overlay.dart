@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
+import '../utils/daily_challenge_repository.dart';
 import '../utils/score_repository.dart';
 
 class HudOverlay extends StatefulWidget {
@@ -36,6 +37,13 @@ class _HudOverlayState extends State<HudOverlay> {
     super.dispose();
   }
 
+  int get _bestToShow => widget.game.gameMode == GameMode.daily
+      ? DailyChallengeRepository.instance.dailyBestScore
+      : ScoreRepository.instance.bestScore;
+
+  String get _bestLabel =>
+      widget.game.gameMode == GameMode.daily ? 'DAILY BEST' : 'BEST';
+
   @override
   Widget build(BuildContext context) {
     final sm = widget.game.scoreManager;
@@ -51,6 +59,17 @@ class _HudOverlayState extends State<HudOverlay> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Daily mode label
+                if (widget.game.gameMode == GameMode.daily)
+                  Text(
+                    'DAILY CHALLENGE',
+                    style: TextStyle(
+                      color: GameConfig.accentColor.withValues(alpha: 0.7),
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 3,
+                    ),
+                  ),
                 // Score display
                 Text(
                   '${sm.displayScore}',
@@ -84,12 +103,12 @@ class _HudOverlayState extends State<HudOverlay> {
             ),
           ),
           // Best score — top left (only shown if a best exists)
-          if (ScoreRepository.instance.bestScore > 0)
+          if (_bestToShow > 0)
             Positioned(
               top: 20,
               left: 16,
               child: Text(
-                'BEST ${ScoreRepository.instance.bestScore}',
+                '$_bestLabel $_bestToShow',
                 style: TextStyle(
                   color: GameConfig.textColor.withValues(alpha: 0.5),
                   fontSize: 14,
