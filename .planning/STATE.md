@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 8 in progress — 08-01 complete, ready for 08-02
+**Current focus:** Phase 8 in progress — 08-02 complete, ready for 08-03
 
 ## Current Position
 
 Phase: 8 of 10 (UI & Menus)
-Plan: 1 of 5 in current phase
-Status: 08-01 complete, ready for 08-02
-Last activity: 2026-02-14 — Completed 08-01 (main menu branding enhancement)
+Plan: 2 of 5 in current phase
+Status: 08-02 complete, ready for 08-03
+Last activity: 2026-02-14 — Completed 08-02 (settings screen with audio controls)
 
-Progress: ███████░░░ 68%
+Progress: ████████░░ 72%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 37
+- Total plans completed: 38
 - Average duration: 9 min
-- Total execution time: 5.11 hours
+- Total execution time: 5.18 hours
 
 **By Phase:**
 
@@ -121,6 +121,8 @@ Recent decisions affecting current work:
 | 08-01 | SingleTickerProviderStateMixin for title pulse | Only one AnimationController needed |
 | 08-01 | Glow as 68px text behind 64px title | Simple technique, no shader overhead |
 | 08-01 | Placeholder SettingsScreen as separate widget | Clean separation, fully built in 08-02 |
+| 08-02 | _galleryReturnTo field for dynamic gallery back-nav | Simple tracking of gallery origin without complex state |
+| 08-02 | Fire-and-forget SharedPreferences for mute persistence | Matches ProgressionRepository pattern; no await needed for UX |
 
 ### Deferred Issues
 
@@ -133,5 +135,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: 08-01 complete — ready for 08-02-PLAN.md execution
+Stopped at: 08-02 complete — ready for 08-03-PLAN.md execution
 Resume file: None
