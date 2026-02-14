@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
 import '../utils/audio_manager.dart';
 
@@ -38,7 +39,7 @@ class _PauseOverlayState extends State<PauseOverlay>
     return FadeTransition(
       opacity: _fadeController,
       child: Container(
-        color: Colors.black54,
+        color: const Color(0xCC000000),
         child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -46,33 +47,41 @@ class _PauseOverlayState extends State<PauseOverlay>
             const Text(
               'PAUSED',
               style: TextStyle(
-                color: Colors.white,
+                color: GameConfig.textColor,
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 8,
               ),
             ),
             const SizedBox(height: 48),
-            TextButton(
-              onPressed: () => widget.game.resumeGame(),
-              child: const Text(
-                'RESUME',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 24,
-                  letterSpacing: 4,
+            GestureDetector(
+              onTap: () => widget.game.resumeGame(),
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  'RESUME',
+                  style: TextStyle(
+                    color: GameConfig.textColor.withValues(alpha: 0.7),
+                    fontSize: 24,
+                    letterSpacing: 4,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            TextButton(
-              onPressed: () => widget.game.returnToMenu(),
-              child: const Text(
-                'QUIT',
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 20,
-                  letterSpacing: 4,
+            GestureDetector(
+              onTap: () => widget.game.returnToMenu(),
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  'QUIT',
+                  style: TextStyle(
+                    color: GameConfig.textColor.withValues(alpha: 0.5),
+                    fontSize: 20,
+                    letterSpacing: 4,
+                  ),
                 ),
               ),
             ),
@@ -129,13 +138,13 @@ class _PauseOverlayState extends State<PauseOverlay>
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: Icon(icon, color: Colors.white, size: 28),
+            icon: Icon(icon, color: GameConfig.textColor, size: 28),
             onPressed: onPressed,
           ),
           Text(
             label,
             style: const TextStyle(
-              color: Colors.white,
+              color: GameConfig.textColor,
               fontSize: 12,
               letterSpacing: 2,
             ),
