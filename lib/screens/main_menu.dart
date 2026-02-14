@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
+import '../utils/daily_challenge_repository.dart';
 import '../utils/score_repository.dart';
 
 class MainMenu extends StatefulWidget {
@@ -47,6 +48,37 @@ class _MainMenuState extends State<MainMenu>
     _fadeController.dispose();
     _pulseController.dispose();
     super.dispose();
+  }
+
+  Widget _buildDailyStats() {
+    final dailyBest = DailyChallengeRepository.instance.dailyBestScore;
+    final streak = DailyChallengeRepository.instance.streak;
+    final children = <Widget>[];
+    if (dailyBest > 0) {
+      children.add(Text(
+        'BEST $dailyBest',
+        style: TextStyle(
+          color: GameConfig.textColor.withValues(alpha: 0.4),
+          fontSize: 12,
+        ),
+      ));
+    }
+    if (dailyBest > 0 && streak > 0) {
+      children.add(const SizedBox(width: 12));
+    }
+    if (streak > 0) {
+      children.add(Text(
+        '$streak DAY STREAK',
+        style: TextStyle(
+          color: GameConfig.xpDisplayColor.withValues(alpha: 0.6),
+          fontSize: 12,
+        ),
+      ));
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: children,
+    );
   }
 
   @override
@@ -117,6 +149,29 @@ class _MainMenuState extends State<MainMenu>
                       ),
                     ),
                   ],
+                  // Daily challenge section
+                  const SizedBox(height: 24),
+                  Container(
+                    width: 120,
+                    height: 1,
+                    color: GameConfig.textColor.withValues(alpha: 0.15),
+                  ),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () => widget.game.startDailyChallenge(),
+                    behavior: HitTestBehavior.opaque,
+                    child: Text(
+                      'DAILY CHALLENGE',
+                      style: TextStyle(
+                        color: GameConfig.accentColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 3,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  _buildDailyStats(),
                 ],
               ),
             ),
