@@ -1,43 +1,107 @@
 import 'package:flutter/material.dart';
 
+import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
+import '../utils/score_repository.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget {
   final PulseGame game;
 
   const MainMenu({required this.game, super.key});
 
   @override
+  State<MainMenu> createState() => _MainMenuState();
+}
+
+class _MainMenuState extends State<MainMenu>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulseController;
+  late final Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final bestScore = ScoreRepository.instance.bestScore;
+
     return GestureDetector(
-      onTap: () => game.startGame(),
+      onTap: () => widget.game.startGame(),
       child: Container(
         color: Colors.black54,
         child: Stack(
           children: [
             // Centered title + tap to play
-            const Center(
+            Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'PULSE',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 64,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 12,
+                  // Pulsing title with glow
+                  ScaleTransition(
+                    scale: _pulseAnimation,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Glow layer behind
+                        Text(
+                          'PULSE',
+                          style: TextStyle(
+                            color: GameConfig.accentColor
+                                .withValues(alpha: 0.15),
+                            fontSize: 68,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 12,
+                          ),
+                        ),
+                        // Main title
+                        Text(
+                          'PULSE',
+                          style: TextStyle(
+                            color: GameConfig.textColor,
+                            fontSize: 64,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 12,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   Text(
                     'TAP TO PLAY',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: GameConfig.textColor.withValues(alpha: 0.7),
                       fontSize: 20,
                       letterSpacing: 4,
                     ),
                   ),
+                  // Best score display — only if player has scored
+                  if (bestScore > 0) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      'BEST $bestScore',
+                      style: TextStyle(
+                        color: GameConfig.textColor.withValues(alpha: 0.5),
+                        fontSize: 16,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -48,7 +112,7 @@ class MainMenu extends StatelessWidget {
               right: 0,
               child: Center(
                 child: GestureDetector(
-                  onTap: () => game.showGallery(),
+                  onTap: () => widget.game.showGallery(),
                   // Stop tap from propagating to the full-screen start handler
                   behavior: HitTestBehavior.opaque,
                   child: Padding(
@@ -56,7 +120,7 @@ class MainMenu extends StatelessWidget {
                     child: Text(
                       'COLLECTION',
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
+                        color: GameConfig.textColor.withValues(alpha: 0.5),
                         fontSize: 16,
                         letterSpacing: 4,
                       ),
