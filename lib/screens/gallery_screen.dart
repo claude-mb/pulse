@@ -24,13 +24,31 @@ class GalleryScreen extends StatefulWidget {
   State<GalleryScreen> createState() => _GalleryScreenState();
 }
 
-class _GalleryScreenState extends State<GalleryScreen> {
+class _GalleryScreenState extends State<GalleryScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _fadeController;
+
   PulseGame get game => widget.game;
 
   ProgressionRepository get _repo => ProgressionRepository.instance;
 
   /// Tracks which locked item was just tapped to show brief feedback.
   String? _lockedFeedbackId;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _fadeController.dispose();
+    super.dispose();
+  }
 
   void _onShapeTap(PlayerShape shape) {
     final isUnlocked = _repo.isUnlocked(shape.xpCost);
@@ -72,10 +90,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
     final selectedShape = _repo.selectedShapeId;
     final selectedTheme = _repo.selectedThemeId;
 
-    return Container(
-      color: const Color(0xCC000000),
-      child: SafeArea(
-        child: Center(
+    return FadeTransition(
+      opacity: _fadeController,
+      child: Container(
+        color: const Color(0xCC000000),
+        child: SafeArea(
+          child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
             child: Column(
@@ -182,6 +202,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ],
             ),
           ),
+        ),
         ),
       ),
     );

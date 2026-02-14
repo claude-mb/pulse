@@ -12,14 +12,34 @@ class PauseOverlay extends StatefulWidget {
   State<PauseOverlay> createState() => _PauseOverlayState();
 }
 
-class _PauseOverlayState extends State<PauseOverlay> {
+class _PauseOverlayState extends State<PauseOverlay>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _fadeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _fadeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final audio = AudioManager.instance;
 
-    return Container(
-      color: Colors.black54,
-      child: Center(
+    return FadeTransition(
+      opacity: _fadeController,
+      child: Container(
+        color: Colors.black54,
+        child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -92,6 +112,7 @@ class _PauseOverlayState extends State<PauseOverlay> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

@@ -6,21 +6,33 @@ import '../utils/score_repository.dart';
 
 class MainMenu extends StatefulWidget {
   final PulseGame game;
+  final bool animate;
 
-  const MainMenu({required this.game, super.key});
+  const MainMenu({required this.game, this.animate = true, super.key});
 
   @override
   State<MainMenu> createState() => _MainMenuState();
 }
 
 class _MainMenuState extends State<MainMenu>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _pulseController;
   late final Animation<double> _pulseAnimation;
+  late final AnimationController _fadeController;
 
   @override
   void initState() {
     super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    if (widget.animate) {
+      _fadeController.forward();
+    } else {
+      _fadeController.value = 1.0;
+    }
+
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -32,6 +44,7 @@ class _MainMenuState extends State<MainMenu>
 
   @override
   void dispose() {
+    _fadeController.dispose();
     _pulseController.dispose();
     super.dispose();
   }
@@ -40,12 +53,14 @@ class _MainMenuState extends State<MainMenu>
   Widget build(BuildContext context) {
     final bestScore = ScoreRepository.instance.bestScore;
 
-    return GestureDetector(
-      onTap: () => widget.game.startGame(),
-      child: Container(
-        color: Colors.black54,
-        child: Stack(
-          children: [
+    return FadeTransition(
+      opacity: _fadeController,
+      child: GestureDetector(
+        onTap: () => widget.game.startGame(),
+        child: Container(
+          color: Colors.black54,
+          child: Stack(
+            children: [
             // Centered title + tap to play
             Center(
               child: Column(
@@ -148,6 +163,7 @@ class _MainMenuState extends State<MainMenu>
               ),
             ),
           ],
+          ),
         ),
       ),
     );

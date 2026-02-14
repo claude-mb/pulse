@@ -17,6 +17,8 @@ class GameOverScreen extends StatefulWidget {
 
 class _GameOverScreenState extends State<GameOverScreen>
     with TickerProviderStateMixin {
+  late AnimationController _fadeController;
+
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
 
@@ -28,6 +30,11 @@ class _GameOverScreenState extends State<GameOverScreen>
   @override
   void initState() {
     super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    )..forward();
+
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -67,6 +74,7 @@ class _GameOverScreenState extends State<GameOverScreen>
 
   @override
   void dispose() {
+    _fadeController.dispose();
     _pulseController.dispose();
     _unlockFadeController.dispose();
     super.dispose();
@@ -101,12 +109,14 @@ class _GameOverScreenState extends State<GameOverScreen>
   Widget build(BuildContext context) {
     final sm = game.scoreManager;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => game.resetGame(),
-      child: Container(
-        color: const Color(0xCC000000),
-        child: Stack(
+    return FadeTransition(
+      opacity: _fadeController,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => game.resetGame(),
+        child: Container(
+          color: const Color(0xCC000000),
+          child: Stack(
           children: [
             // Centered content
             Center(
@@ -315,6 +325,7 @@ class _GameOverScreenState extends State<GameOverScreen>
               ),
             ),
           ],
+          ),
         ),
       ),
     );

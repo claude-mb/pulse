@@ -20,10 +20,28 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends State<SettingsScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _fadeController;
+
   PulseGame get game => widget.game;
 
   AudioManager get _audio => AudioManager.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _fadeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +55,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ProgressionRepository.instance.selectedThemeId,
     ).name;
 
-    return Container(
-      color: const Color(0xCC000000),
-      child: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
+    return FadeTransition(
+      opacity: _fadeController,
+      child: Container(
+        color: const Color(0xCC000000),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -244,6 +264,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
+        ),
         ),
       ),
     );
