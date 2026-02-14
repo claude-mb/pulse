@@ -16,6 +16,7 @@ import 'effects/flash_overlay.dart';
 import 'effects/screen_shake.dart';
 import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
+import '../utils/audio_manager.dart';
 
 enum GameState { menu, playing, paused, gameOver }
 
@@ -32,6 +33,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   late ObstacleSpawner obstacleSpawner;
   late DifficultyManager difficultyManager;
   late BackgroundPulse backgroundPulse;
+  late final AudioManager audioManager;
 
   GameState _state = GameState.menu;
   GameState get state => _state;
@@ -65,6 +67,11 @@ class PulseGame extends FlameGame with HasCollisionDetection {
       GameConfig.worldWidth / 2,
       GameConfig.worldHeight / 2,
     );
+
+    // Initialise audio system (preloads assets, creates pools).
+    audioManager = AudioManager.instance;
+    await audioManager.initialize();
+
     paused = true;
     // Background grid — renders behind everything at priority -10.
     world.add(GameBackground());

@@ -105,4 +105,8 @@ class GameConfig {
   static const double shakeDurationDeath = 0.3;
   static const double shakeDurationNearMiss = 0.15;
   static const double nearMissThreshold = 70.0;
+
+  // Audio
+  static const double defaultSfxVolume = 1.0;
+  static const double defaultBgmVolume = 0.7;
 }
