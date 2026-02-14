@@ -87,6 +87,12 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
           .clamp(GameConfig.spawnCueBaseVolume, GameConfig.spawnCueMaxVolume);
       game.audioManager.playSfx('spawn_cue.wav', volume: spawnCueVolume);
 
+      // Pulse bass layer — sub-bass thump for physical weight, scales with difficulty.
+      final pulseBassVolume = (GameConfig.pulseBassBaseVolume +
+              (game.difficultyManager.speedMultiplier - 1.0) * 0.33)
+          .clamp(GameConfig.pulseBassBaseVolume, GameConfig.pulseBassMaxVolume);
+      game.audioManager.playSfx('pulse_bass.wav', volume: pulseBassVolume);
+
       // Add the pattern's postDelay to the timer so there's a gap
       // before the next pattern spawns.
       _elapsed -= pattern.postDelay;

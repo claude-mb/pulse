@@ -25,6 +25,7 @@ class AudioManager {
   // Audio pools for frequently-played SFX (low latency).
   late AudioPool _dodgePool;
   late AudioPool _spawnPool;
+  late AudioPool _pulseBassPool;
 
   // ---------------------------------------------------------------------------
   // Volume / mute state
@@ -61,6 +62,7 @@ class AudioManager {
       'restart_chime.wav',
       'spawn_cue.wav',
       'menu_select.wav',
+      'pulse_bass.wav',
       'ambient_loop.wav',
     ]);
 
@@ -71,6 +73,10 @@ class AudioManager {
     );
     _spawnPool = await FlameAudio.createPool(
       'spawn_cue.wav',
+      maxPlayers: 4,
+    );
+    _pulseBassPool = await FlameAudio.createPool(
+      'pulse_bass.wav',
       maxPlayers: 4,
     );
 
@@ -99,6 +105,10 @@ class AudioManager {
     }
     if (name == 'spawn_cue.wav') {
       _spawnPool.start(volume: effectiveVolume);
+      return;
+    }
+    if (name == 'pulse_bass.wav') {
+      _pulseBassPool.start(volume: effectiveVolume);
       return;
     }
 
@@ -149,6 +159,7 @@ class AudioManager {
     if (!_initialized) return;
     _dodgePool.dispose();
     _spawnPool.dispose();
+    _pulseBassPool.dispose();
     FlameAudio.bgm.dispose();
     _initialized = false;
   }

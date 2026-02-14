@@ -115,4 +115,6 @@ class GameConfig {
   static const double spawnCueMaxVolume = 0.6;
   static const double nearMissBaseVolume = 0.5;
   static const double nearMissMaxVolume = 1.0;
+  static const double pulseBassBaseVolume = 0.2;
+  static const double pulseBassMaxVolume = 0.4;
 }

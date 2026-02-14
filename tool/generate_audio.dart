@@ -215,6 +215,22 @@ List<double> generateMenuSelect() {
   return samples;
 }
 
+/// Pulse bass — very short deep sine at 55Hz with fast attack and exponential
+/// decay (~0.15s). A "felt more than heard" sub-bass thump layered on spawn.
+List<double> generatePulseBass() {
+  final duration = 0.15;
+  final numSamples = (sampleRate * duration).round();
+  final samples = <double>[];
+
+  for (var i = 0; i < numSamples; i++) {
+    final t = i / sampleRate;
+    // Very fast attack (2ms), then exponential decay.
+    final env = expDecay(t, 0.002, 20.0);
+    samples.add(sine(55, t) * env * 0.3);
+  }
+  return samples;
+}
+
 /// Ambient loop — sub-bass drone with rhythmic pulse and noise texture (~4.4s).
 ///
 /// Designed to loop seamlessly at exactly 4 × 1.1s spawn intervals.
@@ -281,6 +297,7 @@ void main() {
     'restart_chime.wav': generateRestartChime,
     'spawn_cue.wav': generateSpawnCue,
     'menu_select.wav': generateMenuSelect,
+    'pulse_bass.wav': generatePulseBass,
     'ambient_loop.wav': generateAmbientLoop,
   };
 
