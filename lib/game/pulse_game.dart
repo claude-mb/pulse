@@ -293,6 +293,20 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     overlays.add('MainMenu');
   }
 
+  /// Navigate from main menu to the settings screen.
+  void showSettings() {
+    audioManager.playSfx('menu_select.wav');
+    overlays.remove('MainMenu');
+    overlays.add('Settings');
+  }
+
+  /// Navigate from settings back to the main menu.
+  void hideSettings() {
+    audioManager.playSfx('menu_select.wav');
+    overlays.remove('Settings');
+    overlays.add('MainMenu');
+  }
+
   /// Return to the main menu.
   void returnToMenu() {
     audioManager.playSfx('menu_select.wav');

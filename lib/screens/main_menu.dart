@@ -105,28 +105,46 @@ class _MainMenuState extends State<MainMenu>
                 ],
               ),
             ),
-            // COLLECTION button — bottom center, own tap target
+            // SETTINGS and COLLECTION buttons — bottom center
             Positioned(
               bottom: 48,
               left: 0,
               right: 0,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () => widget.game.showGallery(),
-                  // Stop tap from propagating to the full-screen start handler
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      'COLLECTION',
-                      style: TextStyle(
-                        color: GameConfig.textColor.withValues(alpha: 0.5),
-                        fontSize: 16,
-                        letterSpacing: 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => widget.game.showSettings(),
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        'SETTINGS',
+                        style: TextStyle(
+                          color: GameConfig.textColor.withValues(alpha: 0.5),
+                          fontSize: 16,
+                          letterSpacing: 4,
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  const SizedBox(width: 32),
+                  GestureDetector(
+                    onTap: () => widget.game.showGallery(),
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        'COLLECTION',
+                        style: TextStyle(
+                          color: GameConfig.textColor.withValues(alpha: 0.5),
+                          fontSize: 16,
+                          letterSpacing: 4,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
