@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
+import '../utils/score_repository.dart';
 
 class GameOverScreen extends StatelessWidget {
   final PulseGame game;
@@ -54,6 +55,27 @@ class GameOverScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  // Best score comparison
+                  if (sm.isNewBest)
+                    const Text(
+                      'NEW BEST!',
+                      style: TextStyle(
+                        color: GameConfig.playerColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                    )
+                  else
+                    Text(
+                      'BEST ${ScoreRepository.instance.bestScore}',
+                      style: TextStyle(
+                        color: GameConfig.textColor.withValues(alpha: 0.5),
+                        fontSize: 14,
+                        letterSpacing: 1,
+                      ),
+                    ),
                   const SizedBox(height: 12),
                   // Stats row: survival time + best combo
                   Row(

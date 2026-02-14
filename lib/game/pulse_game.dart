@@ -18,6 +18,7 @@ import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
 import 'managers/score_manager.dart';
 import '../utils/audio_manager.dart';
+import '../utils/score_repository.dart';
 
 enum GameState { menu, playing, paused, gameOver }
 
@@ -73,6 +74,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     // Initialise audio system (preloads assets, creates pools).
     audioManager = AudioManager.instance;
     await audioManager.initialize();
+
+    // Initialise score persistence.
+    await ScoreRepository.instance.initialize();
 
     paused = true;
     // Background grid — renders behind everything at priority -10.
@@ -143,6 +147,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// death animation. Pauses after the slow-mo window completes.
   void gameOver() {
     _state = GameState.gameOver;
+    // Persist high score.
+    final currentScore = scoreManager.displayScore;
+    ScoreRepository.instance.saveBestScore(currentScore);
     audioManager.playSfx('death_impact.wav');
     audioManager.stopBgm();
     overlays.remove('HUD');

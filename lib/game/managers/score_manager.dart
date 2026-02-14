@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 
+import '../../utils/score_repository.dart';
 import '../config/game_config.dart';
 import '../pulse_game.dart';
 
@@ -55,6 +56,9 @@ class ScoreManager extends Component with HasGameReference<PulseGame> {
 
   /// The last score event text (for HUD display), or null if expired.
   String? get lastScoreEvent => _lastScoreEvent;
+
+  /// Whether the current score exceeds the persisted best score.
+  bool get isNewBest => ScoreRepository.instance.isNewBest(displayScore);
 
   /// Combo multiplier: 1.0 + (combo × step), capped at max.
   double get comboMultiplier =>

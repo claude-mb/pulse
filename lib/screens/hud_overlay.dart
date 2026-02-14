@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
+import '../utils/score_repository.dart';
 
 class HudOverlay extends StatefulWidget {
   final PulseGame game;
@@ -82,6 +83,20 @@ class _HudOverlayState extends State<HudOverlay> {
               ],
             ),
           ),
+          // Best score — top left (only shown if a best exists)
+          if (ScoreRepository.instance.bestScore > 0)
+            Positioned(
+              top: 20,
+              left: 16,
+              child: Text(
+                'BEST ${ScoreRepository.instance.bestScore}',
+                style: TextStyle(
+                  color: GameConfig.textColor.withValues(alpha: 0.5),
+                  fontSize: 14,
+                  letterSpacing: 1,
+                ),
+              ),
+            ),
           // Pause button — top right
           Positioned(
             top: 8,
