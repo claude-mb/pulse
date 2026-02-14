@@ -8,20 +8,29 @@ import 'package:flutter/animation.dart';
 
 import '../config/game_config.dart';
 import '../effects/dodge_sparkle.dart';
+import '../models/player_shape.dart';
 import '../pulse_game.dart';
+import '../../utils/progression_repository.dart';
 import 'obstacle.dart';
 
-/// The player entity — a diamond/rhombus shape at the bottom of the screen.
+/// The player entity — renders the currently selected [PlayerShape].
 ///
 /// Uses [PolygonComponent] for reliable cross-platform rendering (including web).
 /// Moves left/right via [dodgeLeft] and [dodgeRight] using [MoveEffect]
 /// for smooth, snappy animation. Detects collisions with [Obstacle]s and
 /// triggers game over.
+///
+/// The active shape can be changed at runtime via [updateShape], which
+/// rebuilds the rendered path and glow origin without recreating the component.
 class Player extends PolygonComponent
     with HasGameReference<PulseGame>, CollisionCallbacks {
   Player()
-      : super(
-          // Diamond vertices: top, right, bottom, left
+      : _shape = PlayerShapes.getById(
+          ProgressionRepository.instance.selectedShapeId,
+        ),
+        super(
+          // Always use diamond vertices for PolygonComponent sizing.
+          // Actual rendering uses _shapePath from the active PlayerShape.
           [
             Vector2(20, 0),
             Vector2(40, 20),
@@ -36,13 +45,16 @@ class Player extends PolygonComponent
           paint: Paint()..color = GameConfig.playerColor,
         );
 
+  /// The active player shape (determines rendered polygon and glow origin).
+  PlayerShape _shape;
+
   /// Timer for the idle pulse animation (glow breathing effect).
   double _pulseTimer = 0.0;
 
   /// Whether the player is temporarily invulnerable (during entrance).
   bool _invulnerable = false;
 
-  /// Paint for the glow layer behind the player diamond.
+  /// Paint for the glow layer behind the player shape.
   final Paint _glowPaint = Paint()
     ..color = GameConfig.playerColor.withValues(
       alpha: GameConfig.playerGlowOpacity,
@@ -52,8 +64,11 @@ class Player extends PolygonComponent
       GameConfig.playerGlowRadius,
     );
 
-  /// Diamond path in local coordinates for the solid fill.
-  late final Path _diamondPath;
+  /// Shape path in local coordinates for the solid fill.
+  late Path _shapePath;
+
+  /// Cached shape center for glow scaling origin.
+  late Vector2 _shapeCenter;
 
   @override
   Future<void> onLoad() async {
@@ -67,13 +82,20 @@ class Player extends PolygonComponent
       ),
     );
 
-    // Pre-build the diamond path for manual rendering.
-    _diamondPath = Path()
-      ..moveTo(20, 0)
-      ..lineTo(40, 20)
-      ..lineTo(20, 40)
-      ..lineTo(0, 20)
-      ..close();
+    // Build the shape path from the active shape.
+    _shapePath = _shape.path;
+    _shapeCenter = _shape.center;
+  }
+
+  /// Updates the rendered shape at runtime.
+  ///
+  /// Rebuilds the internal path and glow scaling origin. The hitbox
+  /// remains a rectangle covering 80% of the 40x40 bounding box,
+  /// which works for all shape variants.
+  void updateShape(PlayerShape shape) {
+    _shape = shape;
+    _shapePath = shape.path;
+    _shapeCenter = shape.center;
   }
 
   @override
@@ -120,17 +142,17 @@ class Player extends PolygonComponent
     );
     final glowScale = 1.3 + 0.1 * pulse; // 1.2 to 1.4
 
-    // 1. Draw glow layer — scaled-up blurred diamond.
+    // 1. Draw glow layer — scaled-up blurred shape.
     canvas.save();
-    // Scale around the center of the diamond (20, 20).
-    canvas.translate(20, 20);
+    // Scale around the center of the shape.
+    canvas.translate(_shapeCenter.x, _shapeCenter.y);
     canvas.scale(glowScale);
-    canvas.translate(-20, -20);
-    canvas.drawPath(_diamondPath, _glowPaint);
+    canvas.translate(-_shapeCenter.x, -_shapeCenter.y);
+    canvas.drawPath(_shapePath, _glowPaint);
     canvas.restore();
 
-    // 2. Draw solid diamond on top (using component's paint).
-    canvas.drawPath(_diamondPath, paint);
+    // 2. Draw solid shape on top (using component's paint).
+    canvas.drawPath(_shapePath, paint);
   }
 
   @override

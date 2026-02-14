@@ -17,6 +17,7 @@ import 'effects/screen_shake.dart';
 import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
 import 'managers/score_manager.dart';
+import 'models/player_shape.dart';
 import '../utils/audio_manager.dart';
 import '../utils/progression_repository.dart';
 import '../utils/score_repository.dart';
@@ -276,6 +277,16 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     overlays.remove('GameOver');
     overlays.add('MainMenu');
     paused = true;
+  }
+
+  /// Apply a new player shape by [shapeId] and persist the selection.
+  ///
+  /// Updates the player's rendered shape immediately and saves the
+  /// selection to [ProgressionRepository] for persistence across restarts.
+  void applyShape(String shapeId) {
+    final shape = PlayerShapes.getById(shapeId);
+    player.updateShape(shape);
+    ProgressionRepository.instance.setSelectedShape(shapeId);
   }
 }
 
