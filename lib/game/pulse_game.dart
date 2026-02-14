@@ -51,6 +51,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// XP earned in the most recent game (so game over screen can display it).
   int lastXpEarned = 0;
 
+  /// Items newly unlocked by XP earned in the most recent game.
+  List<UnlockInfo> lastNewUnlocks = [];
+
   double _survivalTime = 0.0;
 
   /// Time scale multiplier — 1.0 is normal speed, < 1.0 is slow motion.
@@ -167,9 +170,13 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// death animation. Pauses after the slow-mo window completes.
   void gameOver() {
     _state = GameState.gameOver;
-    // Award XP based on final score.
+    // Award XP based on final score — capture before/after for unlock detection.
+    final xpBefore = ProgressionRepository.instance.totalXP;
     lastXpEarned = scoreManager.displayScore * GameConfig.xpPerScore;
     ProgressionRepository.instance.addXP(lastXpEarned);
+    final xpAfter = xpBefore + lastXpEarned;
+    lastNewUnlocks =
+        ProgressionRepository.instance.checkNewUnlocks(xpBefore, xpAfter);
     // Record lifetime stats and check for new best in one call.
     ScoreRepository.instance
         .recordGameEnd(

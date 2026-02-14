@@ -141,4 +141,7 @@ class GameConfig {
 
   // Progression / XP
   static const int xpPerScore = 1;
+
+  // Unlock celebration
+  static const double unlockChimeVolume = 0.7;
 }

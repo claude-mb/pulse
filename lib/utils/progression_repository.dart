@@ -1,5 +1,26 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../game/models/color_theme.dart';
+import '../game/models/player_shape.dart';
+
+/// Information about a single newly unlocked item.
+class UnlockInfo {
+  /// Human-readable display name (e.g. 'Star', 'Neon Blue').
+  final String name;
+
+  /// Item category — either 'shape' or 'theme'.
+  final String type;
+
+  /// Unique persistence identifier (e.g. 'star', 'neon_blue').
+  final String id;
+
+  const UnlockInfo({
+    required this.name,
+    required this.type,
+    required this.id,
+  });
+}
+
 /// Persists XP progression and player customisation selections using
 /// [SharedPreferences].
 ///
@@ -85,4 +106,43 @@ class ProgressionRepository {
 
   /// Returns `true` if the player's lifetime XP meets or exceeds [xpCost].
   bool isUnlocked(int xpCost) => totalXP >= xpCost;
+
+  // ---------------------------------------------------------------------------
+  // Unlock detection
+  // ---------------------------------------------------------------------------
+
+  /// Returns a list of items whose XP threshold was crossed between
+  /// [xpBefore] and [xpAfter].
+  ///
+  /// An item is "newly unlocked" when `xpBefore < item.xpCost <= xpAfter`.
+  /// Free items (xpCost == 0) are never reported as newly unlocked.
+  List<UnlockInfo> checkNewUnlocks(int xpBefore, int xpAfter) {
+    final unlocks = <UnlockInfo>[];
+
+    for (final shape in PlayerShapes.all) {
+      if (shape.xpCost > 0 &&
+          xpBefore < shape.xpCost &&
+          xpAfter >= shape.xpCost) {
+        unlocks.add(UnlockInfo(
+          name: shape.name,
+          type: 'shape',
+          id: shape.id,
+        ));
+      }
+    }
+
+    for (final theme in ColorThemes.all) {
+      if (theme.xpCost > 0 &&
+          xpBefore < theme.xpCost &&
+          xpAfter >= theme.xpCost) {
+        unlocks.add(UnlockInfo(
+          name: theme.name,
+          type: 'theme',
+          id: theme.id,
+        ));
+      }
+    }
+
+    return unlocks;
+  }
 }
