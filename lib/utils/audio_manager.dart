@@ -43,6 +43,9 @@ class AudioManager {
   /// Whether BGM is muted.
   bool bgmMuted = false;
 
+  /// The last-requested BGM track name, so unmuting can resume it.
+  String? _lastRequestedBgm;
+
   // ---------------------------------------------------------------------------
   // Initialisation
   // ---------------------------------------------------------------------------
@@ -122,9 +125,12 @@ class AudioManager {
   /// Starts playing a looping background music track.
   ///
   /// If BGM is already playing, stops it first to avoid overlap.
-  /// If [bgmMuted] is true, this is a no-op.
+  /// If [bgmMuted] is true, the request is stored so unmuting can start it.
   Future<void> playBgm(String name) async {
-    if (!_initialized || bgmMuted) return;
+    if (!_initialized) return;
+    // Always track the requested BGM so unmuting can resume it.
+    _lastRequestedBgm = name;
+    if (bgmMuted) return;
     // Guard: stop any currently playing BGM before starting a new track.
     FlameAudio.bgm.stop();
     await FlameAudio.bgm.play(name, volume: bgmVolume);
@@ -146,6 +152,45 @@ class AudioManager {
   void resumeBgm() {
     if (!_initialized) return;
     FlameAudio.bgm.resume();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Toggle / volume controls
+  // ---------------------------------------------------------------------------
+
+  /// Toggles SFX mute state. Next [playSfx] call will respect the new state.
+  void toggleSfxMute() {
+    sfxMuted = !sfxMuted;
+  }
+
+  /// Toggles BGM mute state.
+  ///
+  /// When muting, pauses the active BGM. When unmuting, resumes the
+  /// last-requested BGM track if one was stored.
+  void toggleBgmMute() {
+    bgmMuted = !bgmMuted;
+    if (!_initialized) return;
+    if (bgmMuted) {
+      FlameAudio.bgm.pause();
+    } else if (_lastRequestedBgm != null) {
+      playBgm(_lastRequestedBgm!);
+    }
+  }
+
+  /// Sets the SFX master volume, clamped to 0.0 - 1.0.
+  void setSfxVolume(double v) {
+    sfxVolume = v.clamp(0.0, 1.0);
+  }
+
+  /// Sets the BGM master volume, clamped to 0.0 - 1.0.
+  ///
+  /// If BGM is currently playing, updates the active player's volume
+  /// immediately.
+  void setBgmVolume(double v) {
+    bgmVolume = v.clamp(0.0, 1.0);
+    if (!_initialized) return;
+    // Update the live BGM player volume if playing.
+    FlameAudio.bgm.audioPlayer.setVolume(bgmVolume);
   }
 
   // ---------------------------------------------------------------------------
