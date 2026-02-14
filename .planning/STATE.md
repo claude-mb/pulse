@@ -5,21 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 8 in progress — 08-03 complete, ready for 08-04
+**Current focus:** Phase 8 in progress — 08-04 complete, ready for 08-05
 
 ## Current Position
 
 Phase: 8 of 10 (UI & Menus)
-Plan: 3 of 5 in current phase
-Status: 08-03 complete, ready for 08-04
-Last activity: 2026-02-14 — Completed 08-03 (animated screen transitions)
+Plan: 4 of 5 in current phase
+Status: 08-04 complete, ready for 08-05
+Last activity: 2026-02-14 — Completed 08-04 (first-time tutorial overlay)
 
-Progress: █████████░ 74%
+Progress: █████████░ 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 39
+- Total plans completed: 40
 - Average duration: 8 min
 - Total execution time: 5.26 hours
 
@@ -36,7 +36,7 @@ Progress: █████████░ 74%
 | 7. Progression | 5/5 | 20 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-05 (4 min), 08-01 (5 min), 08-02 (4 min), 08-03 (5 min)
+- Last 5 plans: 08-01 (5 min), 08-02 (4 min), 08-03 (5 min), 08-04 (5 min)
 - Trend: Phase 8 maintaining fast pace at ~5 min/plan
 
 ## Accumulated Context
@@ -125,6 +125,8 @@ Recent decisions affecting current work:
 | 08-02 | Fire-and-forget SharedPreferences for mute persistence | Matches ProgressionRepository pattern; no await needed for UX |
 | 08-03 | 200ms fade for overlays, 300ms for GameOverScreen | Snappy transitions; dramatic death effect slightly slower |
 | 08-03 | 100ms HUD delay on game start | Clean visual beat between menu removal and HUD appearance |
+| 08-04 | Tutorial intercepts startGame() with _beginGameplay() extraction | Clean dual call path; no separate entry point needed |
+| 08-04 | Fire-and-forget SharedPreferences for tutorial flag | Matches existing persistence patterns; no await needed |
 
 ### Deferred Issues
 
@@ -137,5 +139,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: 08-03 complete — ready for 08-04-PLAN.md execution
+Stopped at: 08-04 complete — ready for 08-05-PLAN.md execution
 Resume file: None
