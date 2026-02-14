@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 5 of 10 (Audio System)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-14 — Completed 05-03-PLAN.md
+Last activity: 2026-02-14 — Completed 05-04-PLAN.md
 
-Progress: ████░░░░░░ 45%
+Progress: █████░░░░░ 47%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 24
+- Total plans completed: 25
 - Average duration: 9 min
 - Total execution time: 3.8 hours
 
@@ -31,11 +31,11 @@ Progress: ████░░░░░░ 45%
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
 | 3. Obstacle System | 5/5 | 57 min | 11 min |
 | 4. Visual Juice | 6/6 | 71 min | 12 min |
-| 5. Audio System | 3/5 | 20 min | 7 min |
+| 5. Audio System | 4/5 | 23 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-05 (7 min), 04-06 (35 min), 05-01 (7 min), 05-02 (7 min), 05-03 (6 min)
-- Trend: Consistent ~7 min for audio plans
+- Last 5 plans: 04-06 (35 min), 05-01 (7 min), 05-02 (7 min), 05-03 (6 min), 05-04 (3 min)
+- Trend: Audio plans getting faster as infrastructure established
 
 ## Accumulated Context
 
@@ -99,6 +99,8 @@ Recent decisions affecting current work:
 | 05-02 | Spawn cue at 0.4 volume, menu select at 0.5 for pause | Volume differentiation for ambient vs action feedback |
 | 05-03 | 4.4s loop = 4 × 1.1s spawn intervals | Rhythmic alignment with obstacle spawning |
 | 05-03 | Abrupt BGM stop on death, not fade | Silence after impact is more dramatic |
+| 05-04 | Volume scaling via speedMultiplier lerp | Mirrors danger tint opacity approach |
+| 05-04 | Pulse bass as 55Hz sub-layer on spawn | Felt more than heard, adds physical weight |
 
 ### Deferred Issues
 
@@ -111,5 +113,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 05-03-PLAN.md
+Stopped at: Completed 05-04-PLAN.md
 Resume file: None
