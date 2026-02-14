@@ -6,6 +6,7 @@ import '../game/config/game_config.dart';
 import '../game/models/color_theme.dart';
 import '../game/models/player_shape.dart';
 import '../game/pulse_game.dart';
+import '../utils/audio_manager.dart';
 import '../utils/progression_repository.dart';
 
 /// Collection/gallery screen for browsing and selecting unlocked shapes
@@ -27,6 +28,43 @@ class _GalleryScreenState extends State<GalleryScreen> {
   PulseGame get game => widget.game;
 
   ProgressionRepository get _repo => ProgressionRepository.instance;
+
+  /// Tracks which locked item was just tapped to show brief feedback.
+  String? _lockedFeedbackId;
+
+  void _onShapeTap(PlayerShape shape) {
+    final isUnlocked = _repo.isUnlocked(shape.xpCost);
+    if (!isUnlocked) {
+      // Brief visual feedback for locked items.
+      setState(() => _lockedFeedbackId = shape.id);
+      Future.delayed(const Duration(milliseconds: 600), () {
+        if (mounted) setState(() => _lockedFeedbackId = null);
+      });
+      return;
+    }
+    // Already selected — no-op.
+    if (shape.id == _repo.selectedShapeId) return;
+    game.applyShape(shape.id);
+    AudioManager.instance.playSfx('menu_select.wav');
+    setState(() {});
+  }
+
+  void _onThemeTap(ColorTheme theme) {
+    final isUnlocked = _repo.isUnlocked(theme.xpCost);
+    if (!isUnlocked) {
+      // Brief visual feedback for locked items.
+      setState(() => _lockedFeedbackId = theme.id);
+      Future.delayed(const Duration(milliseconds: 600), () {
+        if (mounted) setState(() => _lockedFeedbackId = null);
+      });
+      return;
+    }
+    // Already selected — no-op.
+    if (theme.id == _repo.selectedThemeId) return;
+    game.applyTheme(theme.id);
+    AudioManager.instance.playSfx('menu_select.wav');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +120,15 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   alignment: WrapAlignment.center,
                   children: [
                     for (final shape in PlayerShapes.all)
-                      _buildShapeItem(
-                        shape: shape,
-                        isUnlocked: _repo.isUnlocked(shape.xpCost),
-                        isSelected: shape.id == selectedShape,
+                      GestureDetector(
+                        onTap: () => _onShapeTap(shape),
+                        behavior: HitTestBehavior.opaque,
+                        child: _buildShapeItem(
+                          shape: shape,
+                          isUnlocked: _repo.isUnlocked(shape.xpCost),
+                          isSelected: shape.id == selectedShape,
+                          showLockedFeedback: _lockedFeedbackId == shape.id,
+                        ),
                       ),
                   ],
                 ),
@@ -107,20 +150,22 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   alignment: WrapAlignment.center,
                   children: [
                     for (final theme in ColorThemes.all)
-                      _buildThemeItem(
-                        theme: theme,
-                        isUnlocked: _repo.isUnlocked(theme.xpCost),
-                        isSelected: theme.id == selectedTheme,
+                      GestureDetector(
+                        onTap: () => _onThemeTap(theme),
+                        behavior: HitTestBehavior.opaque,
+                        child: _buildThemeItem(
+                          theme: theme,
+                          isUnlocked: _repo.isUnlocked(theme.xpCost),
+                          isSelected: theme.id == selectedTheme,
+                          showLockedFeedback: _lockedFeedbackId == theme.id,
+                        ),
                       ),
                   ],
                 ),
                 const SizedBox(height: 32),
                 // BACK button
                 GestureDetector(
-                  onTap: () {
-                    game.overlays.remove('Gallery');
-                    game.overlays.add('MainMenu');
-                  },
+                  onTap: () => game.hideGallery(),
                   behavior: HitTestBehavior.opaque,
                   child: Padding(
                     padding: const EdgeInsets.all(12),
@@ -147,6 +192,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     required PlayerShape shape,
     required bool isUnlocked,
     required bool isSelected,
+    bool showLockedFeedback = false,
   }) {
     final Color itemColor =
         isUnlocked ? GameConfig.playerColor : Colors.white24;
@@ -157,14 +203,17 @@ class _GalleryScreenState extends State<GalleryScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Shape preview container
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             width: 60,
             height: 60,
             decoration: BoxDecoration(
               border: Border.all(
                 color: isSelected
                     ? GameConfig.xpDisplayColor
-                    : Colors.white12,
+                    : showLockedFeedback
+                        ? Colors.white38
+                        : Colors.white12,
                 width: isSelected ? 2 : 1,
               ),
               borderRadius: BorderRadius.circular(8),
@@ -207,9 +256,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
             )
           else if (!isUnlocked)
             Text(
-              '${shape.xpCost} XP',
+              showLockedFeedback
+                  ? '${shape.xpCost} XP NEEDED'
+                  : '${shape.xpCost} XP',
               style: TextStyle(
-                color: GameConfig.textColor.withValues(alpha: 0.3),
+                color: showLockedFeedback
+                    ? GameConfig.textColor.withValues(alpha: 0.5)
+                    : GameConfig.textColor.withValues(alpha: 0.3),
                 fontSize: 9,
               ),
             ),
@@ -223,6 +276,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     required ColorTheme theme,
     required bool isUnlocked,
     required bool isSelected,
+    bool showLockedFeedback = false,
   }) {
     return SizedBox(
       width: 80,
@@ -230,14 +284,17 @@ class _GalleryScreenState extends State<GalleryScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Color swatch container
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             width: 60,
             height: 60,
             decoration: BoxDecoration(
               border: Border.all(
                 color: isSelected
                     ? GameConfig.xpDisplayColor
-                    : Colors.white12,
+                    : showLockedFeedback
+                        ? Colors.white38
+                        : Colors.white12,
                 width: isSelected ? 2 : 1,
               ),
               borderRadius: BorderRadius.circular(8),
@@ -289,9 +346,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
             )
           else if (!isUnlocked)
             Text(
-              '${theme.xpCost} XP',
+              showLockedFeedback
+                  ? '${theme.xpCost} XP NEEDED'
+                  : '${theme.xpCost} XP',
               style: TextStyle(
-                color: GameConfig.textColor.withValues(alpha: 0.3),
+                color: showLockedFeedback
+                    ? GameConfig.textColor.withValues(alpha: 0.5)
+                    : GameConfig.textColor.withValues(alpha: 0.3),
                 fontSize: 9,
               ),
             ),

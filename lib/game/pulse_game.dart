@@ -279,6 +279,20 @@ class PulseGame extends FlameGame with HasCollisionDetection {
         .forEach((o) => o.removeFromParent());
   }
 
+  /// Navigate from main menu to the collection gallery.
+  void showGallery() {
+    audioManager.playSfx('menu_select.wav');
+    overlays.remove('MainMenu');
+    overlays.add('Gallery');
+  }
+
+  /// Navigate from gallery back to the main menu.
+  void hideGallery() {
+    audioManager.playSfx('menu_select.wav');
+    overlays.remove('Gallery');
+    overlays.add('MainMenu');
+  }
+
   /// Return to the main menu.
   void returnToMenu() {
     audioManager.playSfx('menu_select.wav');
