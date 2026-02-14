@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import '../models/color_theme.dart';
+
 class GameConfig {
   // Prevent instantiation
   GameConfig._();
@@ -8,14 +10,25 @@ class GameConfig {
   static const double worldWidth = 400;
   static const double worldHeight = 800;
 
-  // Colors
-  static const Color backgroundColor = Color(0xFF1A1A2E);
-  static const Color playerColor = Color(0xFFE94560);
-  static const Color obstacleColor = Color(0xFF0F3460);
-  static const Color obstacleOutlineColor = Color(0xFF1A5276);
-  static const Color obstacleHighlightColor = Color(0xFF2471A3);
-  static const Color accentColor = Color(0xFF16213E);
+  // Active color theme — drives all themed color getters below.
+  static ColorTheme activeTheme = ColorThemes.neonRed;
+
+  // Themed colors — delegate to activeTheme so all existing references
+  // (GameConfig.playerColor etc.) continue to work transparently.
+  static Color get backgroundColor => activeTheme.backgroundColor;
+  static Color get playerColor => activeTheme.playerColor;
+  static Color get obstacleColor => activeTheme.obstacleColor;
+  static Color get obstacleOutlineColor => activeTheme.obstacleOutlineColor;
+  static Color get obstacleHighlightColor => activeTheme.obstacleHighlightColor;
+  static Color get accentColor => activeTheme.accentColor;
+  static Color get gridColor => activeTheme.gridColor;
+  static Color get pulseColor => activeTheme.pulseColor;
+
+  // Non-themed colors — fixed across all themes.
   static const Color textColor = Color(0xFFFFFFFF);
+  static const Color dangerTintColor = Color(0xFFFF2020);
+  static const Color highScoreColor = Color(0xFFFFD700);
+  static const Color xpDisplayColor = Color(0xFF4ECDC4);
 
   // Tap indicator
   static const double tapIndicatorRadius = 15.0;
@@ -71,7 +84,6 @@ class GameConfig {
   static const double flashOpacity = 0.7;
 
   // Danger tint overlay
-  static const Color dangerTintColor = Color(0xFFFF2020);
   static const double dangerTintMaxOpacity = 0.12;
 
   // Player glow and pulse
@@ -81,7 +93,6 @@ class GameConfig {
 
   // Background grid
   static const double gridSpacing = 50.0;
-  static const Color gridColor = Color(0xFF2A3050);
   static const double gridOpacity = 0.5;
   static const double gridScrollSpeed = 0.15;
 
@@ -97,7 +108,6 @@ class GameConfig {
   // Background pulse
   static const double pulseBaseAmplitude = 0.03;
   static const double pulseMaxAmplitude = 0.08;
-  static const Color pulseColor = Color(0xFF16213E);
 
   // Screen shake
   static const double shakeIntensityDeath = 8.0;
@@ -120,7 +130,6 @@ class GameConfig {
 
   // High score celebration
   static const double highScoreFanfareVolume = 0.8;
-  static const Color highScoreColor = Color(0xFFFFD700);
 
   // Audio – difficulty-reactive volume scaling
   static const double spawnCueBaseVolume = 0.3;
@@ -132,5 +141,4 @@ class GameConfig {
 
   // Progression / XP
   static const int xpPerScore = 1;
-  static const Color xpDisplayColor = Color(0xFF4ECDC4);
 }

@@ -65,7 +65,7 @@ class _HudOverlayState extends State<HudOverlay> {
                 if (sm.combo > 1)
                   Text(
                     '\u00d7${sm.comboMultiplier.toStringAsFixed(1)}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: GameConfig.playerColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
