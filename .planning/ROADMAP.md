@@ -99,7 +99,7 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 06-01: Score calculation — distance/time survived, dodge bonuses, combo multiplier
+- [x] 06-01: Score calculation — distance/time survived, dodge bonuses, combo multiplier
 - [ ] 06-02: In-game score HUD (current score, current combo, best score indicator)
 - [ ] 06-03: Local high score persistence (shared_preferences or similar)
 - [ ] 06-04: New high score celebration (visual + audio fanfare)
@@ -169,7 +169,7 @@ Plans:
 | 3. Obstacle System | 5/5 | Complete | 2026-02-13 |
 | 4. Visual Juice | 6/6 | Complete | 2026-02-14 |
 | 5. Audio System | 5/5 | Complete | 2026-02-14 |
-| 6. Scoring & High Scores | 0/5 | Not started | - |
+| 6. Scoring & High Scores | 1/5 | In progress | - |
 | 7. Progression & Unlockables | 0/5 | Not started | - |
 | 8. UI & Menus | 0/6 | Not started | - |
 | 9. Daily Challenge | 0/5 | Not started | - |
