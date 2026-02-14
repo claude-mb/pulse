@@ -110,6 +110,14 @@ class GameConfig {
   static const double defaultSfxVolume = 1.0;
   static const double defaultBgmVolume = 0.7;
 
+  // Scoring
+  static const double scorePerSecond = 10.0;
+  static const int dodgeBonus = 25;
+  static const int nearMissBonus = 50;
+  static const double maxComboMultiplier = 3.0;
+  static const double comboMultiplierStep = 0.1;
+  static const double scoreEventDisplayDuration = 0.8;
+
   // Audio – difficulty-reactive volume scaling
   static const double spawnCueBaseVolume = 0.3;
   static const double spawnCueMaxVolume = 0.6;
