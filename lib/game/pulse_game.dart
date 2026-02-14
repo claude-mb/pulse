@@ -447,6 +447,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
     // Refresh cached colors on components that don't read GameConfig each frame.
     player.resetVisuals();
+    Player.refreshFaceColors();
     Obstacle.refreshThemeColors();
     gameBackground.refreshThemeColors();
     backgroundPulse.refreshThemeColors();

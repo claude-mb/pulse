@@ -42,6 +42,12 @@ class ColorTheme {
   /// Background pulse overlay color.
   final Color pulseColor;
 
+  /// Whether obstacles should render hand-drawn angry faces.
+  final bool drawFace;
+
+  /// Face stroke/fill color (falls back to [obstacleHighlightColor] if null).
+  final Color? faceColor;
+
   const ColorTheme({
     required this.id,
     required this.name,
@@ -54,6 +60,8 @@ class ColorTheme {
     required this.accentColor,
     required this.gridColor,
     required this.pulseColor,
+    this.drawFace = false,
+    this.faceColor,
   });
 }
 
@@ -139,6 +147,23 @@ class ColorThemes {
     pulseColor: Color(0xFF1A1A1A),
   );
 
+  /// Dark red palette with hand-drawn angry faces on obstacles.
+  static const ColorTheme angryBlocks = ColorTheme(
+    id: 'angry_blocks',
+    name: 'Angry Blocks',
+    xpCost: 8000,
+    backgroundColor: Color(0xFF1A0A0A),
+    playerColor: Color(0xFFFF6B35),
+    obstacleColor: Color(0xFF8B1A1A),
+    obstacleOutlineColor: Color(0xFFA52A2A),
+    obstacleHighlightColor: Color(0xFFCD5C5C),
+    accentColor: Color(0xFF2A0E0E),
+    gridColor: Color(0xFF3A1A1A),
+    pulseColor: Color(0xFF2A0E0E),
+    drawFace: true,
+    faceColor: Color(0xFFFFD700),
+  );
+
   /// All available themes in unlock order.
   static const List<ColorTheme> all = [
     neonRed,
@@ -146,6 +171,7 @@ class ColorThemes {
     neonGreen,
     neonPurple,
     monochrome,
+    angryBlocks,
   ];
 
   /// Looks up a theme by [id]. Returns [neonRed] if not found.

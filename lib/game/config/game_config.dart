@@ -23,6 +23,9 @@ class GameConfig {
   static Color get accentColor => activeTheme.accentColor;
   static Color get gridColor => activeTheme.gridColor;
   static Color get pulseColor => activeTheme.pulseColor;
+  static bool get drawFace => activeTheme.drawFace;
+  static Color get faceColor =>
+      activeTheme.faceColor ?? activeTheme.obstacleHighlightColor;
 
   // Non-themed colors — fixed across all themes.
   static const Color textColor = Color(0xFFFFFFFF);

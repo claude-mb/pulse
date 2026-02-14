@@ -324,22 +324,27 @@ class _GalleryScreenState extends State<GalleryScreen>
                   : Colors.transparent,
             ),
             child: Center(
-              child: Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isUnlocked
-                      ? theme.backgroundColor
-                      : Colors.black26,
-                  border: Border.all(
-                    color: isUnlocked
-                        ? theme.playerColor
-                        : Colors.white24,
-                    width: 3,
-                  ),
-                ),
-              ),
+              child: theme.drawFace && isUnlocked
+                  ? CustomPaint(
+                      size: const Size(34, 34),
+                      painter: _FaceThemePreviewPainter(theme: theme),
+                    )
+                  : Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isUnlocked
+                            ? theme.backgroundColor
+                            : Colors.black26,
+                        border: Border.all(
+                          color: isUnlocked
+                              ? theme.playerColor
+                              : Colors.white24,
+                          width: 3,
+                        ),
+                      ),
+                    ),
             ),
           ),
           const SizedBox(height: 4),
@@ -422,5 +427,85 @@ class _ShapePreviewPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _ShapePreviewPainter oldDelegate) {
     return oldDelegate.shape != shape || oldDelegate.color != color;
+  }
+}
+
+/// Draws a theme color swatch circle with a mini angry face inside.
+class _FaceThemePreviewPainter extends CustomPainter {
+  final ColorTheme theme;
+
+  const _FaceThemePreviewPainter({required this.theme});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cx = size.width / 2;
+    final cy = size.height / 2;
+    final radius = size.width / 2;
+
+    // Background circle.
+    final bgPaint = Paint()..color = theme.backgroundColor;
+    canvas.drawCircle(Offset(cx, cy), radius, bgPaint);
+
+    // Border ring using player color.
+    final borderPaint = Paint()
+      ..color = theme.playerColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3;
+    canvas.drawCircle(Offset(cx, cy), radius - 1.5, borderPaint);
+
+    // Mini angry face.
+    final faceColor = theme.faceColor ?? theme.obstacleHighlightColor;
+    final dotPaint = Paint()
+      ..color = faceColor
+      ..style = PaintingStyle.fill;
+    final strokePaint = Paint()
+      ..color = faceColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5
+      ..strokeCap = StrokeCap.round;
+
+    final eyeSpacing = size.width * 0.16;
+    final eyeY = cy - size.height * 0.06;
+    final eyeR = size.width * 0.045;
+
+    // Eyes.
+    canvas.drawCircle(Offset(cx - eyeSpacing, eyeY), eyeR, dotPaint);
+    canvas.drawCircle(Offset(cx + eyeSpacing, eyeY), eyeR, dotPaint);
+
+    // Eyebrows (angry V-shape).
+    final browLen = size.width * 0.10;
+    final browY = eyeY - size.height * 0.14;
+    final browDrop = size.height * 0.08;
+    canvas.drawLine(
+      Offset(cx - eyeSpacing - browLen, browY),
+      Offset(cx - eyeSpacing + browLen, browY + browDrop),
+      strokePaint,
+    );
+    canvas.drawLine(
+      Offset(cx + eyeSpacing + browLen, browY),
+      Offset(cx + eyeSpacing - browLen, browY + browDrop),
+      strokePaint,
+    );
+
+    // Frown.
+    final mouthY = cy + size.height * 0.14;
+    final mouthW = size.width * 0.14;
+    final mouthD = size.height * 0.08;
+    canvas.drawArc(
+      Rect.fromCenter(
+        center: Offset(cx, mouthY + mouthD),
+        width: mouthW * 2,
+        height: mouthD * 2,
+      ),
+      3.6,
+      2.1,
+      false,
+      strokePaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _FaceThemePreviewPainter oldDelegate) {
+    return oldDelegate.theme != theme;
   }
 }

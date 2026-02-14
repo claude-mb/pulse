@@ -36,6 +36,16 @@ class Obstacle extends RectangleComponent
     ..style = PaintingStyle.stroke
     ..strokeWidth = 1.0;
 
+  // Face paint objects for "Angry Blocks" theme.
+  static final Paint _facePaint = Paint()
+    ..color = GameConfig.faceColor
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 1.5
+    ..strokeCap = StrokeCap.round;
+  static final Paint _faceDotPaint = Paint()
+    ..color = GameConfig.faceColor
+    ..style = PaintingStyle.fill;
+
   /// Reassigns static paint colors from the current [GameConfig] theme.
   ///
   /// Call after changing [GameConfig.activeTheme] so existing and future
@@ -44,6 +54,8 @@ class Obstacle extends RectangleComponent
     _fillPaint.color = GameConfig.obstacleColor;
     _outlinePaint.color = GameConfig.obstacleOutlineColor;
     _highlightPaint.color = GameConfig.obstacleHighlightColor;
+    _facePaint.color = GameConfig.faceColor;
+    _faceDotPaint.color = GameConfig.faceColor;
   }
 
   Obstacle({
@@ -84,6 +96,69 @@ class Obstacle extends RectangleComponent
       rect.topLeft,
       rect.topRight,
       _highlightPaint,
+    );
+
+    // 4. Angry face overlay (theme-dependent).
+    if (GameConfig.drawFace) {
+      _renderAngryFace(canvas, rect);
+    }
+  }
+
+  /// Draws a hand-drawn angry face centered on the obstacle.
+  ///
+  /// All coordinates are proportional to [rect] dimensions so the face
+  /// scales with obstacle width/height. Uses round stroke caps for an
+  /// organic feel.
+  void _renderAngryFace(Canvas canvas, Rect rect) {
+    final cx = rect.center.dx;
+    final cy = rect.center.dy;
+    final h = rect.height;
+    final w = rect.width;
+
+    // Eye positions — offset from center horizontally.
+    final eyeSpacing = w * 0.15;
+    final eyeY = cy - h * 0.05;
+    final eyeRadius = h * 0.08;
+
+    // 1. Left eye (filled dot).
+    canvas.drawCircle(Offset(cx - eyeSpacing, eyeY), eyeRadius, _faceDotPaint);
+
+    // 2. Right eye (filled dot).
+    canvas.drawCircle(Offset(cx + eyeSpacing, eyeY), eyeRadius, _faceDotPaint);
+
+    // Eyebrow dimensions — V-shape sloping inward = angry.
+    final browLength = w * 0.10;
+    final browY = eyeY - h * 0.20;
+    final browDrop = h * 0.12;
+
+    // 3. Left eyebrow (slopes down toward center).
+    canvas.drawLine(
+      Offset(cx - eyeSpacing - browLength, browY),
+      Offset(cx - eyeSpacing + browLength, browY + browDrop),
+      _facePaint,
+    );
+
+    // 4. Right eyebrow (slopes down toward center).
+    canvas.drawLine(
+      Offset(cx + eyeSpacing + browLength, browY),
+      Offset(cx + eyeSpacing - browLength, browY + browDrop),
+      _facePaint,
+    );
+
+    // 5. Frown — downward arc below eyes.
+    final mouthY = cy + h * 0.18;
+    final mouthWidth = w * 0.12;
+    final mouthDepth = h * 0.10;
+    canvas.drawArc(
+      Rect.fromCenter(
+        center: Offset(cx, mouthY + mouthDepth),
+        width: mouthWidth * 2,
+        height: mouthDepth * 2,
+      ),
+      3.6, // ~206 degrees — start past top-left
+      2.1, // sweep ~120 degrees for a frown arc
+      false,
+      _facePaint,
     );
   }
 

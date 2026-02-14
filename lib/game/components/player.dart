@@ -54,6 +54,22 @@ class Player extends PolygonComponent
   /// Whether the player is temporarily invulnerable (during entrance).
   bool _invulnerable = false;
 
+  // Face paint objects for "Angry Blocks" theme (happy face on player).
+  static final Paint _faceDotPaint = Paint()
+    ..color = GameConfig.faceColor
+    ..style = PaintingStyle.fill;
+  static final Paint _faceStrokePaint = Paint()
+    ..color = GameConfig.faceColor
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 1.5
+    ..strokeCap = StrokeCap.round;
+
+  /// Reassigns face paint colors from the current theme.
+  static void refreshFaceColors() {
+    _faceDotPaint.color = GameConfig.faceColor;
+    _faceStrokePaint.color = GameConfig.faceColor;
+  }
+
   /// Paint for the glow layer behind the player shape.
   final Paint _glowPaint = Paint()
     ..color = GameConfig.playerColor.withValues(
@@ -153,6 +169,44 @@ class Player extends PolygonComponent
 
     // 2. Draw solid shape on top (using component's paint).
     canvas.drawPath(_shapePath, paint);
+
+    // 3. Happy face overlay (theme-dependent).
+    if (GameConfig.drawFace) {
+      _renderHappyFace(canvas);
+    }
+  }
+
+  /// Draws a happy face centered on the player shape.
+  ///
+  /// All coordinates are proportional to the 40x40 shape bounding box.
+  void _renderHappyFace(Canvas canvas) {
+    final cx = _shapeCenter.x;
+    final cy = _shapeCenter.y;
+
+    // Eye positions.
+    final eyeSpacing = 6.0;
+    final eyeY = cy - 3.0;
+    final eyeRadius = 1.8;
+
+    // Eyes (filled dots).
+    canvas.drawCircle(Offset(cx - eyeSpacing, eyeY), eyeRadius, _faceDotPaint);
+    canvas.drawCircle(Offset(cx + eyeSpacing, eyeY), eyeRadius, _faceDotPaint);
+
+    // Smile — upward arc below eyes.
+    final mouthY = cy + 4.0;
+    final mouthWidth = 10.0;
+    final mouthHeight = 6.0;
+    canvas.drawArc(
+      Rect.fromCenter(
+        center: Offset(cx, mouthY - mouthHeight / 2),
+        width: mouthWidth,
+        height: mouthHeight,
+      ),
+      0.3,  // start just past 0 (right side)
+      2.5,  // sweep ~143 degrees for a smile
+      false,
+      _faceStrokePaint,
+    );
   }
 
   @override
