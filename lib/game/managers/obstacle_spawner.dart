@@ -80,7 +80,12 @@ class ObstacleSpawner extends Component with HasGameReference<PulseGame> {
 
       // Trigger visual heartbeat on the background pulse.
       game.backgroundPulse.kick();
-      game.audioManager.playSfx('spawn_cue.wav', volume: 0.4);
+
+      // Spawn cue volume scales with difficulty (0.3 at level 1, 0.6 at level 5).
+      final spawnCueVolume = (GameConfig.spawnCueBaseVolume +
+              (game.difficultyManager.speedMultiplier - 1.0) * 0.5)
+          .clamp(GameConfig.spawnCueBaseVolume, GameConfig.spawnCueMaxVolume);
+      game.audioManager.playSfx('spawn_cue.wav', volume: spawnCueVolume);
 
       // Add the pattern's postDelay to the timer so there's a gap
       // before the next pattern spawns.

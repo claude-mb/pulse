@@ -94,7 +94,11 @@ class Obstacle extends RectangleComponent
             GameConfig.shakeIntensityNearMiss,
             GameConfig.shakeDurationNearMiss,
           );
-          game.audioManager.playSfx('near_miss.wav');
+          // Near-miss volume scales with difficulty (0.5 at level 1, 1.0 at level 5).
+          final nearMissVolume = (GameConfig.nearMissBaseVolume +
+                  (game.difficultyManager.speedMultiplier - 1.0) * 0.83)
+              .clamp(GameConfig.nearMissBaseVolume, GameConfig.nearMissMaxVolume);
+          game.audioManager.playSfx('near_miss.wav', volume: nearMissVolume);
         }
       }
     }

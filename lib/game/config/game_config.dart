@@ -109,4 +109,10 @@ class GameConfig {
   // Audio
   static const double defaultSfxVolume = 1.0;
   static const double defaultBgmVolume = 0.7;
+
+  // Audio – difficulty-reactive volume scaling
+  static const double spawnCueBaseVolume = 0.3;
+  static const double spawnCueMaxVolume = 0.6;
+  static const double nearMissBaseVolume = 0.5;
+  static const double nearMissMaxVolume = 1.0;
 }
