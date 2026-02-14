@@ -52,6 +52,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Which overlay the gallery should return to when closed.
   String _galleryReturnTo = 'MainMenu';
 
+  /// Which overlay the settings screen should return to when closed.
+  String _settingsReturnTo = 'MainMenu';
+
   /// Whether the most recent game-over was a new personal best.
   bool lastRunWasNewBest = false;
 
@@ -344,15 +347,24 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Navigate from main menu to the settings screen.
   void showSettings() {
     audioManager.playSfx('menu_select.wav');
+    _settingsReturnTo = 'MainMenu';
     overlays.remove('MainMenu');
     overlays.add('Settings');
   }
 
-  /// Navigate from settings back to the main menu.
+  /// Navigate from pause overlay to the settings screen.
+  void showSettingsFromPause() {
+    audioManager.playSfx('menu_select.wav');
+    _settingsReturnTo = 'Pause';
+    overlays.remove('Pause');
+    overlays.add('Settings');
+  }
+
+  /// Navigate from settings back to the previous screen (main menu or pause).
   void hideSettings() {
     audioManager.playSfx('menu_select.wav');
     overlays.remove('Settings');
-    overlays.add('MainMenu');
+    overlays.add(_settingsReturnTo);
   }
 
   /// Return to the main menu.

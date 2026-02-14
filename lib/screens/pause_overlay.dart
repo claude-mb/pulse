@@ -119,6 +119,23 @@ class _PauseOverlayState extends State<PauseOverlay>
                 ),
               ],
             ),
+            const SizedBox(height: 24),
+            // Settings access
+            GestureDetector(
+              onTap: () => widget.game.showSettingsFromPause(),
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  'SETTINGS',
+                  style: TextStyle(
+                    color: GameConfig.textColor.withValues(alpha: 0.5),
+                    fontSize: 16,
+                    letterSpacing: 4,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
