@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 7 of 10 (Progression & Unlockables)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-14 — Completed 07-01-PLAN.md
+Last activity: 2026-02-14 — Completed 07-02-PLAN.md
 
-Progress: ██████░░░░ 60%
+Progress: ██████░░░░ 62%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 32
+- Total plans completed: 33
 - Average duration: 9 min
-- Total execution time: 4.85 hours
+- Total execution time: 4.9 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ██████░░░░ 60%
 | 4. Visual Juice | 6/6 | 71 min | 12 min |
 | 5. Audio System | 5/5 | 28 min | 6 min |
 | 6. Scoring | 5/5 | 55 min | 11 min |
-| 7. Progression | 1/5 | 3 min | 3 min |
+| 7. Progression | 2/5 | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-03 (5 min), 06-04 (32 min), 06-05 (5 min), 07-01 (3 min)
-- Trend: Phase 7 starting fast
+- Last 5 plans: 06-04 (32 min), 06-05 (5 min), 07-01 (3 min), 07-02 (5 min)
+- Trend: Phase 7 averaging 4 min/plan
 
 ## Accumulated Context
 
@@ -108,6 +108,9 @@ Recent decisions affecting current work:
 | 07-01 | Milestone-based XP (never spent, only accumulated) | Avoids currency management complexity, forward progress feel |
 | 07-01 | 1 XP per score point | Simple, predictable progression mapping |
 | 07-01 | Teal accent (0xFF4ECDC4) for XP display | Distinct from score gold, visually separates progression |
+| 07-02 | PolygonComponent keeps diamond vertices; render() uses _shapePath | Flame refreshVertices() requires same vertex count |
+| 07-02 | Star shape via trigonometry (5 outer r=20, 5 inner r=9) | Programmatic generation for clean star points |
+| 07-02 | Death particle fragments pre-computed per particle | Performance: avoid per-frame shape calculations |
 
 ### Deferred Issues
 
@@ -120,5 +123,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 07-01-PLAN.md
+Stopped at: Completed 07-02-PLAN.md
 Resume file: None
