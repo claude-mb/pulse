@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 4 in progress — Visual Juice (screen shake + particles + flash/tint + geometric art style + smooth transitions complete)
+**Current focus:** Phase 4 complete — ready for Phase 5: Audio System
 
 ## Current Position
 
 Phase: 4 of 10 (Visual Juice)
-Plan: 5 of 6 in current phase
-Status: In progress
-Last activity: 2026-02-13 — Completed 04-05-PLAN.md
+Plan: 6 of 6 in current phase
+Status: Phase complete
+Last activity: 2026-02-14 — Completed 04-06-PLAN.md
 
-Progress: ████▓░░░░░ 38%
+Progress: ████░░░░░░ 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: 9 min
-- Total execution time: 2.9 hours
+- Total execution time: 3.5 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: ████▓░░░░░ 38%
 | 1. Foundation | 5/5 | 67 min | 13 min |
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
 | 3. Obstacle System | 5/5 | 57 min | 11 min |
-| 4. Visual Juice | 5/6 | 36 min | 7 min |
+| 4. Visual Juice | 6/6 | 71 min | 12 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (9 min), 04-02 (6 min), 04-03 (6 min), 04-04 (8 min), 04-05 (7 min)
-- Trend: Fast and consistent, animation patterns well-established
+- Last 5 plans: 04-02 (6 min), 04-03 (6 min), 04-04 (8 min), 04-05 (7 min), 04-06 (35 min)
+- Trend: 04-06 longer due to UAT checkpoint and visual tuning
 
 ## Accumulated Context
 
@@ -90,6 +90,9 @@ Recent decisions affecting current work:
 | 04-05 | Manual paint alpha animation for PolygonComponent opacity | PolygonComponent lacks HasPaint mixin for OpacityEffect |
 | 04-05 | Entrance invulnerability via Future.delayed (0.5s) | Prevents unfair deaths during pop-in animation |
 | 04-05 | elasticOut for entrance, easeIn for death curves | Satisfying bounce on start, weighty feel on death |
+| 04-06 | Pulse syncs to spawn interval via difficultyManager | Natural rhythm match, intensity scales with difficulty |
+| 04-06 | Exponential decay kick (0.06 × 0.85/frame) | Sharp heartbeat on spawn that fades naturally |
+| 04-06 | Grid tuned: 0xFF2A3050, opacity 0.5, 1.0px stroke | Original was invisible against background; UAT-driven fix |
 
 ### Deferred Issues
 
@@ -101,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-13
-Stopped at: Completed 04-05-PLAN.md — Smooth animations and transitions done (death slow-mo + entrance pop-in + spawn protection), Phase 4 in progress
+Last session: 2026-02-14
+Stopped at: Completed 04-06-PLAN.md — Phase 4: Visual Juice complete
 Resume file: None
