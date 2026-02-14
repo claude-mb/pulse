@@ -1,7 +1,7 @@
 /// Generates WAV audio assets for the Pulse game.
 ///
 /// Run with: dart run tool/generate_audio.dart
-/// Outputs 6 WAV files to assets/audio/.
+/// Outputs 7 WAV files to assets/audio/.
 ///
 /// All files are 44100Hz, 16-bit mono PCM WAV format.
 /// No external packages required — uses only dart:io, dart:math, dart:typed_data.
@@ -215,6 +215,58 @@ List<double> generateMenuSelect() {
   return samples;
 }
 
+/// Ambient loop — sub-bass drone with rhythmic pulse and noise texture (~4.4s).
+///
+/// Designed to loop seamlessly at exactly 4 × 1.1s spawn intervals.
+/// Layers:
+///   1. Constant 55Hz sine drone (A1 sub-bass) at amplitude ~0.15
+///   2. 110Hz sine pulse that fades in/out every 1.1s (4 cycles), amplitude 0–0.2
+///   3. Very quiet filtered noise (amplitude ~0.03) for atmospheric texture
+///
+/// All wave periods are exact integer multiples so the loop point is seamless.
+List<double> generateAmbientLoop() {
+  final rng = Random(777);
+
+  // Duration: exactly 4 × 1.1s = 4.4s
+  // 55Hz: period = 1/55 ≈ 0.01818s → 4.4 / (1/55) = 242 complete cycles ✓
+  // 110Hz: period = 1/110 ≈ 0.00909s → 4.4 / (1/110) = 484 complete cycles ✓
+  // Pulse envelope cycles: 4 complete cycles in 4.4s ✓
+  const double duration = 4.4;
+  const double pulseInterval = 1.1; // matches spawn interval
+  const int pulseCycles = 4; // 4 × 1.1 = 4.4
+
+  final numSamples = (sampleRate * duration).round();
+  final samples = <double>[];
+
+  // Simple low-pass filter state for noise texture.
+  double noisePrev = 0.0;
+  const double noiseAlpha = 0.15; // heavy smoothing for rumble-like texture
+
+  for (var i = 0; i < numSamples; i++) {
+    final t = i / sampleRate;
+    double sample = 0;
+
+    // Layer 1: constant sub-bass drone at 55Hz.
+    sample += sine(55, t) * 0.15;
+
+    // Layer 2: rhythmic pulse at 110Hz with smooth sine envelope.
+    // Envelope uses a sine wave at the pulse frequency (1/1.1 Hz),
+    // rectified to always be positive: |sin(...)| gives smooth fade in/out.
+    // The pulse completes exactly [pulseCycles] cycles in [duration].
+    final pulseEnvFreq = pulseCycles / duration; // = 1/1.1 Hz
+    final pulseEnv = sin(2 * pi * pulseEnvFreq * t).abs();
+    sample += sine(110, t) * pulseEnv * 0.2;
+
+    // Layer 3: filtered noise for atmospheric texture.
+    final rawNoise = noise(rng);
+    noisePrev = noisePrev * (1.0 - noiseAlpha) + rawNoise * noiseAlpha;
+    sample += noisePrev * 0.03;
+
+    samples.add(sample.clamp(-1.0, 1.0));
+  }
+  return samples;
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -230,6 +282,7 @@ void main() {
     'restart_chime.wav': generateRestartChime,
     'spawn_cue.wav': generateSpawnCue,
     'menu_select.wav': generateMenuSelect,
+    'ambient_loop.wav': generateAmbientLoop,
   };
 
   for (final entry in sounds.entries) {
