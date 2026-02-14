@@ -8,6 +8,7 @@ import 'screens/hud_overlay.dart';
 import 'screens/main_menu.dart';
 import 'screens/pause_overlay.dart';
 import 'screens/settings_screen.dart';
+import 'screens/tutorial_overlay.dart';
 
 void main() {
   runApp(const PulseApp());
@@ -31,6 +32,7 @@ class PulseApp extends StatelessWidget {
             'Pause': (context, game) => PauseOverlay(game: game),
             'Gallery': (context, game) => GalleryScreen(game: game),
             'Settings': (context, game) => SettingsScreen(game: game),
+            'Tutorial': (context, game) => TutorialOverlay(game: game),
           },
           initialActiveOverlays: const ['MainMenu'],
         ),
