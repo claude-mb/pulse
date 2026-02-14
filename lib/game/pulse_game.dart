@@ -41,6 +41,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   GameState _state = GameState.menu;
   GameState get state => _state;
 
+  /// Whether the most recent game-over was a new personal best.
+  bool lastRunWasNewBest = false;
+
   double _survivalTime = 0.0;
 
   /// Time scale multiplier — 1.0 is normal speed, < 1.0 is slow motion.
@@ -110,6 +113,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _state = GameState.playing;
     _survivalTime = 0.0;
     _timeScale = 1.0;
+    lastRunWasNewBest = false;
     audioManager.playSfx('restart_chime.wav');
     audioManager.playBgm('ambient_loop.wav');
     player.resetPosition();
@@ -147,10 +151,17 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// death animation. Pauses after the slow-mo window completes.
   void gameOver() {
     _state = GameState.gameOver;
-    // Persist high score.
+    // Check for new best BEFORE saving (saveBestScore updates stored value).
     final currentScore = scoreManager.displayScore;
+    lastRunWasNewBest = ScoreRepository.instance.isNewBest(currentScore);
     ScoreRepository.instance.saveBestScore(currentScore);
     audioManager.playSfx('death_impact.wav');
+    if (lastRunWasNewBest) {
+      audioManager.playSfx(
+        'high_score_fanfare.wav',
+        volume: GameConfig.highScoreFanfareVolume,
+      );
+    }
     audioManager.stopBgm();
     overlays.remove('HUD');
     overlays.add('GameOver');
@@ -211,6 +222,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _state = GameState.playing;
     _survivalTime = 0.0;
     _timeScale = 1.0;
+    lastRunWasNewBest = false;
     audioManager.playSfx('restart_chime.wav');
     audioManager.stopBgm();
     audioManager.playBgm('ambient_loop.wav');

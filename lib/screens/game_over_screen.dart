@@ -4,10 +4,42 @@ import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
 import '../utils/score_repository.dart';
 
-class GameOverScreen extends StatelessWidget {
+class GameOverScreen extends StatefulWidget {
   final PulseGame game;
 
   const GameOverScreen({required this.game, super.key});
+
+  @override
+  State<GameOverScreen> createState() => _GameOverScreenState();
+}
+
+class _GameOverScreenState extends State<GameOverScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+
+  PulseGame get game => widget.game;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _pulseAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+    if (game.lastRunWasNewBest) {
+      _pulseController.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +89,23 @@ class GameOverScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   // Best score comparison
-                  if (sm.isNewBest)
-                    const Text(
-                      'NEW BEST!',
-                      style: TextStyle(
-                        color: GameConfig.playerColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
+                  if (game.lastRunWasNewBest)
+                    AnimatedBuilder(
+                      animation: _pulseAnimation,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: _pulseAnimation.value,
+                          child: child,
+                        );
+                      },
+                      child: const Text(
+                        'NEW BEST!',
+                        style: TextStyle(
+                          color: GameConfig.highScoreColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 3,
+                        ),
                       ),
                     )
                   else
