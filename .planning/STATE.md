@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 9 of 10 (Daily Challenge)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-14 — Completed 09-01-PLAN.md
+Last activity: 2026-02-14 — Completed 09-02-PLAN.md
 
-Progress: █████████░ 79%
+Progress: █████████░ 81%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 42
+- Total plans completed: 43
 - Average duration: 8 min
-- Total execution time: 5.44 hours
+- Total execution time: 5.49 hours
 
 **By Phase:**
 
@@ -36,10 +36,10 @@ Progress: █████████░ 79%
 | 7. Progression | 5/5 | 20 min | 4 min |
 
 | 8. UI & Menus | 5/5 | 27 min | 5 min |
-| 9. Daily Challenge | 1/5 | 3 min | 3 min |
+| 9. Daily Challenge | 2/5 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-03 (5 min), 08-04 (5 min), 08-05 (8 min), 09-01 (3 min)
+- Last 5 plans: 08-04 (5 min), 08-05 (8 min), 09-01 (3 min), 09-02 (3 min)
 - Trend: Consistent ~5 min/plan
 
 ## Accumulated Context
@@ -134,6 +134,8 @@ Recent decisions affecting current work:
 | 08-05 | GestureDetector + HitTestBehavior.opaque for all buttons | Consistent pattern across all overlay screens |
 | 09-01 | year*10000 + month*100 + day for daily seed | Unique integer per date, simple and deterministic |
 | 09-01 | Optional seed parameter on ObstacleSpawner constructor/reset | Backward-compatible seeded RNG injection |
+| 09-02 | DailyChallengeRepository singleton matching ScoreRepository | Consistent persistence pattern |
+| 09-02 | Streak increments on first attempt of day only | Prevents multiple streak counts per day |
 
 ### Deferred Issues
 
@@ -146,5 +148,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 09-01-PLAN.md — seeded RNG infrastructure
+Stopped at: Completed 09-02-PLAN.md — daily challenge persistence & game start
 Resume file: None
