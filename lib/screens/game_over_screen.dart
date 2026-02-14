@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
 import '../utils/audio_manager.dart';
+import '../utils/daily_challenge_repository.dart';
 import '../utils/progression_repository.dart';
 import '../utils/score_repository.dart';
 
@@ -42,7 +43,10 @@ class _GameOverScreenState extends State<GameOverScreen>
     _pulseAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
-    if (game.lastRunWasNewBest) {
+    final showBestPulse = game.gameMode == GameMode.daily
+        ? game.lastDailyWasNewBest
+        : game.lastRunWasNewBest;
+    if (showBestPulse) {
       _pulseController.repeat(reverse: true);
     }
 
@@ -123,16 +127,27 @@ class _GameOverScreenState extends State<GameOverScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // GAME OVER title
-                  Text(
-                    'GAME OVER',
-                    style: TextStyle(
-                      color: GameConfig.textColor,
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 8,
+                  // Title: mode-aware
+                  if (game.gameMode == GameMode.daily)
+                    Text(
+                      'DAILY CHALLENGE',
+                      style: TextStyle(
+                        color: GameConfig.accentColor,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 6,
+                      ),
+                    )
+                  else
+                    Text(
+                      'GAME OVER',
+                      style: TextStyle(
+                        color: GameConfig.textColor,
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 8,
+                      ),
                     ),
-                  ),
                   const SizedBox(height: 24),
                   // SCORE label
                   Text(
@@ -154,35 +169,66 @@ class _GameOverScreenState extends State<GameOverScreen>
                     ),
                   ),
                   const SizedBox(height: 4),
-                  // Best score comparison
-                  if (game.lastRunWasNewBest)
-                    AnimatedBuilder(
-                      animation: _pulseAnimation,
-                      builder: (context, child) {
-                        return Opacity(
-                          opacity: _pulseAnimation.value,
-                          child: child,
-                        );
-                      },
-                      child: const Text(
-                        'NEW BEST!',
+                  // Best score comparison — mode-aware
+                  if (game.gameMode == GameMode.daily) ...[
+                    if (game.lastDailyWasNewBest)
+                      AnimatedBuilder(
+                        animation: _pulseAnimation,
+                        builder: (context, child) {
+                          return Opacity(
+                            opacity: _pulseAnimation.value,
+                            child: child,
+                          );
+                        },
+                        child: Text(
+                          'NEW DAILY BEST!',
+                          style: TextStyle(
+                            color: GameConfig.accentColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 3,
+                          ),
+                        ),
+                      )
+                    else
+                      Text(
+                        'DAILY BEST ${DailyChallengeRepository.instance.dailyBestScore}',
                         style: TextStyle(
-                          color: GameConfig.highScoreColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 3,
+                          color: GameConfig.textColor.withValues(alpha: 0.5),
+                          fontSize: 14,
+                          letterSpacing: 1,
                         ),
                       ),
-                    )
-                  else
-                    Text(
-                      'BEST ${ScoreRepository.instance.bestScore}',
-                      style: TextStyle(
-                        color: GameConfig.textColor.withValues(alpha: 0.5),
-                        fontSize: 14,
-                        letterSpacing: 1,
+                  ] else ...[
+                    if (game.lastRunWasNewBest)
+                      AnimatedBuilder(
+                        animation: _pulseAnimation,
+                        builder: (context, child) {
+                          return Opacity(
+                            opacity: _pulseAnimation.value,
+                            child: child,
+                          );
+                        },
+                        child: const Text(
+                          'NEW BEST!',
+                          style: TextStyle(
+                            color: GameConfig.highScoreColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 3,
+                          ),
+                        ),
+                      )
+                    else
+                      Text(
+                        'BEST ${ScoreRepository.instance.bestScore}',
+                        style: TextStyle(
+                          color: GameConfig.textColor.withValues(alpha: 0.5),
+                          fontSize: 14,
+                          letterSpacing: 1,
+                        ),
                       ),
-                    ),
+                  ],
                   const SizedBox(height: 12),
                   // This-run stats row
                   Text(
@@ -211,36 +257,68 @@ class _GameOverScreenState extends State<GameOverScreen>
                     color: GameConfig.textColor.withValues(alpha: 0.2),
                   ),
                   const SizedBox(height: 12),
-                  // Lifetime stats grid
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _lifetimeStat(
-                        'GAMES',
-                        '${ScoreRepository.instance.gamesPlayed}',
-                      ),
-                      const SizedBox(width: 24),
-                      _lifetimeStat(
-                        'BEST TIME',
-                        '${ScoreRepository.instance.bestSurvivalTime.toStringAsFixed(1)}s',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _lifetimeStat(
-                        'TOTAL DODGES',
-                        '${ScoreRepository.instance.allTimeTotalDodges}',
-                      ),
-                      const SizedBox(width: 24),
-                      _lifetimeStat(
-                        'BEST COMBO',
-                        '\u00d7${ScoreRepository.instance.allTimeBestCombo}',
-                      ),
-                    ],
-                  ),
+                  // Lifetime stats grid — mode-aware
+                  if (game.gameMode == GameMode.daily) ...[
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _lifetimeStat(
+                          'ATTEMPTS',
+                          '${DailyChallengeRepository.instance.dailyAttempts}',
+                        ),
+                        const SizedBox(width: 24),
+                        _lifetimeStat(
+                          'STREAK',
+                          '${DailyChallengeRepository.instance.streak} DAYS',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _lifetimeStat(
+                          'DAILY BEST',
+                          '${DailyChallengeRepository.instance.dailyBestScore}',
+                        ),
+                        const SizedBox(width: 24),
+                        _lifetimeStat(
+                          'GAMES',
+                          '${ScoreRepository.instance.gamesPlayed}',
+                        ),
+                      ],
+                    ),
+                  ] else ...[
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _lifetimeStat(
+                          'GAMES',
+                          '${ScoreRepository.instance.gamesPlayed}',
+                        ),
+                        const SizedBox(width: 24),
+                        _lifetimeStat(
+                          'BEST TIME',
+                          '${ScoreRepository.instance.bestSurvivalTime.toStringAsFixed(1)}s',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _lifetimeStat(
+                          'TOTAL DODGES',
+                          '${ScoreRepository.instance.allTimeTotalDodges}',
+                        ),
+                        const SizedBox(width: 24),
+                        _lifetimeStat(
+                          'BEST COMBO',
+                          '\u00d7${ScoreRepository.instance.allTimeBestCombo}',
+                        ),
+                      ],
+                    ),
+                  ],
                   const SizedBox(height: 12),
                   // XP earned this game
                   Text(
