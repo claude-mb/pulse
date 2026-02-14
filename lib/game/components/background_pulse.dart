@@ -93,6 +93,6 @@ class BackgroundPulse extends Component with HasGameReference<PulseGame> {
   /// Sets [_kickIntensity] to 0.15, which decays rapidly via exponential
   /// decay in [update], creating a visual heartbeat on each spawn.
   void kick() {
-    _kickIntensity = 0.15;
+    _kickIntensity = 0.06;
   }
 }

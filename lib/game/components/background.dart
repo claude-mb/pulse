@@ -23,7 +23,7 @@ class GameBackground extends Component {
     await super.onLoad();
     _gridPaint = Paint()
       ..color = GameConfig.gridColor.withValues(alpha: GameConfig.gridOpacity)
-      ..strokeWidth = 0.5;
+      ..strokeWidth = 1.0;
   }
 
   @override

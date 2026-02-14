@@ -81,8 +81,8 @@ class GameConfig {
 
   // Background grid
   static const double gridSpacing = 50.0;
-  static const Color gridColor = Color(0xFF16213E);
-  static const double gridOpacity = 0.3;
+  static const Color gridColor = Color(0xFF2A3050);
+  static const double gridOpacity = 0.5;
   static const double gridScrollSpeed = 0.15;
 
   // Death animation
