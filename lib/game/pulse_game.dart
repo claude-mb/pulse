@@ -24,6 +24,8 @@ import '../utils/audio_manager.dart';
 import '../utils/progression_repository.dart';
 import '../utils/score_repository.dart';
 
+enum GameMode { endless, daily }
+
 enum GameState { menu, playing, paused, gameOver }
 
 class PulseGame extends FlameGame with HasCollisionDetection {
@@ -45,6 +47,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   GameState _state = GameState.menu;
   GameState get state => _state;
+
+  GameMode _gameMode = GameMode.endless;
+  GameMode get gameMode => _gameMode;
 
   /// Whether the player has already seen the first-time tutorial.
   bool _hasSeenTutorial = false;
