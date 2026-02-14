@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 8 planned — ready for execution
+**Current focus:** Phase 8 in progress — 08-01 complete, ready for 08-02
 
 ## Current Position
 
 Phase: 8 of 10 (UI & Menus)
-Plan: 0 of 5 in current phase
-Status: Phase planned, ready for execution
-Last activity: 2026-02-14 — Phase 8 planned (5 plans)
+Plan: 1 of 5 in current phase
+Status: 08-01 complete, ready for 08-02
+Last activity: 2026-02-14 — Completed 08-01 (main menu branding enhancement)
 
 Progress: ███████░░░ 68%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 36
+- Total plans completed: 37
 - Average duration: 9 min
-- Total execution time: 5.07 hours
+- Total execution time: 5.11 hours
 
 **By Phase:**
 
@@ -118,6 +118,9 @@ Recent decisions affecting current work:
 | 07-04 | 500ms delay before unlock chime | Prevents overlap with death impact sound |
 | 07-05 | Stack layout in MainMenu for COLLECTION button | Separate tap target from full-screen game-start |
 | 07-05 | CustomPainter for shape previews at 30x30 | Efficient scaled rendering of vertex paths |
+| 08-01 | SingleTickerProviderStateMixin for title pulse | Only one AnimationController needed |
+| 08-01 | Glow as 68px text behind 64px title | Simple technique, no shader overhead |
+| 08-01 | Placeholder SettingsScreen as separate widget | Clean separation, fully built in 08-02 |
 
 ### Deferred Issues
 
@@ -130,5 +133,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Phase 8 planned — ready for 08-01-PLAN.md execution
+Stopped at: 08-01 complete — ready for 08-02-PLAN.md execution
 Resume file: None
