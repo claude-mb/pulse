@@ -115,6 +115,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   /// Pause the current game.
   void pauseGame() {
+    audioManager.playSfx('menu_select.wav', volume: 0.5);
     _state = GameState.paused;
     overlays.add('Pause');
     paused = true;
@@ -215,6 +216,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
   /// Return to the main menu.
   void returnToMenu() {
+    audioManager.playSfx('menu_select.wav');
     _state = GameState.menu;
     clearObstacles();
     player.resetPosition();

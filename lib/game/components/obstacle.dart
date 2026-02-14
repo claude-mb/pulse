@@ -94,6 +94,7 @@ class Obstacle extends RectangleComponent
             GameConfig.shakeIntensityNearMiss,
             GameConfig.shakeDurationNearMiss,
           );
+          game.audioManager.playSfx('near_miss.wav');
         }
       }
     }
