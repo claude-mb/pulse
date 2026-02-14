@@ -20,7 +20,7 @@ class _HudOverlayState extends State<HudOverlay> {
   @override
   void initState() {
     super.initState();
-    // Rebuild at ~30fps to keep the timer display responsive.
+    // Rebuild at ~30fps to keep the score display responsive.
     _refreshTimer = Timer.periodic(
       const Duration(milliseconds: 33),
       (_) {
@@ -37,24 +37,49 @@ class _HudOverlayState extends State<HudOverlay> {
 
   @override
   Widget build(BuildContext context) {
+    final sm = widget.game.scoreManager;
+
     return SafeArea(
       child: Stack(
         children: [
-          // Survival timer — top center
+          // Score + combo + event — top center
           Positioned(
             top: 16,
             left: 0,
             right: 0,
-            child: Center(
-              child: Text(
-                '${widget.game.survivalTime.toStringAsFixed(1)}s',
-                style: const TextStyle(
-                  color: GameConfig.textColor,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Score display
+                Text(
+                  '${sm.displayScore}',
+                  style: const TextStyle(
+                    color: GameConfig.textColor,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
                 ),
-              ),
+                // Combo multiplier (only visible when combo > 1)
+                if (sm.combo > 1)
+                  Text(
+                    '\u00d7${sm.comboMultiplier.toStringAsFixed(1)}',
+                    style: const TextStyle(
+                      color: GameConfig.playerColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                // Last score event flash
+                if (sm.lastScoreEvent != null)
+                  Text(
+                    sm.lastScoreEvent!,
+                    style: TextStyle(
+                      color: GameConfig.textColor.withValues(alpha: 0.6),
+                      fontSize: 14,
+                    ),
+                  ),
+              ],
             ),
           ),
           // Pause button — top right
