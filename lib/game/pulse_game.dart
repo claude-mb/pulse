@@ -338,6 +338,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     _timeScale = 1.0;
     lastRunWasNewBest = false;
+    lastDailyWasNewBest = false;
     audioManager.playSfx('restart_chime.wav');
     audioManager.stopBgm();
     audioManager.playBgm('ambient_loop.wav');
@@ -346,7 +347,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     clearObstacles();
     difficultyManager.reset();
     scoreManager.reset();
-    obstacleSpawner.reset();
+    obstacleSpawner.reset(
+      seed: _gameMode == GameMode.daily ? todaysSeed() : null,
+    );
     _clearShake();
     overlays.remove('GameOver');
     overlays.add('HUD');
@@ -411,6 +414,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   void returnToMenu() {
     audioManager.playSfx('menu_select.wav');
     audioManager.stopBgm();
+    _gameMode = GameMode.endless;
     _state = GameState.menu;
     clearObstacles();
     player.resetPosition();
