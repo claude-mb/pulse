@@ -45,6 +45,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   GameState _state = GameState.menu;
   GameState get state => _state;
 
+  /// Which overlay the gallery should return to when closed.
+  String _galleryReturnTo = 'MainMenu';
+
   /// Whether the most recent game-over was a new personal best.
   bool lastRunWasNewBest = false;
 
@@ -282,15 +285,24 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Navigate from main menu to the collection gallery.
   void showGallery() {
     audioManager.playSfx('menu_select.wav');
+    _galleryReturnTo = 'MainMenu';
     overlays.remove('MainMenu');
     overlays.add('Gallery');
   }
 
-  /// Navigate from gallery back to the main menu.
+  /// Navigate from gallery back to the caller (main menu or settings).
   void hideGallery() {
     audioManager.playSfx('menu_select.wav');
     overlays.remove('Gallery');
-    overlays.add('MainMenu');
+    overlays.add(_galleryReturnTo);
+  }
+
+  /// Navigate from settings to the collection gallery.
+  void showGalleryFromSettings() {
+    audioManager.playSfx('menu_select.wav');
+    _galleryReturnTo = 'Settings';
+    overlays.remove('Settings');
+    overlays.add('Gallery');
   }
 
   /// Navigate from main menu to the settings screen.
