@@ -155,7 +155,7 @@ Plans:
 - [x] 10-01: App icon and splash screen design (geometric style matching game)
 - [x] 10-02: Android release build — signing, AAB generation, ProGuard config
 - [x] 10-03: iOS release build — signing, archive, provisioning profiles
-- [ ] 10-04: Store listing assets — screenshots, description, keywords, categories
+- [x] 10-04: Store listing assets — screenshots, description, keywords, categories
 - [ ] 10-05: Privacy policy and required legal pages
 - [ ] 10-06: Store submission — Google Play and App Store Connect upload
 
@@ -172,4 +172,4 @@ Plans:
 | 7. Progression & Unlockables | 5/5 | Complete | 2026-02-14 |
 | 8. UI & Menus | 5/5 | Complete | 2026-02-14 |
 | 9. Daily Challenge | 5/5 | Complete | 2026-02-14 |
-| 10. App Store Ship | 3/6 | In progress | - |
+| 10. App Store Ship | 4/6 | In progress | - |
