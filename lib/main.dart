@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 import 'game/pulse_game.dart';
+import 'screens/gallery_screen.dart';
 import 'screens/game_over_screen.dart';
 import 'screens/hud_overlay.dart';
 import 'screens/main_menu.dart';
@@ -27,6 +28,7 @@ class PulseApp extends StatelessWidget {
             'GameOver': (context, game) => GameOverScreen(game: game),
             'HUD': (context, game) => HudOverlay(game: game),
             'Pause': (context, game) => PauseOverlay(game: game),
+            'Gallery': (context, game) => GalleryScreen(game: game),
           },
           initialActiveOverlays: const ['MainMenu'],
         ),
