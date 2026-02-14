@@ -129,4 +129,7 @@ class GameConfig {
   static const double nearMissMaxVolume = 1.0;
   static const double pulseBassBaseVolume = 0.2;
   static const double pulseBassMaxVolume = 0.4;
+
+  // Progression / XP
+  static const int xpPerScore = 1;
 }

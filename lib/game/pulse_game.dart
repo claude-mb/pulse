@@ -18,6 +18,7 @@ import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
 import 'managers/score_manager.dart';
 import '../utils/audio_manager.dart';
+import '../utils/progression_repository.dart';
 import '../utils/score_repository.dart';
 
 enum GameState { menu, playing, paused, gameOver }
@@ -80,6 +81,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
 
     // Initialise score persistence.
     await ScoreRepository.instance.initialize();
+
+    // Initialise progression/XP persistence.
+    await ProgressionRepository.instance.initialize();
 
     paused = true;
     // Background grid — renders behind everything at priority -10.
