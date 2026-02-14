@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 8 complete — ready for Phase 9
+**Current focus:** Phase 9 in progress — Daily Challenge
 
 ## Current Position
 
-Phase: 8 of 10 (UI & Menus)
-Plan: 5 of 5 in current phase
-Status: Phase 8 complete
-Last activity: 2026-02-14 — Completed 08-05 (Phase 8 complete)
+Phase: 9 of 10 (Daily Challenge)
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-02-14 — Completed 09-01-PLAN.md
 
-Progress: █████████░ 77%
+Progress: █████████░ 79%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 41
+- Total plans completed: 42
 - Average duration: 8 min
-- Total execution time: 5.39 hours
+- Total execution time: 5.44 hours
 
 **By Phase:**
 
@@ -36,10 +36,11 @@ Progress: █████████░ 77%
 | 7. Progression | 5/5 | 20 min | 4 min |
 
 | 8. UI & Menus | 5/5 | 27 min | 5 min |
+| 9. Daily Challenge | 1/5 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-01 (5 min), 08-02 (4 min), 08-03 (5 min), 08-04 (5 min), 08-05 (8 min)
-- Trend: Phase 8 complete at ~5 min/plan average
+- Last 5 plans: 08-03 (5 min), 08-04 (5 min), 08-05 (8 min), 09-01 (3 min)
+- Trend: Consistent ~5 min/plan
 
 ## Accumulated Context
 
@@ -131,6 +132,8 @@ Recent decisions affecting current work:
 | 08-04 | Fire-and-forget SharedPreferences for tutorial flag | Matches existing persistence patterns; no await needed |
 | 08-05 | _settingsReturnTo mirrors _galleryReturnTo pattern | Consistent return-to tracking for settings origin |
 | 08-05 | GestureDetector + HitTestBehavior.opaque for all buttons | Consistent pattern across all overlay screens |
+| 09-01 | year*10000 + month*100 + day for daily seed | Unique integer per date, simple and deterministic |
+| 09-01 | Optional seed parameter on ObstacleSpawner constructor/reset | Backward-compatible seeded RNG injection |
 
 ### Deferred Issues
 
@@ -143,5 +146,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Phase 8 complete — ready for Phase 9 (Daily Challenge)
+Stopped at: Completed 09-01-PLAN.md — seeded RNG infrastructure
 Resume file: None

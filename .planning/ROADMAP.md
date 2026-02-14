@@ -138,7 +138,7 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 09-01: Seeded random number generator (date-based seed for consistent daily patterns)
+- [x] 09-01: Seeded random number generator (date-based seed for consistent daily patterns)
 - [ ] 09-02: Daily challenge obstacle sequence generation from seed
 - [ ] 09-03: Daily challenge game mode with distinct UI indicator
 - [ ] 09-04: Daily best score tracking (separate from endless mode)
@@ -171,5 +171,5 @@ Plans:
 | 6. Scoring & High Scores | 5/5 | Complete | 2026-02-14 |
 | 7. Progression & Unlockables | 5/5 | Complete | 2026-02-14 |
 | 8. UI & Menus | 5/5 | Complete | 2026-02-14 |
-| 9. Daily Challenge | 0/5 | Not started | - |
+| 9. Daily Challenge | 1/5 | In progress | - |
 | 10. App Store Ship | 0/6 | Not started | - |
