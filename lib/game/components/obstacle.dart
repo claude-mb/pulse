@@ -36,6 +36,16 @@ class Obstacle extends RectangleComponent
     ..style = PaintingStyle.stroke
     ..strokeWidth = 1.0;
 
+  /// Reassigns static paint colors from the current [GameConfig] theme.
+  ///
+  /// Call after changing [GameConfig.activeTheme] so existing and future
+  /// obstacles render with the new palette.
+  static void refreshThemeColors() {
+    _fillPaint.color = GameConfig.obstacleColor;
+    _outlinePaint.color = GameConfig.obstacleOutlineColor;
+    _highlightPaint.color = GameConfig.obstacleHighlightColor;
+  }
+
   Obstacle({
     required Vector2 position,
     double? width,

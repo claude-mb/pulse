@@ -26,6 +26,14 @@ class GameBackground extends Component {
       ..strokeWidth = 1.0;
   }
 
+  /// Updates the grid paint color from the current [GameConfig] theme.
+  ///
+  /// Call after changing [GameConfig.activeTheme] to refresh the grid colors.
+  void refreshThemeColors() {
+    _gridPaint.color =
+        GameConfig.gridColor.withValues(alpha: GameConfig.gridOpacity);
+  }
+
   @override
   void update(double dt) {
     super.update(dt);

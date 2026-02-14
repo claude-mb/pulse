@@ -17,6 +17,7 @@ import 'effects/screen_shake.dart';
 import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
 import 'managers/score_manager.dart';
+import 'models/color_theme.dart';
 import 'models/player_shape.dart';
 import '../utils/audio_manager.dart';
 import '../utils/progression_repository.dart';
@@ -37,6 +38,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   late ObstacleSpawner obstacleSpawner;
   late DifficultyManager difficultyManager;
   late BackgroundPulse backgroundPulse;
+  late GameBackground gameBackground;
   late ScoreManager scoreManager;
   late final AudioManager audioManager;
 
@@ -89,9 +91,15 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     // Initialise progression/XP persistence.
     await ProgressionRepository.instance.initialize();
 
+    // Restore persisted color theme before any components are created.
+    GameConfig.activeTheme = ColorThemes.getById(
+      ProgressionRepository.instance.selectedThemeId,
+    );
+
     paused = true;
     // Background grid — renders behind everything at priority -10.
-    world.add(GameBackground());
+    gameBackground = GameBackground();
+    world.add(gameBackground);
 
     // Background pulse — syncs to spawn rhythm at priority -5.
     backgroundPulse = BackgroundPulse();
@@ -287,6 +295,22 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     final shape = PlayerShapes.getById(shapeId);
     player.updateShape(shape);
     ProgressionRepository.instance.setSelectedShape(shapeId);
+  }
+
+  /// Apply a new color theme by [themeId] and persist the selection.
+  ///
+  /// Updates [GameConfig.activeTheme], refreshes all components that cache
+  /// theme colors, and saves the selection to [ProgressionRepository].
+  /// Intended to be called from the gallery screen between games.
+  void applyTheme(String themeId) {
+    GameConfig.activeTheme = ColorThemes.getById(themeId);
+    ProgressionRepository.instance.setSelectedTheme(themeId);
+
+    // Refresh cached colors on components that don't read GameConfig each frame.
+    player.resetVisuals();
+    Obstacle.refreshThemeColors();
+    gameBackground.refreshThemeColors();
+    backgroundPulse.refreshThemeColors();
   }
 }
 

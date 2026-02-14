@@ -33,6 +33,13 @@ class BackgroundPulse extends Component with HasGameReference<PulseGame> {
     _paint = Paint()..color = GameConfig.pulseColor;
   }
 
+  /// Updates the pulse paint color from the current [GameConfig] theme.
+  ///
+  /// Call after changing [GameConfig.activeTheme] to refresh the pulse color.
+  void refreshThemeColors() {
+    _paint.color = GameConfig.pulseColor;
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
