@@ -151,17 +151,24 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// death animation. Pauses after the slow-mo window completes.
   void gameOver() {
     _state = GameState.gameOver;
-    // Check for new best BEFORE saving (saveBestScore updates stored value).
-    final currentScore = scoreManager.displayScore;
-    lastRunWasNewBest = ScoreRepository.instance.isNewBest(currentScore);
-    ScoreRepository.instance.saveBestScore(currentScore);
+    // Record lifetime stats and check for new best in one call.
+    ScoreRepository.instance
+        .recordGameEnd(
+      score: scoreManager.displayScore,
+      bestCombo: scoreManager.bestCombo,
+      totalDodges: scoreManager.totalDodges,
+      survivalTime: survivalTime,
+    )
+        .then((isNewBest) {
+      lastRunWasNewBest = isNewBest;
+      if (lastRunWasNewBest) {
+        audioManager.playSfx(
+          'high_score_fanfare.wav',
+          volume: GameConfig.highScoreFanfareVolume,
+        );
+      }
+    });
     audioManager.playSfx('death_impact.wav');
-    if (lastRunWasNewBest) {
-      audioManager.playSfx(
-        'high_score_fanfare.wav',
-        volume: GameConfig.highScoreFanfareVolume,
-      );
-    }
     audioManager.stopBgm();
     overlays.remove('HUD');
     overlays.add('GameOver');
