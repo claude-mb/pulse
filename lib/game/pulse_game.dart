@@ -268,6 +268,14 @@ class PulseGame extends FlameGame with HasCollisionDetection {
         );
       }
     });
+    // Daily-specific score recording (in addition to lifetime stats above).
+    if (_gameMode == GameMode.daily) {
+      DailyChallengeRepository.instance
+          .recordDailyGame(score: scoreManager.displayScore)
+          .then((isNewDailyBest) {
+        lastDailyWasNewBest = isNewDailyBest;
+      });
+    }
     audioManager.playSfx('death_impact.wav');
     audioManager.stopBgm();
     overlays.remove('HUD');
