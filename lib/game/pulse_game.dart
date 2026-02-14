@@ -45,6 +45,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Whether the most recent game-over was a new personal best.
   bool lastRunWasNewBest = false;
 
+  /// XP earned in the most recent game (so game over screen can display it).
+  int lastXpEarned = 0;
+
   double _survivalTime = 0.0;
 
   /// Time scale multiplier — 1.0 is normal speed, < 1.0 is slow motion.
@@ -155,6 +158,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// death animation. Pauses after the slow-mo window completes.
   void gameOver() {
     _state = GameState.gameOver;
+    // Award XP based on final score.
+    lastXpEarned = scoreManager.displayScore * GameConfig.xpPerScore;
+    ProgressionRepository.instance.addXP(lastXpEarned);
     // Record lifetime stats and check for new best in one call.
     ScoreRepository.instance
         .recordGameEnd(

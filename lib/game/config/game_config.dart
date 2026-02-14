@@ -132,4 +132,5 @@ class GameConfig {
 
   // Progression / XP
   static const int xpPerScore = 1;
+  static const Color xpDisplayColor = Color(0xFF4ECDC4);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
+import '../utils/progression_repository.dart';
 import '../utils/score_repository.dart';
 
 class GameOverScreen extends StatefulWidget {
@@ -200,7 +201,26 @@ class _GameOverScreenState extends State<GameOverScreen>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
+                  // XP earned this game
+                  Text(
+                    '+${game.lastXpEarned} XP',
+                    style: const TextStyle(
+                      color: GameConfig.xpDisplayColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Total: ${ProgressionRepository.instance.totalXP} XP',
+                    style: TextStyle(
+                      color: GameConfig.textColor.withValues(alpha: 0.4),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   // TAP TO RETRY
                   Text(
                     'TAP TO RETRY',
