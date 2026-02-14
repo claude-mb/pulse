@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 9 of 10 (Daily Challenge)
-Plan: 2 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-14 — Completed 09-02-PLAN.md
+Last activity: 2026-02-14 — Completed 09-03-PLAN.md
 
-Progress: █████████░ 81%
+Progress: █████████░ 83%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 43
-- Average duration: 8 min
-- Total execution time: 5.49 hours
+- Total plans completed: 44
+- Average duration: 7 min
+- Total execution time: 5.52 hours
 
 **By Phase:**
 
@@ -36,11 +36,11 @@ Progress: █████████░ 81%
 | 7. Progression | 5/5 | 20 min | 4 min |
 
 | 8. UI & Menus | 5/5 | 27 min | 5 min |
-| 9. Daily Challenge | 2/5 | 6 min | 3 min |
+| 9. Daily Challenge | 3/5 | 8 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-04 (5 min), 08-05 (8 min), 09-01 (3 min), 09-02 (3 min)
-- Trend: Consistent ~5 min/plan
+- Last 5 plans: 08-05 (8 min), 09-01 (3 min), 09-02 (3 min), 09-03 (2 min)
+- Trend: Phase 9 averaging ~3 min/plan
 
 ## Accumulated Context
 
@@ -136,6 +136,8 @@ Recent decisions affecting current work:
 | 09-01 | Optional seed parameter on ObstacleSpawner constructor/reset | Backward-compatible seeded RNG injection |
 | 09-02 | DailyChallengeRepository singleton matching ScoreRepository | Consistent persistence pattern |
 | 09-02 | Streak increments on first attempt of day only | Prevents multiple streak counts per day |
+| 09-03 | Daily games dual-record to both repositories | Lifetime stats always accurate |
+| 09-03 | returnToMenu() resets to endless mode | Explicit daily re-entry required |
 
 ### Deferred Issues
 
@@ -148,5 +150,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 09-02-PLAN.md — daily challenge persistence & game start
+Stopped at: Completed 09-03-PLAN.md — mode-aware game lifecycle
 Resume file: None
