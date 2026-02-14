@@ -1,0 +1,26 @@
+You already know the feeling. The obstacle comes, you tap at the last possible moment, and you survive by a pixel. Then the next one comes faster. And the next one. And then you don't make it. But you hit restart before the death animation even finishes, because this time you'll get further.
+
+That's Pulse.
+
+Pulse is a minimalist rhythm-action game built around one idea: dodge obstacles with precise timing. Your geometric shape sits at the center of the screen. Obstacles close in from all sides. Tap at the right moment to slip through. Miss the timing and it's instant death, instant restart, zero loading screens. The loop is tight and the friction is zero.
+
+Every run is different. Patterns are procedurally generated and the difficulty escalates the longer you survive. Early obstacles give you breathing room. Later ones demand split-second reactions and reading patterns two or three moves ahead.
+
+FEATURES
+
+- Tap-to-dodge gameplay with tight timing windows
+- Procedurally generated obstacle patterns that never repeat
+- Escalating difficulty that pushes your reflexes further each run
+- Screen shake, particle bursts, and visual effects on every successful dodge
+- 5 unlockable player shapes earned through gameplay milestones
+- 5 color themes to customize the look
+- Daily challenge mode with a unique seed each day
+- Streak tracking to see how many consecutive days you can play
+- High score tracking across all modes
+- Minimalist geometric art style
+
+NO ADS. NO IN-APP PURCHASES. FULLY OFFLINE.
+
+Pulse has no ads, no in-app purchases, no accounts, no data collection, and no internet requirement. You download it, you play it. That's it.
+
+Built for players who appreciate clean design, tight mechanics, and the pure satisfaction of beating your own score.

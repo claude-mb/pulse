@@ -1,0 +1,14 @@
+Dodge obstacles with precise timing. Die instantly. Restart instantly. Try again.
+
+Pulse is a minimalist rhythm-action game. Obstacles close in from all sides. Tap at the right moment to dodge. The longer you survive, the harder it gets.
+
+No ads. No in-app purchases. No accounts. Fully offline.
+
+- Procedurally generated patterns that never repeat
+- Escalating difficulty that rewards focus and reflexes
+- Screen shake, particles, and visual juice on every dodge
+- 5 unlockable player shapes and 5 color themes
+- Daily challenge mode with streak tracking
+- Instant death, instant restart, zero friction
+
+Clean design. Tight mechanics. One more try.
