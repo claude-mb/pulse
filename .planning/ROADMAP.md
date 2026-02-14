@@ -116,7 +116,7 @@ Plans:
 - [x] 07-02: Unlockable player shapes (circle, triangle, hexagon, star, etc.)
 - [x] 07-03: Unlockable color themes (palette swaps for entire game aesthetic)
 - [x] 07-04: Unlock conditions and reward triggers (score milestones, games played)
-- [ ] 07-05: Collection/gallery screen showing owned and locked items
+- [x] 07-05: Collection/gallery screen showing owned and locked items
 
 ### Phase 8: UI & Menus
 **Goal**: Complete navigation flow — title screen, game over, settings, all connected
@@ -170,7 +170,7 @@ Plans:
 | 4. Visual Juice | 6/6 | Complete | 2026-02-14 |
 | 5. Audio System | 5/5 | Complete | 2026-02-14 |
 | 6. Scoring & High Scores | 5/5 | Complete | 2026-02-14 |
-| 7. Progression & Unlockables | 4/5 | In progress | - |
+| 7. Progression & Unlockables | 5/5 | Complete | 2026-02-14 |
 | 8. UI & Menus | 0/6 | Not started | - |
 | 9. Daily Challenge | 0/5 | Not started | - |
 | 10. App Store Ship | 0/6 | Not started | - |

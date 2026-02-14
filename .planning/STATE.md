@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 7 in progress — Progression & Unlockables
+**Current focus:** Phase 7 complete — ready for Phase 8: UI & Menus
 
 ## Current Position
 
 Phase: 7 of 10 (Progression & Unlockables)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-14 — Completed 07-04-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-02-14 — Completed 07-05-PLAN.md
 
-Progress: ██████░░░░ 66%
+Progress: ███████░░░ 68%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 35
+- Total plans completed: 36
 - Average duration: 9 min
-- Total execution time: 5.0 hours
+- Total execution time: 5.07 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ██████░░░░ 66%
 | 4. Visual Juice | 6/6 | 71 min | 12 min |
 | 5. Audio System | 5/5 | 28 min | 6 min |
 | 6. Scoring | 5/5 | 55 min | 11 min |
-| 7. Progression | 4/5 | 16 min | 4 min |
+| 7. Progression | 5/5 | 20 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (3 min), 07-02 (5 min), 07-03 (4 min), 07-04 (4 min)
-- Trend: Phase 7 averaging 4 min/plan
+- Last 5 plans: 07-01 (3 min), 07-02 (5 min), 07-03 (4 min), 07-04 (4 min), 07-05 (4 min)
+- Trend: Phase 7 complete at 4 min/plan average — fastest phase yet
 
 ## Accumulated Context
 
@@ -116,6 +116,8 @@ Recent decisions affecting current work:
 | 07-03 | refreshThemeColors() pattern on cached-paint components | Only needed for components that cache Paint objects |
 | 07-04 | Synchronous xpAfter = xpBefore + earned | Avoids async timing issues with repo persistence |
 | 07-04 | 500ms delay before unlock chime | Prevents overlap with death impact sound |
+| 07-05 | Stack layout in MainMenu for COLLECTION button | Separate tap target from full-screen game-start |
+| 07-05 | CustomPainter for shape previews at 30x30 | Efficient scaled rendering of vertex paths |
 
 ### Deferred Issues
 
@@ -128,5 +130,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 07-04-PLAN.md
+Stopped at: Completed 07-05-PLAN.md — Phase 7: Progression & Unlockables complete
 Resume file: None
