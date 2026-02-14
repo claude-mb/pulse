@@ -90,6 +90,7 @@ class Obstacle extends RectangleComponent
         final horizontalDistance =
             (position.x - game.player.position.x).abs();
         if (horizontalDistance < GameConfig.nearMissThreshold) {
+          game.scoreManager.addNearMiss();
           game.triggerShake(
             GameConfig.shakeIntensityNearMiss,
             GameConfig.shakeDurationNearMiss,

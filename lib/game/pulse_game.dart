@@ -16,6 +16,7 @@ import 'effects/flash_overlay.dart';
 import 'effects/screen_shake.dart';
 import 'managers/difficulty_manager.dart';
 import 'managers/obstacle_spawner.dart';
+import 'managers/score_manager.dart';
 import '../utils/audio_manager.dart';
 
 enum GameState { menu, playing, paused, gameOver }
@@ -33,6 +34,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   late ObstacleSpawner obstacleSpawner;
   late DifficultyManager difficultyManager;
   late BackgroundPulse backgroundPulse;
+  late ScoreManager scoreManager;
   late final AudioManager audioManager;
 
   GameState _state = GameState.menu;
@@ -89,6 +91,9 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     difficultyManager = DifficultyManager();
     world.add(difficultyManager);
 
+    scoreManager = ScoreManager();
+    world.add(scoreManager);
+
     // Persistent danger tint — invisible at difficulty 1, subtle red at max.
     world.add(DangerTint());
 
@@ -107,6 +112,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     player.playEntranceAnimation();
     clearObstacles();
     difficultyManager.reset();
+    scoreManager.reset();
     obstacleSpawner.reset();
     _clearShake();
     overlays.remove('MainMenu');
@@ -205,6 +211,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     player.playEntranceAnimation();
     clearObstacles();
     difficultyManager.reset();
+    scoreManager.reset();
     obstacleSpawner.reset();
     _clearShake();
     overlays.remove('GameOver');

@@ -152,6 +152,7 @@ class Player extends PolygonComponent
   /// clamped to [GameConfig.playerMinX].
   void dodgeLeft() {
     game.audioManager.playSfx('dodge_whoosh.wav');
+    game.scoreManager.addDodge();
     final targetX =
         (position.x - GameConfig.playerDodgeDistance).clamp(
           GameConfig.playerMinX,
@@ -170,6 +171,7 @@ class Player extends PolygonComponent
   /// clamped to [GameConfig.playerMaxX].
   void dodgeRight() {
     game.audioManager.playSfx('dodge_whoosh.wav');
+    game.scoreManager.addDodge();
     final targetX =
         (position.x + GameConfig.playerDodgeDistance).clamp(
           GameConfig.playerMinX,
