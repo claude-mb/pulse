@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 9 in progress — Daily Challenge
+**Current focus:** Phase 9 complete — ready for Phase 10
 
 ## Current Position
 
 Phase: 9 of 10 (Daily Challenge)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-14 — Completed 09-04-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase 9 complete
+Last activity: 2026-02-14 — Completed 09-05 (Phase 9 complete)
 
-Progress: █████████░ 85%
+Progress: █████████░ 87%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 45
+- Total plans completed: 46
 - Average duration: 7 min
-- Total execution time: 5.57 hours
+- Total execution time: 5.67 hours
 
 **By Phase:**
 
@@ -36,11 +36,11 @@ Progress: █████████░ 85%
 | 7. Progression | 5/5 | 20 min | 4 min |
 
 | 8. UI & Menus | 5/5 | 27 min | 5 min |
-| 9. Daily Challenge | 4/5 | 11 min | 3 min |
+| 9. Daily Challenge | 5/5 | 17 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 09-01 (3 min), 09-02 (3 min), 09-03 (2 min), 09-04 (3 min)
-- Trend: Phase 9 averaging ~3 min/plan
+- Last 5 plans: 09-01 (3 min), 09-02 (3 min), 09-03 (2 min), 09-04 (3 min), 09-05 (6 min)
+- Trend: Phase 9 complete at ~3 min/plan average
 
 ## Accumulated Context
 
@@ -140,6 +140,8 @@ Recent decisions affecting current work:
 | 09-03 | returnToMenu() resets to endless mode | Explicit daily re-entry required |
 | 09-04 | Nested GestureDetector for DAILY button | Prevents full-screen tap from starting endless |
 | 09-04 | DAILY CHALLENGE label above HUD score | Clear mode identification during gameplay |
+| 09-05 | DAILY CHALLENGE title at 32px on game over | Visual distinction from GAME OVER at 48px |
+| 09-05 | Reuse _pulseController for NEW DAILY BEST | Consistent animation, minimal code duplication |
 
 ### Deferred Issues
 
@@ -152,5 +154,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 09-04-PLAN.md — daily challenge UI
+Stopped at: Phase 9 complete — ready for Phase 10 (App Store Ship)
 Resume file: None

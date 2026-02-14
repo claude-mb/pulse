@@ -142,7 +142,7 @@ Plans:
 - [x] 09-02: Daily challenge obstacle sequence generation from seed
 - [x] 09-03: Daily challenge game mode with distinct UI indicator
 - [x] 09-04: Daily best score tracking (separate from endless mode)
-- [ ] 09-05: Daily challenge entry point and streak tracking
+- [x] 09-05: Daily challenge entry point and streak tracking
 
 ### Phase 10: App Store Ship
 **Goal**: Published on Google Play Store and Apple App Store
@@ -171,5 +171,5 @@ Plans:
 | 6. Scoring & High Scores | 5/5 | Complete | 2026-02-14 |
 | 7. Progression & Unlockables | 5/5 | Complete | 2026-02-14 |
 | 8. UI & Menus | 5/5 | Complete | 2026-02-14 |
-| 9. Daily Challenge | 4/5 | In progress | - |
+| 9. Daily Challenge | 5/5 | Complete | 2026-02-14 |
 | 10. App Store Ship | 0/6 | Not started | - |
