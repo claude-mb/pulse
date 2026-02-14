@@ -1,4 +1,5 @@
 import 'package:flame_audio/flame_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Central audio manager for the Pulse game.
 ///
@@ -14,6 +15,10 @@ import 'package:flame_audio/flame_audio.dart';
 class AudioManager {
   /// Singleton instance.
   static final AudioManager instance = AudioManager._();
+
+  // SharedPreferences keys for persisted mute state.
+  static const String _sfxMutedKey = 'audio_sfx_muted';
+  static const String _bgmMutedKey = 'audio_bgm_muted';
 
   AudioManager._();
 
@@ -86,6 +91,11 @@ class AudioManager {
     );
 
     _initialized = true;
+
+    // Restore persisted mute states.
+    final prefs = await SharedPreferences.getInstance();
+    sfxMuted = prefs.getBool(_sfxMutedKey) ?? false;
+    bgmMuted = prefs.getBool(_bgmMutedKey) ?? false;
   }
 
   // ---------------------------------------------------------------------------
@@ -161,14 +171,20 @@ class AudioManager {
   // ---------------------------------------------------------------------------
 
   /// Toggles SFX mute state. Next [playSfx] call will respect the new state.
+  ///
+  /// Persists the new state to SharedPreferences (fire-and-forget).
   void toggleSfxMute() {
     sfxMuted = !sfxMuted;
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool(_sfxMutedKey, sfxMuted);
+    });
   }
 
   /// Toggles BGM mute state.
   ///
   /// When muting, pauses the active BGM. When unmuting, resumes the
   /// last-requested BGM track if one was stored.
+  /// Persists the new state to SharedPreferences (fire-and-forget).
   void toggleBgmMute() {
     bgmMuted = !bgmMuted;
     if (!_initialized) return;
@@ -177,6 +193,9 @@ class AudioManager {
     } else if (_lastRequestedBgm != null) {
       playBgm(_lastRequestedBgm!);
     }
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool(_bgmMutedKey, bgmMuted);
+    });
   }
 
   /// Sets the SFX master volume, clamped to 0.0 - 1.0.
