@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 8 in progress — 08-02 complete, ready for 08-03
+**Current focus:** Phase 8 in progress — 08-03 complete, ready for 08-04
 
 ## Current Position
 
 Phase: 8 of 10 (UI & Menus)
-Plan: 2 of 5 in current phase
-Status: 08-02 complete, ready for 08-03
-Last activity: 2026-02-14 — Completed 08-02 (settings screen with audio controls)
+Plan: 3 of 5 in current phase
+Status: 08-03 complete, ready for 08-04
+Last activity: 2026-02-14 — Completed 08-03 (animated screen transitions)
 
-Progress: ████████░░ 72%
+Progress: █████████░ 74%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 38
-- Average duration: 9 min
-- Total execution time: 5.18 hours
+- Total plans completed: 39
+- Average duration: 8 min
+- Total execution time: 5.26 hours
 
 **By Phase:**
 
@@ -36,8 +36,8 @@ Progress: ████████░░ 72%
 | 7. Progression | 5/5 | 20 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (3 min), 07-02 (5 min), 07-03 (4 min), 07-04 (4 min), 07-05 (4 min)
-- Trend: Phase 7 complete at 4 min/plan average — fastest phase yet
+- Last 5 plans: 07-05 (4 min), 08-01 (5 min), 08-02 (4 min), 08-03 (5 min)
+- Trend: Phase 8 maintaining fast pace at ~5 min/plan
 
 ## Accumulated Context
 
@@ -123,6 +123,8 @@ Recent decisions affecting current work:
 | 08-01 | Placeholder SettingsScreen as separate widget | Clean separation, fully built in 08-02 |
 | 08-02 | _galleryReturnTo field for dynamic gallery back-nav | Simple tracking of gallery origin without complex state |
 | 08-02 | Fire-and-forget SharedPreferences for mute persistence | Matches ProgressionRepository pattern; no await needed for UX |
+| 08-03 | 200ms fade for overlays, 300ms for GameOverScreen | Snappy transitions; dramatic death effect slightly slower |
+| 08-03 | 100ms HUD delay on game start | Clean visual beat between menu removal and HUD appearance |
 
 ### Deferred Issues
 
@@ -135,5 +137,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: 08-02 complete — ready for 08-03-PLAN.md execution
+Stopped at: 08-03 complete — ready for 08-04-PLAN.md execution
 Resume file: None
