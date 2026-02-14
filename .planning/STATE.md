@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-10)
 
 **Core value:** The gameplay feel — buttery smooth controls, tight timing windows, and satisfying feedback that makes every tap feel perfect.
-**Current focus:** Phase 5 in progress — Audio System
+**Current focus:** Phase 5 complete — ready for Phase 6: Scoring & High Scores
 
 ## Current Position
 
 Phase: 5 of 10 (Audio System)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-14 — Completed 05-04-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-02-14 — Completed 05-05-PLAN.md
 
-Progress: █████░░░░░ 47%
+Progress: █████░░░░░ 49%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 25
+- Total plans completed: 26
 - Average duration: 9 min
-- Total execution time: 3.8 hours
+- Total execution time: 3.9 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: █████░░░░░ 47%
 | 2. Core Game Loop | 5/5 | 20 min | 4 min |
 | 3. Obstacle System | 5/5 | 57 min | 11 min |
 | 4. Visual Juice | 6/6 | 71 min | 12 min |
-| 5. Audio System | 4/5 | 23 min | 6 min |
+| 5. Audio System | 5/5 | 28 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-06 (35 min), 05-01 (7 min), 05-02 (7 min), 05-03 (6 min), 05-04 (3 min)
-- Trend: Audio plans getting faster as infrastructure established
+- Last 5 plans: 05-01 (7 min), 05-02 (7 min), 05-03 (6 min), 05-04 (3 min), 05-05 (5 min)
+- Trend: Audio phase averaged 6 min/plan — fastest phase yet
 
 ## Accumulated Context
 
@@ -101,6 +101,8 @@ Recent decisions affecting current work:
 | 05-03 | Abrupt BGM stop on death, not fade | Silence after impact is more dramatic |
 | 05-04 | Volume scaling via speedMultiplier lerp | Mirrors danger tint opacity approach |
 | 05-04 | Pulse bass as 55Hz sub-layer on spawn | Felt more than heard, adds physical weight |
+| 05-05 | Mute toggles only, no volume sliders for v1 | Simpler UX; sliders can come in Phase 8 |
+| 05-05 | Track last-requested BGM for unmute resume | Seamless music toggle without losing track state |
 
 ### Deferred Issues
 
@@ -113,5 +115,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 05-04-PLAN.md
+Stopped at: Completed 05-05-PLAN.md — Phase 5: Audio System complete
 Resume file: None

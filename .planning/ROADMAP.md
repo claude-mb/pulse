@@ -90,7 +90,7 @@ Plans:
 - [x] 05-02: Core SFX — tap sound, dodge whoosh, death impact, restart chime
 - [x] 05-03: Ambient background pulse/music loop
 - [x] 05-04: Dynamic audio — combo escalation sounds, near-miss tension
-- [ ] 05-05: Audio settings (mute toggle, volume control, SFX/music separation)
+- [x] 05-05: Audio settings (mute toggle, volume control, SFX/music separation)
 
 ### Phase 6: Scoring & High Scores
 **Goal**: Score tracking that drives "one more try" — visible during gameplay, persisted locally
@@ -168,7 +168,7 @@ Plans:
 | 2. Core Game Loop | 5/5 | Complete | 2026-02-11 |
 | 3. Obstacle System | 5/5 | Complete | 2026-02-13 |
 | 4. Visual Juice | 6/6 | Complete | 2026-02-14 |
-| 5. Audio System | 4/5 | In progress | - |
+| 5. Audio System | 5/5 | Complete | 2026-02-14 |
 | 6. Scoring & High Scores | 0/5 | Not started | - |
 | 7. Progression & Unlockables | 0/5 | Not started | - |
 | 8. UI & Menus | 0/6 | Not started | - |
