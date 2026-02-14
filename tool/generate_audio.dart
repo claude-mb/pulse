@@ -231,6 +231,50 @@ List<double> generatePulseBass() {
   return samples;
 }
 
+/// High score fanfare — short celebratory rising arpeggio (~0.6s).
+///
+/// Three ascending notes (C5→E5→G5: 523→659→784 Hz), each ~0.15s with
+/// slight overlap. Sine waves with quick attack, medium decay, plus
+/// harmonic overtones (2× frequency at 30% amplitude) for shimmer.
+List<double> generateHighScoreFanfare() {
+  final duration = 0.6;
+  final numSamples = (sampleRate * duration).round();
+  final samples = List<double>.filled(numSamples, 0.0);
+
+  // Three ascending notes: C5, E5, G5
+  const notes = <(double freq, double start)>[
+    (523.0, 0.0),   // C5 starts at 0s
+    (659.0, 0.15),  // E5 starts at 0.15s
+    (784.0, 0.30),  // G5 starts at 0.30s
+  ];
+
+  for (final (freq, start) in notes) {
+    final noteDuration = 0.28; // each note rings ~0.28s (overlaps next)
+    for (var i = 0; i < numSamples; i++) {
+      final t = i / sampleRate;
+      final noteT = t - start;
+      if (noteT < 0 || noteT > noteDuration) continue;
+
+      // Quick attack (5ms), medium decay over remaining note duration.
+      final env = envelope(noteT, 0.005, noteDuration - 0.005);
+
+      // Fundamental sine
+      final fundamental = sine(freq, t) * 0.7;
+      // Harmonic overtone at 2× frequency for shimmer
+      final overtone = sine(freq * 2, t) * 0.3;
+
+      samples[i] += (fundamental + overtone) * env * 0.7;
+    }
+  }
+
+  // Clamp all samples
+  for (var i = 0; i < samples.length; i++) {
+    samples[i] = samples[i].clamp(-1.0, 1.0);
+  }
+
+  return samples;
+}
+
 /// Ambient loop — sub-bass drone with rhythmic pulse and noise texture (~4.4s).
 ///
 /// Designed to loop seamlessly at exactly 4 × 1.1s spawn intervals.
@@ -299,6 +343,7 @@ void main() {
     'menu_select.wav': generateMenuSelect,
     'pulse_bass.wav': generatePulseBass,
     'ambient_loop.wav': generateAmbientLoop,
+    'high_score_fanfare.wav': generateHighScoreFanfare,
   };
 
   for (final entry in sounds.entries) {

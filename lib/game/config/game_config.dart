@@ -118,6 +118,10 @@ class GameConfig {
   static const double comboMultiplierStep = 0.1;
   static const double scoreEventDisplayDuration = 0.8;
 
+  // High score celebration
+  static const double highScoreFanfareVolume = 0.8;
+  static const Color highScoreColor = Color(0xFFFFD700);
+
   // Audio – difficulty-reactive volume scaling
   static const double spawnCueBaseVolume = 0.3;
   static const double spawnCueMaxVolume = 0.6;

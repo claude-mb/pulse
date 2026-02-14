@@ -67,6 +67,7 @@ class AudioManager {
       'menu_select.wav',
       'pulse_bass.wav',
       'ambient_loop.wav',
+      'high_score_fanfare.wav',
     ]);
 
     // Create pools for high-frequency SFX.
