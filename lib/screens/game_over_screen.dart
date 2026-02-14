@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../game/config/game_config.dart';
 import '../game/pulse_game.dart';
+import '../utils/audio_manager.dart';
 import '../utils/progression_repository.dart';
 import '../utils/score_repository.dart';
 
@@ -15,9 +16,12 @@ class GameOverScreen extends StatefulWidget {
 }
 
 class _GameOverScreenState extends State<GameOverScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
+
+  late AnimationController _unlockFadeController;
+  late Animation<double> _unlockFadeAnimation;
 
   PulseGame get game => widget.game;
 
@@ -34,11 +38,37 @@ class _GameOverScreenState extends State<GameOverScreen>
     if (game.lastRunWasNewBest) {
       _pulseController.repeat(reverse: true);
     }
+
+    // Unlock notification fade-in animation.
+    _unlockFadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _unlockFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _unlockFadeController,
+        curve: Curves.easeOut,
+      ),
+    );
+
+    // If there are new unlocks, play chime and trigger fade-in after a delay.
+    if (game.lastNewUnlocks.isNotEmpty) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _unlockFadeController.forward();
+          AudioManager.instance.playSfx(
+            'unlock_chime.wav',
+            volume: GameConfig.unlockChimeVolume,
+          );
+        }
+      });
+    }
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
+    _unlockFadeController.dispose();
     super.dispose();
   }
 
@@ -220,6 +250,33 @@ class _GameOverScreenState extends State<GameOverScreen>
                       fontSize: 12,
                     ),
                   ),
+                  // Unlock notifications (between XP display and TAP TO RETRY)
+                  if (game.lastNewUnlocks.isNotEmpty) ...[
+                    const SizedBox(height: 10),
+                    FadeTransition(
+                      opacity: _unlockFadeAnimation,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          for (final unlock
+                              in game.lastNewUnlocks.take(3))
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 2),
+                              child: Text(
+                                'UNLOCKED: ${unlock.name}',
+                                style: const TextStyle(
+                                  color: GameConfig.xpDisplayColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 20),
                   // TAP TO RETRY
                   Text(

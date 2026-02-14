@@ -275,6 +275,48 @@ List<double> generateHighScoreFanfare() {
   return samples;
 }
 
+/// Unlock chime — bright ascending two-note chime (E5 then G5, ~0.25s).
+///
+/// A quick celebratory "ding-ding!" notification sound. Two sine tones with
+/// harmonic overtone for brightness. Each note ~0.1s with slight overlap.
+List<double> generateUnlockChime() {
+  final duration = 0.25;
+  final numSamples = (sampleRate * duration).round();
+  final samples = List<double>.filled(numSamples, 0.0);
+
+  // Two ascending notes: E5, G5
+  const notes = <(double freq, double start)>[
+    (659.0, 0.0),  // E5 starts at 0s
+    (784.0, 0.1),  // G5 starts at 0.1s
+  ];
+
+  for (final (freq, start) in notes) {
+    final noteDuration = 0.14; // each note rings ~0.14s
+    for (var i = 0; i < numSamples; i++) {
+      final t = i / sampleRate;
+      final noteT = t - start;
+      if (noteT < 0 || noteT > noteDuration) continue;
+
+      // Quick attack (3ms), smooth decay over remaining note duration.
+      final env = envelope(noteT, 0.003, noteDuration - 0.003);
+
+      // Fundamental sine
+      final fundamental = sine(freq, t) * 0.7;
+      // Harmonic overtone at 2× frequency for shimmer/brightness
+      final overtone = sine(freq * 2, t) * 0.25;
+
+      samples[i] += (fundamental + overtone) * env * 0.7;
+    }
+  }
+
+  // Clamp all samples
+  for (var i = 0; i < samples.length; i++) {
+    samples[i] = samples[i].clamp(-1.0, 1.0);
+  }
+
+  return samples;
+}
+
 /// Ambient loop — sub-bass drone with rhythmic pulse and noise texture (~4.4s).
 ///
 /// Designed to loop seamlessly at exactly 4 × 1.1s spawn intervals.
@@ -344,6 +386,7 @@ void main() {
     'pulse_bass.wav': generatePulseBass,
     'ambient_loop.wav': generateAmbientLoop,
     'high_score_fanfare.wav': generateHighScoreFanfare,
+    'unlock_chime.wav': generateUnlockChime,
   };
 
   for (final entry in sounds.entries) {
