@@ -40,3 +40,31 @@
 - Privacy policy is required by both stores even with no data collection
 - Google Play requires a developer account ($25 one-time fee)
 - App Store requires Apple Developer Program membership ($99/year)
+
+## Privacy Policy Hosting
+
+The privacy policy is located at `docs/privacy-policy.html` (static HTML) and `docs/privacy-policy.md` (source). You must host the HTML version at a public URL and enter that URL in both Google Play Console and App Store Connect before submission.
+
+### Option A -- GitHub Pages (Recommended)
+
+1. Push `docs/privacy-policy.html` to the repo on the `main` branch
+2. Go to repo **Settings > Pages > Source**: select "Deploy from a branch", choose `main`, and set folder to `/docs`
+3. Privacy policy will be accessible at: `https://[username].github.io/[repo]/privacy-policy.html`
+
+### Option B -- Netlify Drop
+
+1. Go to [app.netlify.com/drop](https://app.netlify.com/drop)
+2. Drag the `docs/` folder onto the page
+3. Get an instant URL; set a custom domain if desired
+
+### Option C -- Include in Web Build
+
+1. Copy `docs/privacy-policy.html` to the `web/` directory
+2. Deploy the web build; privacy policy will be accessible at `/privacy-policy.html`
+
+### Store Entry Points
+
+- **Google Play Console:** App content > Privacy policy > enter URL
+- **App Store Connect:** App Information > Privacy Policy URL > enter URL
+
+> **Note:** The privacy policy URL must be entered in both stores before submission. The URL must be publicly accessible (not behind authentication).
