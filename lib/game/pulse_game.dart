@@ -146,8 +146,13 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     obstacleSpawner.reset();
     _clearShake();
     overlays.remove('MainMenu');
-    overlays.add('HUD');
     paused = false;
+    // Brief delay before HUD appears for a clean visual beat.
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_state == GameState.playing) {
+        overlays.add('HUD');
+      }
+    });
   }
 
   /// Pause the current game.
