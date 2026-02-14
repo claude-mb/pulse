@@ -112,7 +112,7 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 07-01: Progression currency/XP system (earned through gameplay)
+- [x] 07-01: Progression currency/XP system (earned through gameplay)
 - [ ] 07-02: Unlockable player shapes (circle, triangle, hexagon, star, etc.)
 - [ ] 07-03: Unlockable color themes (palette swaps for entire game aesthetic)
 - [ ] 07-04: Unlock conditions and reward triggers (score milestones, games played)
@@ -170,7 +170,7 @@ Plans:
 | 4. Visual Juice | 6/6 | Complete | 2026-02-14 |
 | 5. Audio System | 5/5 | Complete | 2026-02-14 |
 | 6. Scoring & High Scores | 5/5 | Complete | 2026-02-14 |
-| 7. Progression & Unlockables | 0/5 | Not started | - |
+| 7. Progression & Unlockables | 1/5 | In progress | - |
 | 8. UI & Menus | 0/6 | Not started | - |
 | 9. Daily Challenge | 0/5 | Not started | - |
 | 10. App Store Ship | 0/6 | Not started | - |
