@@ -102,6 +102,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     _timeScale = 1.0;
     audioManager.playSfx('restart_chime.wav');
+    audioManager.playBgm('ambient_loop.wav');
     player.resetPosition();
     player.playEntranceAnimation();
     clearObstacles();
@@ -116,6 +117,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Pause the current game.
   void pauseGame() {
     audioManager.playSfx('menu_select.wav', volume: 0.5);
+    audioManager.pauseBgm();
     _state = GameState.paused;
     overlays.add('Pause');
     paused = true;
@@ -124,6 +126,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Resume from pause.
   void resumeGame() {
     _state = GameState.playing;
+    audioManager.resumeBgm();
     overlays.remove('Pause');
     paused = false;
   }
@@ -135,6 +138,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   void gameOver() {
     _state = GameState.gameOver;
     audioManager.playSfx('death_impact.wav');
+    audioManager.stopBgm();
     overlays.remove('HUD');
     overlays.add('GameOver');
     // Slow-motion for dramatic death.
@@ -195,6 +199,8 @@ class PulseGame extends FlameGame with HasCollisionDetection {
     _survivalTime = 0.0;
     _timeScale = 1.0;
     audioManager.playSfx('restart_chime.wav');
+    audioManager.stopBgm();
+    audioManager.playBgm('ambient_loop.wav');
     player.resetPosition();
     player.playEntranceAnimation();
     clearObstacles();
@@ -217,6 +223,7 @@ class PulseGame extends FlameGame with HasCollisionDetection {
   /// Return to the main menu.
   void returnToMenu() {
     audioManager.playSfx('menu_select.wav');
+    audioManager.stopBgm();
     _state = GameState.menu;
     clearObstacles();
     player.resetPosition();

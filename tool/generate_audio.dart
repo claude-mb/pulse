@@ -231,9 +231,8 @@ List<double> generateAmbientLoop() {
   // 55Hz: period = 1/55 ≈ 0.01818s → 4.4 / (1/55) = 242 complete cycles ✓
   // 110Hz: period = 1/110 ≈ 0.00909s → 4.4 / (1/110) = 484 complete cycles ✓
   // Pulse envelope cycles: 4 complete cycles in 4.4s ✓
-  const double duration = 4.4;
-  const double pulseInterval = 1.1; // matches spawn interval
-  const int pulseCycles = 4; // 4 × 1.1 = 4.4
+  const double duration = 4.4; // 4 × 1.1s spawn intervals
+  const int pulseCycles = 4; // complete envelope cycles in duration
 
   final numSamples = (sampleRate * duration).round();
   final samples = <double>[];

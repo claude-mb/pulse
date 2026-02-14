@@ -61,6 +61,7 @@ class AudioManager {
       'restart_chime.wav',
       'spawn_cue.wav',
       'menu_select.wav',
+      'ambient_loop.wav',
     ]);
 
     // Create pools for high-frequency SFX.
@@ -110,9 +111,12 @@ class AudioManager {
 
   /// Starts playing a looping background music track.
   ///
+  /// If BGM is already playing, stops it first to avoid overlap.
   /// If [bgmMuted] is true, this is a no-op.
   Future<void> playBgm(String name) async {
     if (!_initialized || bgmMuted) return;
+    // Guard: stop any currently playing BGM before starting a new track.
+    FlameAudio.bgm.stop();
     await FlameAudio.bgm.play(name, volume: bgmVolume);
   }
 
