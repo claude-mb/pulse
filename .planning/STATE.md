@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 7 of 10 (Progression & Unlockables)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-14 — Completed 07-03-PLAN.md
+Last activity: 2026-02-14 — Completed 07-04-PLAN.md
 
-Progress: ██████░░░░ 64%
+Progress: ██████░░░░ 66%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 34
+- Total plans completed: 35
 - Average duration: 9 min
-- Total execution time: 4.97 hours
+- Total execution time: 5.0 hours
 
 **By Phase:**
 
@@ -33,10 +33,10 @@ Progress: ██████░░░░ 64%
 | 4. Visual Juice | 6/6 | 71 min | 12 min |
 | 5. Audio System | 5/5 | 28 min | 6 min |
 | 6. Scoring | 5/5 | 55 min | 11 min |
-| 7. Progression | 3/5 | 12 min | 4 min |
+| 7. Progression | 4/5 | 16 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-05 (5 min), 07-01 (3 min), 07-02 (5 min), 07-03 (4 min)
+- Last 5 plans: 07-01 (3 min), 07-02 (5 min), 07-03 (4 min), 07-04 (4 min)
 - Trend: Phase 7 averaging 4 min/plan
 
 ## Accumulated Context
@@ -114,6 +114,8 @@ Recent decisions affecting current work:
 | 07-03 | GameConfig color fields → getters delegating to activeTheme | Zero callsite changes, seamless theme switching |
 | 07-03 | Non-themed colors (text, highscore, danger, XP) stay const | Universal meaning, shouldn't change per theme |
 | 07-03 | refreshThemeColors() pattern on cached-paint components | Only needed for components that cache Paint objects |
+| 07-04 | Synchronous xpAfter = xpBefore + earned | Avoids async timing issues with repo persistence |
+| 07-04 | 500ms delay before unlock chime | Prevents overlap with death impact sound |
 
 ### Deferred Issues
 
@@ -126,5 +128,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-14
-Stopped at: Completed 07-03-PLAN.md
+Stopped at: Completed 07-04-PLAN.md
 Resume file: None
